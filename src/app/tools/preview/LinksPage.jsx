@@ -23,6 +23,10 @@ import { linkElementValidationSchema } from "./validation/linkElement.validation
 import { mediaIcons } from "./icons";
 import { v4 as uuidv4 } from "uuid";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import createComponent from "../../api/components/createComponent";
+import fetchComponent from "../../api/components/fetchComponent";
+import updateComponent from "../../api/components/updateComponent";
+import deleteComponent from "../../api/components/deleteComponent";
 
 const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
     const theme = useTheme();
@@ -296,19 +300,6 @@ export default function LinksPage() {
             setLinkElements(newList);
         }
     };
-
-    setLinkElements([
-      ...linkElements,
-      {
-        _id: uuidv4(),
-        new: true,
-        active: true,
-        elemType: "link",
-        title: "",
-        link: "",
-        icon: <></>,
-      },
-    ]);
   
   const handleDragEnd = (result) => {
       const { destination, source } = result;
@@ -322,15 +313,35 @@ export default function LinksPage() {
     
       setLinkElements(newLinkElements);
   }
+
+   const createLinkElement = () => {
+
+        setLinkElements([
+        ...linkElements,
+        {
+            _id: uuidv4(),
+            new: true,
+            active: true,
+            elemType: "link",
+            title: "",
+            link: "",
+            icon: <></>,
+        },
+        ]);
+    };
       const getUserLinkElements = async () => {
         await fetchComponent().then((data)=>setLinkElements(data));
         // setLinkElements()
       }
+
+
       useEffect(() => {
           getUserLinkElements();
         }, []);
 
+
   useEffect(()=>{},[linkElements])
+
 
     
     return (
