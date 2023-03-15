@@ -417,7 +417,7 @@ export default function LinksPage() {
 
         <Grid item xs={6}>
           <Box>
-            <Button href="#" sx={styles.button2}>
+            <Button sx={styles.button2}>
               <Typography
                 color={"secondary"}
                 sx={{
@@ -444,7 +444,7 @@ export default function LinksPage() {
 
         <Grid item xs={6}>
           <Box>
-            <Button href="#" sx={styles.button2}>
+            <Button sx={styles.button2}>
               <Typography
                 color={"secondary"}
                 sx={{
@@ -470,37 +470,63 @@ export default function LinksPage() {
         </Grid>
       </Grid>
 
-      <Grid mt={2} container spacing={1}>
-        {linkElements ? (
-          linkElements.map((e, i) => (
-            <Grid item xs={12} key={e._id}>
-              {e.elemType === "link" ? (
-                <LinkElementTool
-                  element={e}
-                  deleteElem={deleteLinkElement}
-                  index={i}
-                />
-              ) : e.elemType === "header" ? (
-                <HeaderElementTool
-                  element={e}
-                  deleteElem={deleteLinkElement}
-                  index={i}
-                />
-              ) : e.elemType === "social" ? (
-                <SocialElementTool
-                  element={e}
-                  deleteElem={deleteLinkElement}
-                  index={i}
-                />
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="link-element">
+        {(provided) => (
+          <Grid
+            mt={2}
+            container
+            spacing={1}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {
+              linkElements ? (
+                linkElements.map((e, i) => (
+                  <Draggable key={e._id} draggableId={e._id} index={i}>
+                    {(provided) => (
+                      <Grid
+                        item
+                        xs={12}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        {e.elemType === "link" ? (
+                          <LinkElementTool
+                            className={"link-element"}
+                            element={e}
+                            deleteElem={deleteLinkElement}
+                            index={i}
+                          />
+                        ) : e.elemType === "header" ? (
+                          <HeaderElementTool
+                            element={e}
+                            deleteElem={deleteLinkElement}
+                            index={i}
+                          />
+                        ) : e.elemType === "social" ? (
+                          <SocialElementTool
+                            element={e}
+                            deleteElem={deleteLinkElement}
+                            index={i}
+                          />
+                        ) : (
+                          <></>
+                        )}
+                      </Grid>
+                    )}
+                  </Draggable>
+                ))
               ) : (
-                <></>
-              )}
-            </Grid>
-          ))
-        ) : (
-          <>Empty</>
+                <>Empty</>
+              )
+            }
+            {provided.placeholder}
+          </Grid>
         )}
-      </Grid>
+        </Droppable>
+      </DragDropContext>
     </Box>
   );
 }
