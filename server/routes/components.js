@@ -24,19 +24,16 @@ router.route("/").get(async (req, res) => {
     let linkElements = await LinkElement.find({ user: _id },{
       active:1,
       elemType:1,
+      user:1,
       title:1,
       link:1,
       updatedAt:1
     });
 
-    console.log(user.order);
+    const userOrder = await user.order.map((o)=>o._id.toString());
 
     linkElements.sort((a, b) => {
-      // console.log(b._id);
-      // console.log(user.order.indexOf(b._id));
-      return user.order.indexOf(a._id) - user.order.indexOf(b._id)});
-    // console.log(linkElements)
-    console.log("==============")
+      return userOrder.indexOf(a._id.toString()) - userOrder.indexOf(b._id.toString())});
 
     return res.json({
       success: true,
