@@ -23,7 +23,6 @@ router.route("/register").post(async (req, res) => {
     if (userEmailExists) {
       return res.send({ success: false, message: "Email is already in use" });
     }
-    await User.findOne({ username: username });
     if (usernameExists) {
       return res.send({
         success: false,

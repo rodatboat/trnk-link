@@ -26,17 +26,16 @@ export default function LoginPage() {
   
     return (
       <Box
-        sx={{
-          height: "100%",
-          display: "flex",
-          // alignItems:"flex-start"
-        }}
+        m={"auto"}
+        height={"100vh"}
+        display={"flex"}
       >
         <Box
           component={"form"}
           maxWidth={"500px"}
           width={"100%"}
           m={"auto"}
+          my={"auto"}
           onSubmit={handleSubmit}
         >
           <Box mb={4}>

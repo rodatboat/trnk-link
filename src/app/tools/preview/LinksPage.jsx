@@ -29,7 +29,6 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
     const [activeToggle, setActiveToggle] = useState(element.active);
     const [deleteDialog, setDeleteDialog] = useState(false);
 
-
     const {
         values,
         touched,
@@ -58,27 +57,31 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
         setActiveToggle(!activeToggle);
     };
 
-    const handleDeleteDialogToggle = () => {
-        setDeleteDialog(!deleteDialog);
-    };
+  const handleDelete = async () => {
+    handleDeleteDialogToggle();
+    if(element.new){
+      deleteElem(element);
+    } else {
+      deleteComponent({_id:element._id});
+      deleteElem(element);
+    }
+  };
 
-    const handleDelete = async () => {
-        handleDeleteDialogToggle();
-        if (element.new) {
-            deleteElem(element);
-        } else {
-            // send delete request
-            deleteElem(element);
-        }
-    };
+  const handleUpdate = async (values, actions) => {
+    updateComponent({
+      ...values,
+      _id:element._id,
+      active: activeToggle
+    })
+  };
 
-    const handleUpdate = async (values, actions) => {
-        // Send update request
-    };
-
-    const handleCreate = async (values, actions) => {
-        // Send create request
-    };
+  const handleCreate = async (values, actions) => {
+    createComponent({
+      ...values,
+      elemType: element.elemType,
+      active: activeToggle
+    });
+  };
 
     return (
         <>
@@ -261,46 +264,31 @@ const SocialElementTool = ({ element }) => {
 
 export default function LinksPage() {
   const [linkElements, setLinkElements] = useState([
-    {
-      _id: "1",
-      active: true,
-      type: "link",
-      title: "Youtube",
-      link: "https://youtube.com/",
-      icon: mediaIcons.youtube[0],
-        },
-        // {
-        //   _id: 2,
-        //   active: true,
-        //   type: "header",
-        //   title: "",
-        //   link: "",
-        //   icon: <></>,
-        // },
-        // {
-          //   _id: 3,
-          //   active: true,
-          //   type: "social",
-          //   title: "",
-          //   link: "",
-          //   icon: <></>,
-          // },
-        ]);
-        
-        const createLinkElement = () => {
-          setLinkElements([
-            ...linkElements,
-            {
-              _id: uuidv4(),
-              new: true,
-              active: true,
-              type: "link",
-                title: "",
-                link: "",
-                icon: <></>,
-              },
-            ]);
-    };
+    // {
+    //   _id: 1,
+    //   active: true,
+    //   elemType: "link",
+    //   title: "Youtube",
+    //   link: "https://youtube.com/",
+    //   icon: mediaIcons.youtube[0],
+    // },
+    // {
+    //   _id: 2,
+    //   active: true,
+    //   elemType: "header",
+    //   title: "",
+    //   link: "",
+    //   icon: <></>,
+    // },
+    // {
+    //   _id: 3,
+    //   active: true,
+    //   elemType: "social",
+    //   title: "",
+    //   link: "",
+    //   icon: <></>,
+    // },
+  ]);
 
     const deleteLinkElement = (e) => {
         let newList = linkElements.filter((i) => i._id !== e._id);
@@ -309,21 +297,41 @@ export default function LinksPage() {
         }
     };
 
-    useEffect(() => {}, [linkElements]);
-
-    const handleDragEnd = (result) => {
+    setLinkElements([
+      ...linkElements,
+      {
+        _id: uuidv4(),
+        new: true,
+        active: true,
+        elemType: "link",
+        title: "",
+        link: "",
+        icon: <></>,
+      },
+    ]);
+  
+  const handleDragEnd = (result) => {
       const { destination, source } = result;
-
+      
       if (!destination) return;
       if ((destination.droppableId === source.droppableId) && (destination.index === source.index)) return;
-
       const newLinkElements = Array.from(linkElements);
-
+    
       // Swap elements by destructuring
       [newLinkElements[source.index], newLinkElements[destination.index]] = [newLinkElements[destination.index], newLinkElements[source.index]];
-
+    
       setLinkElements(newLinkElements);
-    };
+  }
+      const getUserLinkElements = async () => {
+        await fetchComponent().then((data)=>setLinkElements(data));
+        // setLinkElements()
+      }
+      useEffect(() => {
+          getUserLinkElements();
+        }, []);
+
+  useEffect(()=>{},[linkElements])
+
     
     return (
         <Box m={"auto"} maxWidth={640}>

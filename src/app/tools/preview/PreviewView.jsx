@@ -5,7 +5,7 @@ import { styles } from "../../styles";
 
 export default function PreviewView() {
   return (
-    <Box height={"100vh"} backgroundColor={"secondary"}>
+    <Box backgroundColor={"secondary"}>
       <Box sx={styles.previewLeft} p={2}>
         <Outlet />
       </Box>

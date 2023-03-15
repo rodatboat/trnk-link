@@ -6,6 +6,7 @@ import PreviewView from './preview/PreviewView'
 import CustomizePage from './preview/CustomizePage'
 import SettingsPage from './nopreview/SettingsPage'
 import StatsPage from './nopreview/StatsPage'
+import { Box } from '@mui/material'
 
 export default function ToolsView() {
   return (

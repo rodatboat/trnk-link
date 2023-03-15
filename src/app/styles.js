@@ -64,6 +64,7 @@ export const styles = {
       lg: "70%",
     },
     borderRight: 1,
+    minHeight: "100vh",
     height: "100%",
   },
   elementSettings: {

@@ -1,4 +1,4 @@
 export default async function logoutUser() {
-    window.localStorage.clear();
+    Cookies.remove("jwt");
     window.location.href = "./login";
 }

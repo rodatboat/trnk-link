@@ -1,29 +1,25 @@
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 
-export default async function loginUser({ username, password }) {
-  return await fetch(`${import.meta.env.VITE_API_URL}/user/login`, {
+export default async function updateComponent({ _id, active, title, link }) {
+  return fetch(`${import.meta.env.VITE_API_URL}/components/update`, {
     method: "POST",
-    credentials: 'same-origin',
+    crossDomain: true,
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
+      authorization: `Bearer ${Cookies.get("jwt")}`
+
     },
     body: JSON.stringify({
-      username,
-      password,
+        elemId:_id, active, title, link
     }),
   })
     .then((res) => res.json())
     .then((data) => {
       if (data.success) {
-        Cookies.set("jwt", data.token, {
-          expires: 1 // 1 day
-      })
         toast.success(data.message);
-        window.location.href = "/tools";
-    
       } else {
         toast.error(data.message);
       }
