@@ -490,25 +490,27 @@ export default function LinksPage() {
                         xs={12}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
-                        {...provided.dragHandleProps}
                       >
                         {e.elemType === "link" ? (
                           <LinkElementTool
                             className={"link-element"}
                             element={e}
                             deleteElem={deleteLinkElement}
+                            dragHandleProps={...provided.dragHandleProps}
                             index={i}
                           />
                         ) : e.elemType === "header" ? (
                           <HeaderElementTool
                             element={e}
                             deleteElem={deleteLinkElement}
+                            dragHandleProps={...provided.dragHandleProps}
                             index={i}
                           />
                         ) : e.elemType === "social" ? (
                           <SocialElementTool
                             element={e}
                             deleteElem={deleteLinkElement}
+                            dragHandleProps={...provided.dragHandleProps}
                             index={i}
                           />
                         ) : (
