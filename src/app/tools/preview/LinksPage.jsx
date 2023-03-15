@@ -27,6 +27,7 @@ import fetchComponent from "../../api/components/fetchComponent";
 import createComponent from "../../api/components/createComponent";
 import updateComponent from "../../api/components/updateComponent";
 import deleteComponent from "../../api/components/deleteComponent";
+import SocialIconsMenu from "./SocialIconsMenu";
 
 const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
     const theme = useTheme();
@@ -358,7 +359,18 @@ export default function LinksPage() {
 
     useEffect(() => {}, [linkElements]);
 
+    const [openSocialIconsMenu, setOpenSocialIconsMenu] = React.useState(false);
+
+    const handleOpenSocialIconsMenu = () => {
+        setOpenSocialIconsMenu(true);
+    };
+
+    const handleCloseSocialIconsMenu = () => {
+        setOpenSocialIconsMenu(false);
+    };
+
     return (
+        <>
         <Box m={"auto"} maxWidth={640}>
             <Grid container spacing={1}>
                 <Grid item xs={12}>
@@ -432,7 +444,7 @@ export default function LinksPage() {
 
                 <Grid item xs={6}>
                     <Box>
-                        <Button sx={styles.button2}>
+                        <Button onClick={handleOpenSocialIconsMenu} sx={styles.button2}>
                             <Typography
                                 color={"secondary"}
                                 sx={{
@@ -519,6 +531,15 @@ export default function LinksPage() {
                     )}
                 </Droppable>
             </DragDropContext>
+        <Box sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            maxWidth: "100%"
+        }}>
+            <SocialIconsMenu openSocialIconsMenu={openSocialIconsMenu} handleOpenSocialIconsMenu={handleOpenSocialIconsMenu} handleCloseSocialIconsMenu={handleCloseSocialIconsMenu}/>
+            </Box>
         </Box>
+            </>
     );
 }
