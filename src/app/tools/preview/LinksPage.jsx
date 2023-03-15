@@ -172,6 +172,7 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
           height={"100%"}
           justifyContent={"space-evenly"}
           width={"100%"}
+          gap={1}
         >
           <TextField
             id={"title"}
@@ -216,9 +217,9 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
               )
             }}
           />
-          <Box>
-            <Typography sx={styles.hint}>{initialValues !== values || element.new ? "Unsaved Changes" : ""}</Typography>
-          </Box>
+            <Box textAlign={"center"} mt={"auto"}>
+            <Typography color={"accent.main"} sx={styles.hint}>{initialValues !== values || element.new ? "Unsaved Changes" : ""}</Typography>
+            </Box>
         </Box>
         <Box
           pl={1.5}
