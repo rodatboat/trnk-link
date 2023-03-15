@@ -16,7 +16,7 @@ export default async function fetchComponent() {
     .then((res) => res.json())
     .then((data) => {
       if (data.success) {
-        toast.success(data.message);
+        // toast.success(data.message);
         return data.data;
       } else {
         toast.error(data.message);

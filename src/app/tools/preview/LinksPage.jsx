@@ -40,6 +40,7 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
     handleChange,
     handleSubmit,
     isSubmitting,
+    initialValues
   } = useFormik({
     initialValues: {
       title: element.title,
@@ -51,7 +52,8 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
       if (element.new) {
         await handleCreate(values, actions);
       } else {
-        await handleUpdate(values, actions);
+        if(initialValues !== values)
+        {await handleUpdate(values, actions);}
       }
     },
   });
@@ -79,7 +81,8 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
       ...values,
       _id:element._id,
       active: activeToggle
-    })
+    });
+    deleteElem(element);
   };
 
   const handleCreate = async (values, actions) => {
@@ -88,6 +91,7 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
       elemType: element.elemType,
       active: activeToggle
     });
+    deleteElem(element);
   };
 
   return (
@@ -229,7 +233,7 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
                 },
               }}
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || (initialValues === values)}
             >
               <RiSaveLine fontSize={18} />
             </Button>
@@ -267,6 +271,7 @@ const SocialElementTool = ({ element }) => {
 };
 
 export default function LinksPage() {
+  const [updated, setUpdated] = useState(null);
   const [linkElements, setLinkElements] = useState([
     // {
     //   _id: 1,
@@ -315,6 +320,7 @@ export default function LinksPage() {
     if(newList !== linkElements){
       setLinkElements(newList);
     }
+    setUpdated(Math.random());
   };
 
   const getUserLinkElements = async () => {
@@ -325,6 +331,10 @@ export default function LinksPage() {
   useEffect(() => {
     getUserLinkElements();
   }, []);
+
+  useEffect(()=>{
+    getUserLinkElements();
+  },[updated])
 
   useEffect(()=>{},[linkElements])
 
