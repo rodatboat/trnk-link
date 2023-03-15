@@ -259,8 +259,210 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
         </>
     );
 };
-const HeaderElementTool = ({ element }) => {
-    return <>Header</>;
+const HeaderElementTool = ({ element, dragHandleProps }) => {
+    const theme = useTheme();
+    const [activeToggle, setActiveToggle] = useState(element.active);
+    const [deleteDialog, setDeleteDialog] = useState(false);
+
+
+    const {
+        values,
+        touched,
+        errors,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        isSubmitting,
+    } = useFormik({
+        initialValues: {
+            title: element.title,
+            icon: element.icon,
+        },
+        validationSchema: linkElementValidationSchema,
+        onSubmit: async (values, actions) => {
+            if (element.new) {
+                await handleCreate(values, actions);
+            } else {
+                await handleUpdate(values, actions);
+            }
+        },
+    });
+
+    const handleActiveToggle = () => {
+        setActiveToggle(!activeToggle);
+    };
+
+    const handleDeleteDialogToggle = () => {
+        setDeleteDialog(!deleteDialog);
+    };
+
+    const handleDelete = async () => {
+        handleDeleteDialogToggle();
+        if (element.new) {
+            deleteElem(element);
+        } else {
+            // send delete request
+            deleteElem(element);
+        }
+    };
+
+    const handleUpdate = async (values, actions) => {
+        // Send update request
+    };
+
+    const handleCreate = async (values, actions) => {
+        // Send create request
+    };
+
+    return (
+        <>
+            <Box
+                sx={styles.elementSettings}
+                component={"form"}
+                onSubmit={handleSubmit}>
+                <Modal
+                    open={deleteDialog}
+                    onClose={handleDeleteDialogToggle}
+                    aria-labelledby='modal-modal-title'
+                    aria-describedby='modal-modal-description'>
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            width: "fit-content",
+                            backgroundColor: "primary.main",
+                            border: 2,
+                            borderColor: "black",
+                            p: 1,
+                        }}>
+                        <Box m={2} minWidth={300}>
+                            <Typography
+                                variant='h6'
+                                component='h2'
+                                textAlign={"center"}
+                                mb={4}>
+                                Delete this forever?
+                            </Typography>
+                            <Box display={"flex"} flexDirection={"row"} gap={1}>
+                                <Button
+                                    onClick={handleDeleteDialogToggle}
+                                    sx={styles.button2}
+                                    color={"secondary"}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    onClick={handleDelete}
+                                    sx={styles.button3}
+                                    color={"primary"}>
+                                    Delete
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
+
+                <Box
+                id="handle-box"
+                    pr={1.5}
+                    display={"flex"}
+                    alignItems={"center"}
+                    {...dragHandleProps}
+                    >
+                    <RxDragHandleDots1 />
+                </Box>
+                <Box
+                    display={"flex"}
+                    flexDirection={"column"}
+                    height={"100%"}
+                    justifyContent={"space-evenly"}
+                    width={"100%"}>
+                    <TextField
+                        id={"headline-title"}
+                        type='text'
+                        value={values.title}
+                        error={errors.title && touched.title}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        helperText={
+                            errors.title && touched.title && errors.title
+                        }
+                        sx={styles.input}
+                        placeholder='Headline title'
+                        size='small'
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment
+                                    position='start'
+                                    color='secondary'>
+                                    <MdOutlineEdit />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </Box>
+                <Box
+                    pl={1.5}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    height={"100%"}
+                    gap={2}>
+                    <Box>
+                        <Switch
+                            defaultChecked={values.active}
+                            checked={activeToggle}
+                            onChange={handleActiveToggle}
+                            onBlur={handleBlur}
+                            size='small'
+                            sx={styles.switch}
+                        />
+                    </Box>
+                    <Box>
+                        <Button
+                            color={"secondary"}
+                            sx={{
+                                border: 1,
+                                borderRadius: 1,
+                                boxShadow: 1,
+                                width: "fit-content",
+                                minWidth: "fit-content",
+                                borderColor: "complement.main",
+                                maxWidth: "fit-content",
+                                ".MuiButtonBase-root": {
+                                    maxWidth: "fit-content",
+                                },
+                            }}
+                            type='submit'
+                            disabled={isSubmitting}>
+                            <RiSaveLine fontSize={18} />
+                        </Button>
+                    </Box>
+                    <Box>
+                        <Button
+                            color={"secondary"}
+                            sx={{
+                                border: 1,
+                                borderRadius: 1,
+                                boxShadow: 1,
+                                width: "fit-content",
+                                minWidth: "fit-content",
+                                borderColor: "complement.main",
+                                maxWidth: "fit-content",
+                                ".MuiButtonBase-root": {
+                                    maxWidth: "fit-content",
+                                },
+                            }}
+                            onClick={handleDeleteDialogToggle}>
+                            <RxTrash fontSize={18} />
+                        </Button>
+                    </Box>
+                </Box>
+            </Box>
+        </>
+    );
 };
 const SocialElementTool = ({ element }) => {
     return <>Social</>;
@@ -300,8 +502,10 @@ export default function LinksPage() {
             setLinkElements(newList);
         }
     };
-  
-  const handleDragEnd = (result) => {
+
+    useEffect(() => {}, [linkElements]);
+
+    const handleDragEnd = (result) => {
       const { destination, source } = result;
       
       if (!destination) return;
@@ -329,10 +533,14 @@ export default function LinksPage() {
         },
         ]);
     };
+
+
+
       const getUserLinkElements = async () => {
         await fetchComponent().then((data)=>setLinkElements(data));
         // setLinkElements()
       }
+
 
 
       useEffect(() => {
@@ -393,7 +601,7 @@ export default function LinksPage() {
 
                 <Grid item xs={6}>
                     <Box>
-                        <Button href='#' sx={styles.button2}>
+                        <Button onClick={createHeaderElement} href='#' sx={styles.button2}>
                             <Typography
                                 color={"secondary"}
                                 sx={{
@@ -482,6 +690,7 @@ export default function LinksPage() {
                                                             deleteLinkElement
                                                         }
                                                         index={i}
+                                                        dragHandleProps={...provided.dragHandleProps}
                                                     />
                                                 ) : e.type === "social" ? (
                                                     <SocialElementTool
@@ -490,6 +699,7 @@ export default function LinksPage() {
                                                             deleteLinkElement
                                                         }
                                                         index={i}
+                                                        dragHandleProps={...provided.dragHandleProps}
                                                         />
                                                         ) : (
                                                           <></>
