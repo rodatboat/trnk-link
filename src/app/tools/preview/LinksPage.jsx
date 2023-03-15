@@ -22,12 +22,13 @@ import { styles } from "../../styles";
 import { linkElementValidationSchema } from "./validation/linkElement.validation";
 import { mediaIcons } from "./icons";
 import { v4 as uuidv4 } from "uuid";
-import createComponent from "../../api/components/createComponent";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import fetchComponent from "../../api/components/fetchComponent";
+import createComponent from "../../api/components/createComponent";
 import updateComponent from "../../api/components/updateComponent";
 import deleteComponent from "../../api/components/deleteComponent";
 
-const LinkElementTool = ({ element, deleteElem, index }) => {
+const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
   const theme = useTheme();
   const [activeToggle, setActiveToggle] = useState(element.active);
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -40,20 +41,21 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
     handleChange,
     handleSubmit,
     isSubmitting,
-    initialValues
+    initialValues,
   } = useFormik({
     initialValues: {
       title: element.title,
       link: element.link,
-      // icon: element.icon,
+      icon: element.icon,
     },
     validationSchema: linkElementValidationSchema,
     onSubmit: async (values, actions) => {
       if (element.new) {
         await handleCreate(values, actions);
       } else {
-        if(initialValues !== values)
-        {await handleUpdate(values, actions);}
+        if (initialValues !== values) {
+          await handleUpdate(values, actions);
+        }
       }
     },
   });
@@ -68,10 +70,10 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
 
   const handleDelete = async () => {
     handleDeleteDialogToggle();
-    if(element.new){
+    if (element.new) {
       deleteElem(element);
     } else {
-      deleteComponent({_id:element._id});
+      deleteComponent({ _id: element._id });
       deleteElem(element);
     }
   };
@@ -79,8 +81,8 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
   const handleUpdate = async (values, actions) => {
     updateComponent({
       ...values,
-      _id:element._id,
-      active: activeToggle
+      _id: element._id,
+      active: activeToggle,
     });
     deleteElem(element);
   };
@@ -89,7 +91,7 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
     createComponent({
       ...values,
       elemType: element.elemType,
-      active: activeToggle
+      active: activeToggle,
     });
     deleteElem(element);
   };
@@ -149,7 +151,13 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
           </Box>
         </Modal>
 
-        <Box pr={1.5} display={"flex"} alignItems={"center"}>
+        <Box
+          id="handle-box"
+          pr={1.5}
+          display={"flex"}
+          alignItems={"center"}
+          {...dragHandleProps}
+        >
           <RxDragHandleDots1 />
         </Box>
         <Box
@@ -233,7 +241,7 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
                 },
               }}
               type="submit"
-              disabled={isSubmitting || (initialValues === values)}
+              disabled={isSubmitting || initialValues === values}
             >
               <RiSaveLine fontSize={18} />
             </Button>
@@ -298,9 +306,7 @@ export default function LinksPage() {
     //   icon: <></>,
     // },
   ]);
-
   const createLinkElement = () => {
-
     setLinkElements([
       ...linkElements,
       {
@@ -310,33 +316,53 @@ export default function LinksPage() {
         elemType: "link",
         title: "",
         link: "",
-        icon: <></>,
+        // icon: <></>,
       },
     ]);
   };
 
   const deleteLinkElement = (e) => {
-    let newList = linkElements.filter((i)=> i._id !== e._id);
-    if(newList !== linkElements){
+    let newList = linkElements.filter((i) => i._id !== e._id);
+    if (newList !== linkElements) {
       setLinkElements(newList);
     }
     setUpdated(Math.random());
   };
 
   const getUserLinkElements = async () => {
-    await fetchComponent().then((data)=>setLinkElements(data));
+    await fetchComponent().then((data) => setLinkElements(data));
     // setLinkElements()
-  }
+  };
+
+  const handleDragEnd = (result) => {
+    const { destination, source } = result;
+
+    if (!destination) return;
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    )
+      return;
+    const newLinkElements = Array.from(linkElements);
+
+    // Swap elements by destructuring
+    [newLinkElements[source.index], newLinkElements[destination.index]] = [
+      newLinkElements[destination.index],
+      newLinkElements[source.index],
+    ];
+
+    setLinkElements(newLinkElements);
+  };
 
   useEffect(() => {
     getUserLinkElements();
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     getUserLinkElements();
-  },[updated])
+  }, [updated]);
 
-  useEffect(()=>{},[linkElements])
+  useEffect(() => {}, [linkElements]);
 
   return (
     <Box m={"auto"} maxWidth={640}>
