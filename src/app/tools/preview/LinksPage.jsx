@@ -19,10 +19,11 @@ import { useFormik } from "formik";
 import { RiSaveLine } from "react-icons/ri";
 import { toast } from "react-hot-toast";
 import { styles } from "../../styles";
-import {linkElementValidationSchema} from './validation/linkElement.validation';
-import {mediaIcons} from "./icons";
+import { linkElementValidationSchema } from "./validation/linkElement.validation";
+import { mediaIcons } from "./icons";
+import { v4 as uuidv4 } from "uuid";
 
-const LinkElementTool = ({ element, deleteElem }) => {
+const LinkElementTool = ({ element, deleteElem, index }) => {
   const theme = useTheme();
   const [activeToggle, setActiveToggle] = useState(element.active);
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -43,10 +44,10 @@ const LinkElementTool = ({ element, deleteElem }) => {
     },
     validationSchema: linkElementValidationSchema,
     onSubmit: async (values, actions) => {
-      if(element._id !== null){
-        await handleUpdate(values, actions);
-      } else {
+      if (element.new) {
         await handleCreate(values, actions);
+      } else {
+        await handleUpdate(values, actions);
       }
     },
   });
@@ -61,44 +62,74 @@ const LinkElementTool = ({ element, deleteElem }) => {
 
   const handleDelete = async () => {
     handleDeleteDialogToggle();
+    if(element.new){
+      deleteElem(element);
+    } else {
+      // send delete request
+      deleteElem(element);
+    }
   };
 
   const handleUpdate = async (values, actions) => {
+    // Send update request
   };
 
   const handleCreate = async (values, actions) => {
+    // Send create request
   };
 
   return (
     <>
-      <Box sx={styles.elementSettings} component={"form"}
-          onSubmit={handleSubmit}>
+      <Box
+        sx={styles.elementSettings}
+        component={"form"}
+        onSubmit={handleSubmit}
+      >
         <Modal
           open={deleteDialog}
           onClose={handleDeleteDialogToggle}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: "fit-content",
-            backgroundColor:"primary.main",
-            border: 2,
-            borderColor: "black",
-            p: 1,
-          }}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "fit-content",
+              backgroundColor: "primary.main",
+              border: 2,
+              borderColor: "black",
+              p: 1,
+            }}
+          >
             <Box m={2} minWidth={300}>
-            <Typography variant="h6" component="h2" textAlign={"center"} mb={4}>
-              Delete this forever?
-            </Typography>
-            <Box display={"flex"} flexDirection={"row"} gap={1}>
-            <Button onClick={handleDeleteDialogToggle} sx={styles.button2} color={"secondary"}>Cancel</Button>
-            <Button onClick={handleDelete} sx={styles.button3} color={"primary"}>Delete</Button>
-            </Box>
+              <Typography
+                variant="h6"
+                component="h2"
+                textAlign={"center"}
+                mb={4}
+              >
+                Delete this forever?
+              </Typography>
+              <Box display={"flex"} flexDirection={"row"} gap={1}>
+                <Button
+                  onClick={handleDeleteDialogToggle}
+                  sx={styles.button2}
+                  color={"secondary"}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleDelete}
+                  sx={styles.button3}
+                  color={"primary"}
+                >
+                  Delete
+                </Button>
               </Box>
+            </Box>
           </Box>
         </Modal>
 
@@ -224,7 +255,6 @@ const SocialElementTool = ({ element }) => {
 };
 
 export default function LinksPage() {
-  const [rerender, setRerender] = useState(Math.random());
   const [linkElements, setLinkElements] = useState([
     {
       _id: 1,
@@ -253,31 +283,30 @@ export default function LinksPage() {
   ]);
 
   const createLinkElement = () => {
+
     setLinkElements([
       ...linkElements,
       {
-        _id:null,
-        active:true,
-        type:"link",
-        title:"",
-        link:"",
-        icon:<></>
-      }
+        _id: uuidv4(),
+        new: true,
+        active: true,
+        type: "link",
+        title: "",
+        link: "",
+        icon: <></>,
+      },
     ]);
-  }
+  };
 
   const deleteLinkElement = (e) => {
-    const index = linkElements.indexOf(e);
-    console.log(index)
-    if(index !== -1){
-      let newList = linkElements;
-      newList.splice(index, 1);
+    let newList = linkElements.filter((i)=> i._id !== e._id);
+    if(newList !== linkElements){
       setLinkElements(newList);
-      setRerender(Math.random());
     }
-  }
+  };
 
-  useEffect(() => {}, [rerender]);
+  useEffect(() => {
+  }, [linkElements]);
 
   return (
     <Box m={"auto"} maxWidth={640}>
@@ -386,21 +415,36 @@ export default function LinksPage() {
       </Grid>
 
       <Grid mt={2} container spacing={1}>
-        {linkElements ? linkElements.map((e, i) => (
-          <Grid item xs={12} key={i}>
-            {e.type === "link" ? (
-              <LinkElementTool element={e} deleteElem={deleteLinkElement} />
-            ) : e.type === "header" ? (
-              <HeaderElementTool element={e} deleteElem={deleteLinkElement} />
-            ) : e.type === "social" ? (
-              <SocialElementTool element={e} deleteElem={deleteLinkElement} />
-            ) : (
-              <></>
-            )}
-          </Grid>
-        )) : <></>}
+        {linkElements ? (
+          linkElements.map((e, i) => (
+            <Grid item xs={12} key={e._id}>
+              {e.type === "link" ? (
+                <LinkElementTool
+                  element={e}
+                  deleteElem={deleteLinkElement}
+                  index={i}
+                />
+              ) : e.type === "header" ? (
+                <HeaderElementTool
+                  element={e}
+                  deleteElem={deleteLinkElement}
+                  index={i}
+                />
+              ) : e.type === "social" ? (
+                <SocialElementTool
+                  element={e}
+                  deleteElem={deleteLinkElement}
+                  index={i}
+                />
+              ) : (
+                <></>
+              )}
+            </Grid>
+          ))
+        ) : (
+          <></>
+        )}
       </Grid>
     </Box>
   );
 }
-
