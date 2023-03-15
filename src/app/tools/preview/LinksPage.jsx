@@ -27,6 +27,8 @@ import fetchComponent from "../../api/components/fetchComponent";
 import createComponent from "../../api/components/createComponent";
 import updateComponent from "../../api/components/updateComponent";
 import deleteComponent from "../../api/components/deleteComponent";
+import { TbMenuOrder } from "react-icons/tb";
+import changeOrder from "../../api/components/changeOrder";
 
 const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
   const theme = useTheme();
@@ -279,6 +281,7 @@ const SocialElementTool = ({ element }) => {
 };
 
 export default function LinksPage() {
+  const [orderChange, setOrderChange] = useState(false);
   const [updated, setUpdated] = useState(null);
   const [linkElements, setLinkElements] = useState([
     // {
@@ -351,8 +354,18 @@ export default function LinksPage() {
       newLinkElements[source.index],
     ];
 
+    if(linkElements !== newLinkElements){
+      setOrderChange(true);
+    }
     setLinkElements(newLinkElements);
   };
+
+  const handleOrderChange = () => {
+    if(orderChange){
+      changeOrder(linkElements.filter((e)=> !e.new));
+    }
+    setOrderChange(false);
+  }
 
   useEffect(() => {
     getUserLinkElements();
@@ -464,6 +477,33 @@ export default function LinksPage() {
                   <IoShareSocialOutline fontSize={16} />
                 </Box>
                 Social Icon
+              </Typography>
+            </Button>
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} display={orderChange ? "block" : "none"}>
+          <Box>
+            <Button sx={styles.button} onClick={handleOrderChange}>
+              <Typography
+                color={"#fff"}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontWeight: "medium",
+                }}
+                fontSize={14}
+              >
+                <Box
+                  component={"span"}
+                  sx={{
+                    display: "inline-flex",
+                  }}
+                  p={0.5}
+                >
+                  <TbMenuOrder fontSize={16} />
+                </Box>
+                Save Link Order
               </Typography>
             </Button>
           </Box>
