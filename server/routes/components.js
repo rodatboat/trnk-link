@@ -15,14 +15,25 @@ router.use((req, res, next) => {
 router.route("/").get(async (req, res) => {
   try {
     let { _id } = req.decoded;
+    const user = await User.findOne({_id:_id});
 
-    const linkElements = await LinkElement.find({ user: _id },{
+    if (!user) {
+      return res.send({ success: false, message: "User doesn't exist" });
+    }
+
+    let linkElements = await LinkElement.find({ user: _id },{
       active:1,
       elemType:1,
+      user:1,
       title:1,
       link:1,
       updatedAt:1
     });
+
+    const userOrder = await user.order.map((o)=>o._id.toString());
+
+    linkElements.sort((a, b) => {
+      return userOrder.indexOf(a._id.toString()) - userOrder.indexOf(b._id.toString())});
 
     return res.json({
       success: true,
@@ -118,13 +129,41 @@ router.route("/update").post(async (req, res) => {
 
     return res.send({
       success: true,
-      message: "Link component updated successfully."
+      message: "Link component updated"
     });
   } catch (error) {
     console.log(error.message)
     return res.send({
       success: false,
       message: "Error updating link component",
+    });
+  }
+});
+
+router.route("/order").post( async(req, res)=>{
+  try {
+    const { components } = req.body;
+    const { _id } = req.decoded;
+
+    const user = await User.findOne({_id:_id})
+
+    if (!user) {
+      return res.send({ success: false, message: "User doesn't exist" });
+    }
+
+    await user.updateOne({
+      order:components
+    });
+
+    return res.send({
+      success: true,
+      message: "Link components order changed"
+    });
+  } catch (error) {
+    console.log(error.message)
+    return res.send({
+      success: false,
+      message: "Error changing link components order",
     });
   }
 });

@@ -28,37 +28,39 @@ import createComponent from "../../api/components/createComponent";
 import updateComponent from "../../api/components/updateComponent";
 import deleteComponent from "../../api/components/deleteComponent";
 import SocialIconsMenu from "./SocialIconsMenu";
+import { TbMenuOrder } from "react-icons/tb";
+import changeOrder from "../../api/components/changeOrder";
 
 const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
     const theme = useTheme();
     const [activeToggle, setActiveToggle] = useState(element.active);
     const [deleteDialog, setDeleteDialog] = useState(false);
-    const {
-        values,
-        touched,
-        errors,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-        initialValues,
-    } = useFormik({
-        initialValues: {
-            title: element.title,
-            link: element.link,
-            icon: element.icon,
-        },
-        validationSchema: linkElementValidationSchema,
-        onSubmit: async (values, actions) => {
-            if (element.new) {
-                await handleCreate(values, actions);
-            } else {
-                if (initialValues !== values) {
-                    await handleUpdate(values, actions);
-                }
-            }
-        },
-    });
+    // const {
+    //     values,
+    //     touched,
+    //     errors,
+    //     handleBlur,
+    //     handleChange,
+    //     handleSubmit,
+    //     isSubmitting,
+    //     initialValues,
+    // } = useFormik({
+    //     initialValues: {
+    //         title: element.title,
+    //         link: element.link,
+    //         icon: element.icon,
+    //     },
+    //     validationSchema: linkElementValidationSchema,
+    //     onSubmit: async (values, actions) => {
+    //         if (element.new) {
+    //             await handleCreate(values, actions);
+    //         } else {
+    //             if (initialValues !== values) {
+    //                 await handleUpdate(values, actions);
+    //             }
+    //         }
+    //     },
+    // });
 
     const handleActiveToggle = () => {
         setActiveToggle(!activeToggle);
@@ -77,6 +79,36 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
             deleteElem(element);
         }
     };
+  const {
+    values,
+    touched,
+    errors,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    initialValues,
+  } = useFormik({
+    initialValues: {
+      title: element.title,
+      link: element.link,
+      active:element.active,
+      icon: element.icon,
+    },
+    validationSchema: linkElementValidationSchema,
+    onSubmit: async (values, actions) => {
+      if (element.new) {
+        await handleCreate(values, actions);
+      } else {
+        if (initialValues !== values) {
+          await handleUpdate(values, actions);
+        }
+      }
+    },
+    // handleChange:async ()=>{
+    //   console.log("changes")
+    // }
+  });
 
     const handleUpdate = async (values, actions) => {
         updateComponent({
@@ -144,127 +176,113 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
                         </Box>
                     </Box>
                 </Modal>
-
-                <Box
-                    id='handle-box'
-                    pr={1.5}
-                    display={"flex"}
-                    alignItems={"center"}
-                    {...dragHandleProps}>
-                    <RxDragHandleDots1 />
-                </Box>
-                <Box
-                    display={"flex"}
-                    flexDirection={"column"}
-                    height={"100%"}
-                    justifyContent={"space-evenly"}
-                    width={"100%"}>
-                    <TextField
-                        id={"title"}
-                        type='text'
-                        value={values.title}
-                        error={errors.title && touched.title}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        helperText={
-                            errors.title && touched.title && errors.title
-                        }
-                        sx={styles.input}
-                        placeholder='Title'
-                        size='small'
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment
-                                    position='start'
-                                    color='secondary'>
-                                    <MdOutlineEdit />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <TextField
-                        id={"link"}
-                        type='text'
-                        value={values.link}
-                        error={errors.link && touched.link}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        helperText={errors.link && touched.link && errors.link}
-                        sx={styles.input}
-                        placeholder='https://www.example.com/'
-                        size='small'
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment
-                                    position='start'
-                                    color='secondary'>
-                                    <MdOutlineEdit />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </Box>
-                <Box
-                    pl={1.5}
-                    display={"flex"}
-                    flexDirection={"column"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                    height={"100%"}
-                    gap={2}>
-                    <Box>
-                        <Switch
-                            defaultChecked={values.active}
-                            checked={activeToggle}
-                            onChange={handleActiveToggle}
-                            onBlur={handleBlur}
-                            size='small'
-                            sx={styles.switch}
-                        />
-                    </Box>
-                    <Box>
-                        <Button
-                            color={"secondary"}
-                            sx={{
-                                border: 1,
-                                borderRadius: 1,
-                                boxShadow: 1,
-                                width: "fit-content",
-                                minWidth: "fit-content",
-                                borderColor: "complement.main",
-                                maxWidth: "fit-content",
-                                ".MuiButtonBase-root": {
-                                    maxWidth: "fit-content",
-                                },
-                            }}
-                            type='submit'
-                            disabled={isSubmitting || initialValues === values}>
-                            <RiSaveLine fontSize={18} />
-                        </Button>
-                    </Box>
-                    <Box>
-                        <Button
-                            color={"secondary"}
-                            sx={{
-                                border: 1,
-                                borderRadius: 1,
-                                boxShadow: 1,
-                                width: "fit-content",
-                                minWidth: "fit-content",
-                                borderColor: "complement.main",
-                                maxWidth: "fit-content",
-                                ".MuiButtonBase-root": {
-                                    maxWidth: "fit-content",
-                                },
-                            }}
-                            onClick={handleDeleteDialogToggle}>
-                            <RxTrash fontSize={18} />
-                        </Button>
-                    </Box>
-                </Box>
-            </Box>
-        </>
-    );
+        <Box
+          id="handle-box"
+          pr={1.5}
+          display={"flex"}
+          alignItems={"center"}
+          {...dragHandleProps}
+        >
+          <RxDragHandleDots1 />
+        </Box>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          height={"100%"}
+          justifyContent={"space-evenly"}
+          width={"100%"}
+        >
+          <TextField
+            id={"title"}
+            type="text"
+            value={values.title}
+            error={errors.title && touched.title}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            helperText={errors.title && touched.title && errors.title}
+            sx={styles.input}
+            placeholder="Title"
+            size="small"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start" color="secondary">
+                  <MdOutlineEdit />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end" color="secondary">
+                  <Typography fontSize={12}>{values.title.length > 0 ? `${values.title.length}/50` : ''}</Typography>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            id={"link"}
+            type="text"
+            value={values.link}
+            error={errors.link && touched.link}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            helperText={errors.link && touched.link && errors.link}
+            sx={styles.input}
+            placeholder="https://www.example.com/"
+            size="small"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start" color="secondary">
+                  <MdOutlineEdit />
+                </InputAdornment>
+              )
+            }}
+          />
+          <Box>
+            <Typography sx={styles.hint}>{initialValues !== values || element.new ? "Unsaved Changes" : ""}</Typography>
+          </Box>
+        </Box>
+        <Box
+          pl={1.5}
+          display={"flex"}
+          flexDirection={"column"}
+          alignItems={"center"}
+          justifyContent={"center"}
+          height={"100%"}
+          gap={2}
+        >
+          <Box>
+            <Switch
+            id={"active"}
+              // defaultChecked={initialValues.active}
+              checked={values.active}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              size="small"
+              sx={styles.switch}
+            />
+          </Box>
+          <Box>
+            <Button
+              color={initialValues === values ? "secondary" : "primary"}
+              sx={initialValues === values ? styles.smallButton : styles.smallButtonActive} //initialValues !== values
+              type="submit"
+              disabled={isSubmitting || initialValues === values
+              }
+            >
+              <RiSaveLine fontSize={18} />
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              color={"secondary"}
+              sx={styles.smallButton}
+              onClick={handleDeleteDialogToggle}
+            >
+              <RxTrash fontSize={18} />
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+    </>
+  );
 };
 const HeaderElementTool = ({ element }) => {
     return <>Header</>;
@@ -274,32 +292,46 @@ const SocialElementTool = ({ element }) => {
 };
 
 export default function LinksPage() {
-    const [updated, setUpdated] = useState(null);
-    const [linkElements, setLinkElements] = useState([
-        // {
-        //   _id: 1,
-        //   active: true,
-        //   elemType: "link",
-        //   title: "Youtube",
-        //   link: "https://youtube.com/",
-        //   icon: mediaIcons.youtube[0],
-        // },
-        // {
-        //   _id: 2,
-        //   active: true,
-        //   elemType: "header",
-        //   title: "",
-        //   link: "",
-        //   icon: <></>,
-        // },
-        // {
-        //   _id: 3,
-        //   active: true,
-        //   elemType: "social",
-        //   title: "",
-        //   link: "",
-        //   icon: <></>,
-        // },
+  const [orderChange, setOrderChange] = useState(false);
+  const [updated, setUpdated] = useState(null);
+  const [linkElements, setLinkElements] = useState([
+    // {
+    //   _id: 1,
+    //   active: true,
+    //   elemType: "link",
+    //   title: "Youtube",
+    //   link: "https://youtube.com/",
+    //   icon: mediaIcons.youtube[0],
+    // },
+    // {
+    //   _id: 2,
+    //   active: true,
+    //   elemType: "header",
+    //   title: "",
+    //   link: "",
+    //   icon: <></>,
+    // },
+    // {
+    //   _id: 3,
+    //   active: true,
+    //   elemType: "social",
+    //   title: "",
+    //   link: "",
+    //   icon: <></>,
+    // },
+  ]);
+  const createLinkElement = () => {
+    setLinkElements([
+      ...linkElements,
+      {
+        _id: uuidv4(),
+        new: true,
+        active: true,
+        elemType: "link",
+        title: "",
+        link: "",
+        // icon: <></>,
+      },
     ]);
     const createLinkElement = () => {
         setLinkElements([
@@ -346,12 +378,22 @@ export default function LinksPage() {
             newLinkElements[source.index],
         ];
 
-        setLinkElements(newLinkElements);
-    };
+    if(linkElements !== newLinkElements){
+      setOrderChange(true);
+    }
+    setLinkElements(newLinkElements);
+  };
 
-    useEffect(() => {
-        getUserLinkElements();
-    }, []);
+  const handleOrderChange = () => {
+    if(orderChange){
+      changeOrder(linkElements.filter((e)=> !e.new));
+    }
+    setOrderChange(false);
+  }
+
+  useEffect(() => {
+    getUserLinkElements();
+  }, []);
 
     useEffect(() => {
         getUserLinkElements();
@@ -370,153 +412,156 @@ export default function LinksPage() {
     };
 
     return (
-        <>
-        <Box m={"auto"} maxWidth={640}>
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <Box
-                        mt={1}
-                        mb={0.5}
-                        sx={{
-                            backgroundColor: "primary",
-                            color: "secondary",
-                            borderColor: "complement.main",
-                        }}>
+    <><>
+            {/* Create Link */}
+            <Grid item xs={12}>
+                <Box>
+                    <Button onClick={createLinkElement} sx={styles.button2}>
                         <Typography
                             color={"secondary"}
                             sx={{
+                                display: "flex",
+                                alignItems: "center",
                                 fontWeight: "regular",
-                            }}>
-                            Choose what element to create:
+                            }}
+                            fontSize={14}
+                        >
+                            <Box
+                                component={"span"}
+                                sx={{
+                                    display: "inline-flex",
+                                }}
+                                p={0.5}
+                            >
+                                <BiLinkAlt fontSize={16} />
+                            </Box>
+                            Link
                         </Typography>
-                    </Box>
-                </Grid>
-
-                <Grid item xs={12}>
-                    <Box>
-                        <Button onClick={createLinkElement} sx={styles.button2}>
-                            <Typography
-                                color={"secondary"}
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    fontWeight: "regular",
-                                }}
-                                fontSize={14}>
-                                <Box
-                                    component={"span"}
-                                    sx={{
-                                        display: "inline-flex",
-                                    }}
-                                    p={0.5}>
-                                    <BiLinkAlt fontSize={16} />
-                                </Box>
-                                Link
-                            </Typography>
-                        </Button>
-                    </Box>
-                </Grid>
-
-                <Grid item xs={6}>
-                    <Box>
-                        <Button sx={styles.button2}>
-                            <Typography
-                                color={"secondary"}
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    fontWeight: "regular",
-                                }}
-                                fontSize={14}>
-                                <Box
-                                    component={"span"}
-                                    sx={{
-                                        display: "inline-flex",
-                                    }}
-                                    p={0.5}>
-                                    <MdTitle fontSize={16} />
-                                </Box>
-                                Header
-                            </Typography>
-                        </Button>
-                    </Box>
-                </Grid>
-
-                <Grid item xs={6}>
-                    <Box>
-                        <Button onClick={handleOpenSocialIconsMenu} sx={styles.button2}>
-                            <Typography
-                                color={"secondary"}
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    fontWeight: "regular",
-                                }}
-                                fontSize={14}>
-                                <Box
-                                    component={"span"}
-                                    sx={{
-                                        display: "inline-flex",
-                                    }}
-                                    p={0.5}>
-                                    <IoShareSocialOutline fontSize={16} />
-                                </Box>
-                                Social Icon
-                            </Typography>
-                        </Button>
-                    </Box>
-                </Grid>
+                    </Button>
+                </Box>
             </Grid>
 
-            <DragDropContext>
-                <Droppable droppableId='link-element'>
+            {/* Create Header */}
+            <Grid item xs={6}>
+                <Box>
+                    <Button sx={styles.button2}>
+                        <Typography
+                            color={"secondary"}
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                fontWeight: "regular",
+                            }}
+                            fontSize={14}
+                        >
+                            <Box
+                                component={"span"}
+                                sx={{
+                                    display: "inline-flex",
+                                }}
+                                p={0.5}
+                            >
+                                <MdTitle fontSize={16} />
+                            </Box>
+                            Header
+                        </Typography>
+                    </Button>
+                </Box>
+            </Grid>
+
+            {/* Create Icon */}
+            <Grid item xs={6}>
+                <Box>
+                    <Button sx={styles.button2}>
+                        <Typography
+                            color={"secondary"}
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                fontWeight: "regular",
+                            }}
+                            fontSize={14}
+                        >
+                            <Box
+                                component={"span"}
+                                sx={{
+                                    display: "inline-flex",
+                                }}
+                                p={0.5}
+                            >
+                                <IoShareSocialOutline fontSize={16} />
+                            </Box>
+                            Social Icon
+                        </Typography>
+                    </Button>
+                </Box>
+            </Grid>
+
+            <Grid item xs={12} display={orderChange ? "block" : "none"}>
+                <Box>
+                    <Button sx={styles.button} onClick={handleOrderChange}>
+                        <Typography
+                            color={"#fff"}
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                fontWeight: "medium",
+                            }}
+                            fontSize={14}
+                        >
+                            <Box
+                                component={"span"}
+                                sx={{
+                                    display: "inline-flex",
+                                }}
+                                p={0.5}
+                            >
+                                <TbMenuOrder fontSize={16} />
+                            </Box>
+                            Save Link Order
+                        </Typography>
+                    </Button>
+                </Box>
+            </Grid>
+        </><DragDropContext onDragEnd={handleDragEnd}>
+                <Droppable droppableId="link-element">
                     {(provided) => (
                         <Grid
                             mt={2}
                             container
-                            spacing={1}
+                            spacing={2.5}
                             {...provided.droppableProps}
-                            ref={provided.innerRef}>
+                            ref={provided.innerRef}
+                        >
                             {linkElements ? (
                                 linkElements.map((e, i) => (
-                                    <Draggable
-                                        key={e._id}
-                                        draggableId={e._id}
-                                        index={i}>
+                                    <Draggable key={e._id} draggableId={e._id} index={i}>
                                         {(provided) => (
                                             <Grid
                                                 item
                                                 xs={12}
                                                 ref={provided.innerRef}
-                                                {...provided.draggableProps}>
+                                                {...provided.draggableProps}
+                                            >
                                                 {e.elemType === "link" ? (
                                                     <LinkElementTool
-                                                        className={
-                                                            "link-element"
-                                                        }
+                                                        className={"link-element"}
                                                         element={e}
-                                                        deleteElem={
-                                                            deleteLinkElement
-                                                        }
-                                                        index={i}
+                                                        deleteElem={deleteLinkElement}
                                                         dragHandleProps={...provided.dragHandleProps}
-                                                    />
+                                                        index={i} />
                                                 ) : e.elemType === "header" ? (
                                                     <HeaderElementTool
                                                         element={e}
-                                                        deleteElem={
-                                                            deleteLinkElement
-                                                        }
-                                                        index={i}
-                                                    />
+                                                        deleteElem={deleteLinkElement}
+                                                        dragHandleProps={...provided.dragHandleProps}
+                                                        index={i} />
                                                 ) : e.elemType === "social" ? (
                                                     <SocialElementTool
                                                         element={e}
-                                                        deleteElem={
-                                                            deleteLinkElement
-                                                        }
-                                                        index={i}
-                                                    />
+                                                        deleteElem={deleteLinkElement}
+                                                        dragHandleProps={...provided.dragHandleProps}
+                                                        index={i} />
                                                 ) : (
                                                     <></>
                                                 )}
@@ -527,19 +572,19 @@ export default function LinksPage() {
                             ) : (
                                 <>Empty</>
                             )}
+                            {provided.placeholder}
                         </Grid>
                     )}
                 </Droppable>
-            </DragDropContext>
-        <Box sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            maxWidth: "100%"
-        }}>
-            <SocialIconsMenu openSocialIconsMenu={openSocialIconsMenu} handleOpenSocialIconsMenu={handleOpenSocialIconsMenu} handleCloseSocialIconsMenu={handleCloseSocialIconsMenu}/>
+            </DragDropContext><Box sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                maxWidth: "100%"
+            }}>
+                <SocialIconsMenu openSocialIconsMenu={openSocialIconsMenu} handleOpenSocialIconsMenu={handleOpenSocialIconsMenu} handleCloseSocialIconsMenu={handleCloseSocialIconsMenu} />
             </Box>
-        </Box>
             </>
-    );
-}
+    )
+        }
+    }
