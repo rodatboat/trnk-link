@@ -35,32 +35,6 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
     const theme = useTheme();
     const [activeToggle, setActiveToggle] = useState(element.active);
     const [deleteDialog, setDeleteDialog] = useState(false);
-    // const {
-    //     values,
-    //     touched,
-    //     errors,
-    //     handleBlur,
-    //     handleChange,
-    //     handleSubmit,
-    //     isSubmitting,
-    //     initialValues,
-    // } = useFormik({
-    //     initialValues: {
-    //         title: element.title,
-    //         link: element.link,
-    //         icon: element.icon,
-    //     },
-    //     validationSchema: linkElementValidationSchema,
-    //     onSubmit: async (values, actions) => {
-    //         if (element.new) {
-    //             await handleCreate(values, actions);
-    //         } else {
-    //             if (initialValues !== values) {
-    //                 await handleUpdate(values, actions);
-    //             }
-    //         }
-    //     },
-    // });
 
     const handleActiveToggle = () => {
         setActiveToggle(!activeToggle);
@@ -320,19 +294,6 @@ export default function LinksPage() {
     //   icon: <></>,
     // },
   ]);
-  const createLinkElement = () => {
-    setLinkElements([
-      ...linkElements,
-      {
-        _id: uuidv4(),
-        new: true,
-        active: true,
-        elemType: "link",
-        title: "",
-        link: "",
-        // icon: <></>,
-      },
-    ]);
     const createLinkElement = () => {
         setLinkElements([
             ...linkElements,
@@ -344,7 +305,7 @@ export default function LinksPage() {
                 title: "",
                 link: "",
                 // icon: <></>,
-            },
+            }
         ]);
     };
 
@@ -412,171 +373,203 @@ export default function LinksPage() {
     };
 
     return (
-    <><>
-            {/* Create Link */}
-            <Grid item xs={12}>
-                <Box>
-                    <Button onClick={createLinkElement} sx={styles.button2}>
-                        <Typography
-                            color={"secondary"}
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                fontWeight: "regular",
-                            }}
-                            fontSize={14}
-                        >
-                            <Box
-                                component={"span"}
-                                sx={{
-                                    display: "inline-flex",
-                                }}
-                                p={0.5}
-                            >
-                                <BiLinkAlt fontSize={16} />
-                            </Box>
-                            Link
-                        </Typography>
-                    </Button>
-                </Box>
-            </Grid>
+    <>
+    <Box m={"auto"} maxWidth={640}>
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <Box
+            mt={1}
+            mb={0.5}
+            sx={{
+              backgroundColor: "primary",
+              color: "secondary",
+              borderColor: "complement.main",
+            }}
+          >
+            <Typography
+              color={"secondary"}
+              sx={{
+                fontWeight: "regular",
+              }}
+            >
+              Choose what element to create:
+            </Typography>
+          </Box>
+        </Grid>
 
-            {/* Create Header */}
-            <Grid item xs={6}>
-                <Box>
-                    <Button sx={styles.button2}>
-                        <Typography
-                            color={"secondary"}
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                fontWeight: "regular",
-                            }}
-                            fontSize={14}
-                        >
-                            <Box
-                                component={"span"}
-                                sx={{
-                                    display: "inline-flex",
-                                }}
-                                p={0.5}
-                            >
-                                <MdTitle fontSize={16} />
-                            </Box>
-                            Header
-                        </Typography>
-                    </Button>
+              {/* Create Link */}
+        <Grid item xs={12}>
+          <Box>
+            <Button onClick={createLinkElement} sx={styles.button2}>
+              <Typography
+                color={"secondary"}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontWeight: "regular",
+                }}
+                fontSize={14}
+              >
+                <Box
+                  component={"span"}
+                  sx={{
+                    display: "inline-flex",
+                  }}
+                  p={0.5}
+                >
+                  <BiLinkAlt fontSize={16} />
                 </Box>
-            </Grid>
+                Link
+              </Typography>
+            </Button>
+          </Box>
+        </Grid>
 
-            {/* Create Icon */}
-            <Grid item xs={6}>
-                <Box>
-                    <Button sx={styles.button2}>
-                        <Typography
-                            color={"secondary"}
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                fontWeight: "regular",
-                            }}
-                            fontSize={14}
-                        >
-                            <Box
-                                component={"span"}
-                                sx={{
-                                    display: "inline-flex",
-                                }}
-                                p={0.5}
-                            >
-                                <IoShareSocialOutline fontSize={16} />
-                            </Box>
-                            Social Icon
-                        </Typography>
-                    </Button>
+              {/* Create Header */}
+        <Grid item xs={6}>
+          <Box>
+            <Button sx={styles.button2}>
+              <Typography
+                color={"secondary"}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontWeight: "regular",
+                }}
+                fontSize={14}
+              >
+                <Box
+                  component={"span"}
+                  sx={{
+                    display: "inline-flex",
+                  }}
+                  p={0.5}
+                >
+                  <MdTitle fontSize={16} />
                 </Box>
-            </Grid>
+                Header
+              </Typography>
+            </Button>
+          </Box>
+        </Grid>
 
-            <Grid item xs={12} display={orderChange ? "block" : "none"}>
-                <Box>
-                    <Button sx={styles.button} onClick={handleOrderChange}>
-                        <Typography
-                            color={"#fff"}
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                fontWeight: "medium",
-                            }}
-                            fontSize={14}
-                        >
-                            <Box
-                                component={"span"}
-                                sx={{
-                                    display: "inline-flex",
-                                }}
-                                p={0.5}
-                            >
-                                <TbMenuOrder fontSize={16} />
-                            </Box>
-                            Save Link Order
-                        </Typography>
-                    </Button>
+              {/* Create Icon */}
+        <Grid item xs={6}>
+          <Box>
+            <Button onClick={handleOpenSocialIconsMenu} sx={styles.button2}>
+              <Typography
+                color={"secondary"}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontWeight: "regular",
+                }}
+                fontSize={14}
+              >
+                <Box
+                  component={"span"}
+                  sx={{
+                    display: "inline-flex",
+                  }}
+                  p={0.5}
+                >
+                  <IoShareSocialOutline fontSize={16} />
                 </Box>
-            </Grid>
-        </><DragDropContext onDragEnd={handleDragEnd}>
-                <Droppable droppableId="link-element">
+                Social Icon
+              </Typography>
+            </Button>
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} display={orderChange ? "block" : "none"}>
+          <Box>
+            <Button sx={styles.button} onClick={handleOrderChange}>
+              <Typography
+                color={"#fff"}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontWeight: "medium",
+                }}
+                fontSize={14}
+              >
+                <Box
+                  component={"span"}
+                  sx={{
+                    display: "inline-flex",
+                  }}
+                  p={0.5}
+                >
+                  <TbMenuOrder fontSize={16} />
+                </Box>
+                Save Link Order
+              </Typography>
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
+
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="link-element">
+        {(provided) => (
+          <Grid
+            mt={2}
+            container
+            spacing={2.5}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {
+              linkElements ? (
+                linkElements.map((e, i) => (
+                  <Draggable key={e._id} draggableId={e._id} index={i}>
                     {(provided) => (
-                        <Grid
-                            mt={2}
-                            container
-                            spacing={2.5}
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                        >
-                            {linkElements ? (
-                                linkElements.map((e, i) => (
-                                    <Draggable key={e._id} draggableId={e._id} index={i}>
-                                        {(provided) => (
-                                            <Grid
-                                                item
-                                                xs={12}
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                            >
-                                                {e.elemType === "link" ? (
-                                                    <LinkElementTool
-                                                        className={"link-element"}
-                                                        element={e}
-                                                        deleteElem={deleteLinkElement}
-                                                        dragHandleProps={...provided.dragHandleProps}
-                                                        index={i} />
-                                                ) : e.elemType === "header" ? (
-                                                    <HeaderElementTool
-                                                        element={e}
-                                                        deleteElem={deleteLinkElement}
-                                                        dragHandleProps={...provided.dragHandleProps}
-                                                        index={i} />
-                                                ) : e.elemType === "social" ? (
-                                                    <SocialElementTool
-                                                        element={e}
-                                                        deleteElem={deleteLinkElement}
-                                                        dragHandleProps={...provided.dragHandleProps}
-                                                        index={i} />
-                                                ) : (
-                                                    <></>
-                                                )}
-                                            </Grid>
-                                        )}
-                                    </Draggable>
-                                ))
-                            ) : (
-                                <>Empty</>
-                            )}
-                            {provided.placeholder}
-                        </Grid>
+                      <Grid
+                        item
+                        xs={12}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                      >
+                        {e.elemType === "link" ? (
+                          <LinkElementTool
+                            className={"link-element"}
+                            element={e}
+                            deleteElem={deleteLinkElement}
+                            dragHandleProps={...provided.dragHandleProps}
+                            index={i}
+                          />
+                        ) : e.elemType === "header" ? (
+                          <HeaderElementTool
+                            element={e}
+                            deleteElem={deleteLinkElement}
+                            dragHandleProps={...provided.dragHandleProps}
+                            index={i}
+                          />
+                        ) : e.elemType === "social" ? (
+                          <SocialElementTool
+                            element={e}
+                            deleteElem={deleteLinkElement}
+                            dragHandleProps={...provided.dragHandleProps}
+                            index={i}
+                          />
+                        ) : (
+                          <></>
+                        )}
+                      </Grid>
                     )}
-                </Droppable>
-            </DragDropContext><Box sx={{
+                  </Draggable>
+                ))
+              ) : (
+                <>Empty</>
+              )
+            }
+            {provided.placeholder}
+          </Grid>
+        )}
+        </Droppable>
+      </DragDropContext>
+    </Box>
+            <Box sx={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -587,4 +580,3 @@ export default function LinksPage() {
             </>
     )
         }
-    }
