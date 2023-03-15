@@ -2,6 +2,7 @@ const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
 const User = require("../models/user.model");
+const LinkElement = require("../models/linkElements.model");
 let middleware = require("../authcheck");
 require("dotenv").config();
 
@@ -15,17 +16,20 @@ router.route("/").get(async (req, res) => {
   try {
     let { _id } = req.decoded;
 
-    const user = await User.findOne({ _id: _id });
-
-    if (!user) {
-      return res.send({ success: false, message: "User doesn't exist" });
-    }
+    const linkElements = await LinkElement.find({ user: _id },{
+      active:1,
+      elemType:1,
+      title:1,
+      link:1,
+      updatedAt:1
+    });
 
     return res.json({
       success: true,
       message: "Link components fetched",
-      data: user.linkComponents,
+      data: linkElements,
     });
+
   } catch (err) {
     return res.json({
       success: false,
@@ -36,48 +40,28 @@ router.route("/").get(async (req, res) => {
 
 router.route("/create").post(async (req, res) => {
   try {
-    const { active, type, title, link, icon } = req.body;
+    const { active, elemType, title, link, icon } = req.body;
+    const { _id } = req.decoded;
 
-    let { _id } = req.decoded;
-
-    const newElement = {
-      // _id: new mongoose.Types.ObjectId(),
-      active,
-      elemType:type,
-      title,
-      link,
-      // icon
-    }
-    console.log(newElement)
-    const user = await User.findOneAndUpdate({ _id: _id }, {"$push":{"linkComponents":newElement}}, {
-      new: true
-    });
-    
-    console.log(user)
+    const user = await User.findOne({ _id: _id });
     
     if (!user) {
       return res.send({ success: false, message: "User doesn't exist" });
     }
-    // const usernameExists = await User.findOne({ username: username });
-    // if (userEmailExists) {
-    //   return res.send({ success: false, message: "Email is already in use" });
-    // }
-    // await User.findOne({ username: username });
-    // if (usernameExists) {
-    //   return res.send({
-    //     success: false,
-    //     message: "Username is already in use",
-    //   });
-    // }
-    // await User.create({
-    //   email: email,
-    //   username: username,
-    //   password: encryptedPassword,
-    // });
+    
+    const newElement = await LinkElement.create({
+      active,
+      elemType,
+      user: user._id,
+      title,
+      link,
+      // icon
+    });
 
     return res.send({
       success: true,
-      message: "Link component created successfully.",
+      message: "Link component created",
+      data: newElement
     });
   } catch (error) {
     console.log(error.message)
@@ -88,21 +72,58 @@ router.route("/create").post(async (req, res) => {
   }
 });
 
-// router.route("/").delete(async (req, res) => {
-// });
-
-router.route("/update").post(async (req, res) => {
+router.route("/").delete(async (req, res) => {
   try {
-    const { id, active, title, link, icon } = req.body;
+    const { elemId } = req.body;
+    const { _id } = req.decoded;
+
+    const linkElement = await LinkElement.findOne({ _id:elemId, user: _id });
+    
+    if (!linkElement) {
+      return res.send({ success: false, message: "Component doesn't exist" });
+    }
+
+    await linkElement.deleteOne();
 
     return res.send({
       success: true,
-      message: "Link component created successfully.",
+      message: "Link component deleted"
     });
   } catch (error) {
+    console.log(error.message)
     return res.send({
       success: false,
-      message: "Error creating link component",
+      message: "Error deleting link component",
+    });
+  }
+});
+
+router.route("/update").post(async (req, res) => {
+  try {
+    const { elemId, active, title, link, icon } = req.body;
+    const { _id } = req.decoded;
+
+    const linkElement = await LinkElement.findOne({ _id:elemId, user: _id });
+    
+    if (!linkElement) {
+      return res.send({ success: false, message: "Component doesn't exist" });
+    }
+
+    await linkElement.updateOne({
+      active,
+      title,
+      link
+    });
+
+    return res.send({
+      success: true,
+      message: "Link component updated successfully."
+    });
+  } catch (error) {
+    console.log(error.message)
+    return res.send({
+      success: false,
+      message: "Error updating link component",
     });
   }
 });

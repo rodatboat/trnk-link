@@ -34,6 +34,11 @@ const LinkElementSchema = new Schema({
       }
   },
 },
-{id:true});
+{
+  collection: "LinkElements",
+  timestamps: true,
+});
+
+const LinkElement = mongoose.model("LinkElement", LinkElementSchema);
 
 module.exports = LinkElement;

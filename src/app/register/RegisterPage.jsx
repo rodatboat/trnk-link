@@ -27,11 +27,9 @@ export default function RegisterPage() {
   
     return (
         <Box
-        sx={{
-          height: "100%",
-          display: "flex",
-          // alignItems:"flex-start"
-        }}
+        m={"auto"}
+        height={"100vh"}
+        display={"flex"}
       >
         <Box
           component={"form"}

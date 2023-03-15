@@ -22,6 +22,10 @@ import { styles } from "../../styles";
 import { linkElementValidationSchema } from "./validation/linkElement.validation";
 import { mediaIcons } from "./icons";
 import { v4 as uuidv4 } from "uuid";
+import createComponent from "../../api/components/createComponent";
+import fetchComponent from "../../api/components/fetchComponent";
+import updateComponent from "../../api/components/updateComponent";
+import deleteComponent from "../../api/components/deleteComponent";
 
 const LinkElementTool = ({ element, deleteElem, index }) => {
   const theme = useTheme();
@@ -40,7 +44,7 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
     initialValues: {
       title: element.title,
       link: element.link,
-      icon: element.icon,
+      // icon: element.icon,
     },
     validationSchema: linkElementValidationSchema,
     onSubmit: async (values, actions) => {
@@ -65,17 +69,25 @@ const LinkElementTool = ({ element, deleteElem, index }) => {
     if(element.new){
       deleteElem(element);
     } else {
-      // send delete request
+      deleteComponent({_id:element._id});
       deleteElem(element);
     }
   };
 
   const handleUpdate = async (values, actions) => {
-    // Send update request
+    updateComponent({
+      ...values,
+      _id:element._id,
+      active: activeToggle
+    })
   };
 
   const handleCreate = async (values, actions) => {
-    // Send create request
+    createComponent({
+      ...values,
+      elemType: element.elemType,
+      active: activeToggle
+    });
   };
 
   return (
@@ -256,18 +268,18 @@ const SocialElementTool = ({ element }) => {
 
 export default function LinksPage() {
   const [linkElements, setLinkElements] = useState([
-    {
-      _id: 1,
-      active: true,
-      type: "link",
-      title: "Youtube",
-      link: "https://youtube.com/",
-      icon: mediaIcons.youtube[0],
-    },
+    // {
+    //   _id: 1,
+    //   active: true,
+    //   elemType: "link",
+    //   title: "Youtube",
+    //   link: "https://youtube.com/",
+    //   icon: mediaIcons.youtube[0],
+    // },
     // {
     //   _id: 2,
     //   active: true,
-    //   type: "header",
+    //   elemType: "header",
     //   title: "",
     //   link: "",
     //   icon: <></>,
@@ -275,7 +287,7 @@ export default function LinksPage() {
     // {
     //   _id: 3,
     //   active: true,
-    //   type: "social",
+    //   elemType: "social",
     //   title: "",
     //   link: "",
     //   icon: <></>,
@@ -290,7 +302,7 @@ export default function LinksPage() {
         _id: uuidv4(),
         new: true,
         active: true,
-        type: "link",
+        elemType: "link",
         title: "",
         link: "",
         icon: <></>,
@@ -305,8 +317,16 @@ export default function LinksPage() {
     }
   };
 
+  const getUserLinkElements = async () => {
+    await fetchComponent().then((data)=>setLinkElements(data));
+    // setLinkElements()
+  }
+
   useEffect(() => {
-  }, [linkElements]);
+    getUserLinkElements();
+  }, []);
+
+  useEffect(()=>{},[linkElements])
 
   return (
     <Box m={"auto"} maxWidth={640}>
@@ -418,19 +438,19 @@ export default function LinksPage() {
         {linkElements ? (
           linkElements.map((e, i) => (
             <Grid item xs={12} key={e._id}>
-              {e.type === "link" ? (
+              {e.elemType === "link" ? (
                 <LinkElementTool
                   element={e}
                   deleteElem={deleteLinkElement}
                   index={i}
                 />
-              ) : e.type === "header" ? (
+              ) : e.elemType === "header" ? (
                 <HeaderElementTool
                   element={e}
                   deleteElem={deleteLinkElement}
                   index={i}
                 />
-              ) : e.type === "social" ? (
+              ) : e.elemType === "social" ? (
                 <SocialElementTool
                   element={e}
                   deleteElem={deleteLinkElement}
@@ -442,7 +462,7 @@ export default function LinksPage() {
             </Grid>
           ))
         ) : (
-          <></>
+          <>Empty</>
         )}
       </Grid>
     </Box>
