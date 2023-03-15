@@ -20,14 +20,51 @@ export const styles = {
     fontWeight: "regular",
     fontSize: 16,
   },
+  hint: {
+    fontWeight: "regular",
+    fontSize: 12,
+  },
+  smallButton:{
+    border: 1,
+    borderRadius: 1,
+    // boxShadow: 1,
+    width: "fit-content",
+    minWidth: "fit-content",
+    backgroundColor:"#fff",
+    borderColor: "complement.main",
+    maxWidth: "fit-content",
+    ".MuiButtonBase-root": {
+      maxWidth: "fit-content",
+    },
+    "&:hover":{
+      
+    }
+  },
+  smallButtonActive:{
+    border: 1,
+    borderRadius: 1,
+    // boxShadow: 1,
+    borderColor: "accent.main",
+    borderBottomColor:"accent.hover",
+    width: "fit-content",
+    minWidth: "fit-content",
+    backgroundColor:"accent.main",
+    maxWidth: "fit-content",
+    ".MuiButtonBase-root": {
+      maxWidth: "fit-content",
+    },
+    "&:hover":{
+      backgroundColor:"accent.hover",
+    }
+  },
   button: {
     fontSize: 16,
     fontWeight: "medium",
     backgroundColor: "accent.main",
-    border: 1,
+    borderBottom: 1,
     borderColor: "accent.hover",
     borderRadius: 1,
-    boxShadow: 1,
+    // boxShadow: 1,
     padding: 1.25,
     textTransform: "none",
     width: "100%",
@@ -105,7 +142,7 @@ export const styles = {
     border: 1,
     borderColor: "accent.hover",
     borderRadius: 1,
-    boxShadow: 1,
+    // boxShadow: 1,
     width: "100%",
     paddingX: 2,
     textTransform: "none",

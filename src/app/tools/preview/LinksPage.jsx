@@ -48,6 +48,7 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
     initialValues: {
       title: element.title,
       link: element.link,
+      active:element.active,
       icon: element.icon,
     },
     validationSchema: linkElementValidationSchema,
@@ -60,6 +61,9 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
         }
       }
     },
+    // handleChange:async ()=>{
+    //   console.log("changes")
+    // }
   });
 
   const handleActiveToggle = () => {
@@ -186,6 +190,11 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
                   <MdOutlineEdit />
                 </InputAdornment>
               ),
+              endAdornment: (
+                <InputAdornment position="end" color="secondary">
+                  <Typography fontSize={12}>{values.title.length > 0 ? `${values.title.length}/50` : ''}</Typography>
+                </InputAdornment>
+              ),
             }}
           />
           <TextField
@@ -204,9 +213,12 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
                 <InputAdornment position="start" color="secondary">
                   <MdOutlineEdit />
                 </InputAdornment>
-              ),
+              )
             }}
           />
+          <Box>
+            <Typography sx={styles.hint}>{initialValues !== values || element.new ? "Unsaved Changes" : ""}</Typography>
+          </Box>
         </Box>
         <Box
           pl={1.5}
@@ -219,9 +231,10 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
         >
           <Box>
             <Switch
-              defaultChecked={values.active}
-              checked={activeToggle}
-              onChange={handleActiveToggle}
+            id={"active"}
+              // defaultChecked={initialValues.active}
+              checked={values.active}
+              onChange={handleChange}
               onBlur={handleBlur}
               size="small"
               sx={styles.switch}
@@ -229,21 +242,11 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
           </Box>
           <Box>
             <Button
-              color={"secondary"}
-              sx={{
-                border: 1,
-                borderRadius: 1,
-                boxShadow: 1,
-                width: "fit-content",
-                minWidth: "fit-content",
-                borderColor: "complement.main",
-                maxWidth: "fit-content",
-                ".MuiButtonBase-root": {
-                  maxWidth: "fit-content",
-                },
-              }}
+              color={initialValues === values ? "secondary" : "primary"}
+              sx={initialValues === values ? styles.smallButton : styles.smallButtonActive} //initialValues !== values
               type="submit"
-              disabled={isSubmitting || initialValues === values}
+              disabled={isSubmitting || initialValues === values
+              }
             >
               <RiSaveLine fontSize={18} />
             </Button>
@@ -251,18 +254,7 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
           <Box>
             <Button
               color={"secondary"}
-              sx={{
-                border: 1,
-                borderRadius: 1,
-                boxShadow: 1,
-                width: "fit-content",
-                minWidth: "fit-content",
-                borderColor: "complement.main",
-                maxWidth: "fit-content",
-                ".MuiButtonBase-root": {
-                  maxWidth: "fit-content",
-                },
-              }}
+              sx={styles.smallButton}
               onClick={handleDeleteDialogToggle}
             >
               <RxTrash fontSize={18} />
@@ -401,6 +393,7 @@ export default function LinksPage() {
           </Box>
         </Grid>
 
+              {/* Create Link */}
         <Grid item xs={12}>
           <Box>
             <Button onClick={createLinkElement} sx={styles.button2}>
@@ -428,6 +421,7 @@ export default function LinksPage() {
           </Box>
         </Grid>
 
+              {/* Create Header */}
         <Grid item xs={6}>
           <Box>
             <Button sx={styles.button2}>
@@ -455,6 +449,7 @@ export default function LinksPage() {
           </Box>
         </Grid>
 
+              {/* Create Icon */}
         <Grid item xs={6}>
           <Box>
             <Button sx={styles.button2}>
@@ -516,7 +511,7 @@ export default function LinksPage() {
           <Grid
             mt={2}
             container
-            spacing={1}
+            spacing={2.5}
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
