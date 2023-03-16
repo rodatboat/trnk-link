@@ -385,14 +385,50 @@ export default function LinksPage() {
     useEffect(() => {}, [linkElements]);
 
     const [openSocialIconsMenu, setOpenSocialIconsMenu] = React.useState(false);
+    const [shouldFocus, setShouldFocus] = React.useState(false);
 
     const handleOpenSocialIconsMenu = () => {
+      setShouldFocus(true)
         setOpenSocialIconsMenu(true);
     };
 
     const handleCloseSocialIconsMenu = () => {
         setOpenSocialIconsMenu(false);
+        setSearch("");
+        setShouldFocus(false);
     };
+
+    const getIcons = () => {
+      const icons = [];
+
+      for (const [key, value] of Object.entries(mediaIcons)) {
+          if (value[1]) {
+              icons.push({ icon: value[1].type, name: key })
+          }
+          else {
+              icons.push({ icon: value[0].type, name: key });
+          }
+      }
+
+      return icons;
+  }
+
+    // A constant for all icons 
+    const ICONS = getIcons();
+    const [search, setSearch] = React.useState("");
+    const [icons, setIcons] = React.useState(ICONS); // The icons that match the search query
+
+    const handleSearchChange = (event) => {
+        setSearch(event.target.value);
+    }
+    
+
+    React.useEffect(() => {        
+        // Always filter the constant icons
+        const newIcons = ICONS.filter(icon => icon.name.toLowerCase().includes(search.toLowerCase()));
+        setIcons(newIcons);
+
+    }, [search])
 
     return (
     <>
@@ -597,7 +633,7 @@ export default function LinksPage() {
                 alignItems: "center",
                 maxWidth: "100%"
             }}>
-                <SocialIconsMenu createSocialIconElement={createSocialIconElement} openSocialIconsMenu={openSocialIconsMenu} handleOpenSocialIconsMenu={handleOpenSocialIconsMenu} handleCloseSocialIconsMenu={handleCloseSocialIconsMenu} />
+                <SocialIconsMenu shouldFocus={shouldFocus} icons={icons} search={search} handleSearchChange={handleSearchChange} createSocialIconElement={createSocialIconElement} openSocialIconsMenu={openSocialIconsMenu} handleOpenSocialIconsMenu={handleOpenSocialIconsMenu} handleCloseSocialIconsMenu={handleCloseSocialIconsMenu} />
             </Box>
             </>
     )

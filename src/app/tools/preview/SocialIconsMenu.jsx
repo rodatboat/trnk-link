@@ -10,9 +10,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import Button from "@Mui/material/Button";
-import { mediaIcons } from "./icons";
 import { styles } from "../../styles";
 import { motion } from "framer-motion";
+import { useFocusableInput } from "../../hooks/useFocusableInput";
 
 
 const scrollbarStyles = {
@@ -31,6 +31,7 @@ const scrollbarStyles = {
         backgroundColor: '#555'
       }
 }
+
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
 });
@@ -41,6 +42,7 @@ function SocialIcon(props) {
         props.createSocialIconElement(props.icon)
         props.handleCloseMenu();
     }
+
     return (
         <>
             <Box
@@ -75,41 +77,6 @@ function SocialIcon(props) {
 }
 
 export default function SocialIconsMenu(props) {
-    
-    const getIcons = () => {
-        const icons = [];
-
-        for (const [key, value] of Object.entries(mediaIcons)) {
-            if (value[1]) {
-                icons.push({ icon: value[1].type, name: key })
-            }
-            else {
-                icons.push({ icon: value[0].type, name: key });
-            }
-        }
-
-        return icons;
-    }
-
-    // A constant for all icons 
-    const ICONS = getIcons();
-
-    const [search, setSearch] = React.useState("");
-    const [icons, setIcons] = React.useState(ICONS); // The icons that match the search query
-
-    const handleSearchChange = (event) => {
-        setSearch(event.target.value);
-    }
-    
-
-    
-
-    React.useEffect(() => {        
-        // Always filter the constant icons
-        const newIcons = ICONS.filter(icon => icon.name.toLowerCase().includes(search.toLowerCase()));
-        setIcons(newIcons);
-
-    }, [search])
 
     const draw = {
         hidden: { pathLength: 0, opacity: 0 },
@@ -130,6 +97,8 @@ export default function SocialIconsMenu(props) {
             };
         },
     };
+
+    const { setInputRef } = useFocusableInput(props.shouldFocus);
 
     return (
         <>
@@ -218,13 +187,14 @@ export default function SocialIconsMenu(props) {
                         margin: 0
                     }}>
                     <TextField
+                    inputRef={setInputRef}
                         sx={{
                             ...styles.input,
                             p: 2,
                         }}
                         placeholder='Search...'
-                        value={search}
-                        onChange={handleSearchChange}
+                        value={props.search}
+                        onChange={props.handleSearchChange}
                     />
                     <Divider
                         variant='middle'
@@ -236,13 +206,9 @@ export default function SocialIconsMenu(props) {
                     sx={{
                         display: "flex",
                         m: "0 !important",
-                        p: 0,
                         justifyContent: "center",
                         width: "100%",
                         alignItems: "center",
-                        top: 0,
-                        left: 0,
-                        boxSizing: "border-box",
                     }}
                         >
                     <Box
@@ -252,7 +218,6 @@ export default function SocialIconsMenu(props) {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            p: 1,
                             overflowY: "scroll",
                             overflowX: "hidden",
                             maxHeight: "300px",  
@@ -269,7 +234,7 @@ export default function SocialIconsMenu(props) {
                             margin="auto"
                             width="100%"
                             >
-                            {icons.map((icon, index) => {
+                            {props.icons.map((icon, index) => {
                                 return (
                                     <Grid key={index} item xs={1}>
                                         <SocialIcon
@@ -279,11 +244,12 @@ export default function SocialIconsMenu(props) {
                                                 props.createSocialIconElement
                                             }
                                             handleCloseMenu={props.handleCloseSocialIconsMenu}
+                                            // clearSearch={clearSearch}
                                         />
                                     </Grid>
                                 );
                             })}
-                            {icons.length === 0 ? 
+                            {props.icons.length === 0 ? 
                                 <Typography>No icons found</Typography> : null}
                         </Grid>
                     </Box>
