@@ -1,27 +1,46 @@
+// @ts-nocheck
 import React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import Button from "@Mui/material/Button";
 import { mediaIcons } from "./icons";
 import { styles } from "../../styles";
-import { motion, useAnimationControls, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 
+
+const scrollbarStyles = {
+    '::-webkit-scrollbar-track': {
+        WebkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.3)',
+        borderRadius: '10px',
+        backgroundColor: '#F5F5F5'
+      },
+      '::-webkit-scrollbar': {
+        width: '12px',
+        backgroundColor: '#F5F5F5'
+      },
+      '::-webkit-scrollbar-thumb': {
+        borderRadius: '10px',
+        WebkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
+        backgroundColor: '#555'
+      }
+}
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction='up' ref={ref} {...props} />;
 });
 
 function SocialIcon(props) {
-    // console.log(`props.icon in SocialIconsMenu.socialicon: ${props.icon}`);
+
+    const handleClick = () => {
+        props.createSocialIconElement(props.icon)
+        props.handleCloseMenu();
+    }
     return (
         <>
             <Box
@@ -29,7 +48,7 @@ function SocialIcon(props) {
                     m: 1,
                 }}>
                 <Button
-                    onClick={() => props.createSocialIconElement(props.icon)}>
+                    onClick={handleClick}>
                     <Box
                         sx={{
                             "&:hover": {
@@ -42,12 +61,12 @@ function SocialIcon(props) {
                             justifyContent: "center",
                             alignItems: "center",
                             flexDirection: "column",
-                            // height: "50px",
-                            // width: "50px",
+                            height: "100px",
+                            width: "100px",
                             margin: "auto",
                         }}>
-                        <props.icon style={{ p: 1 }} />
-                        <Typography variant='caption'>{props.name}</Typography>
+                        <props.icon style={{ p: 1, color: "black", height: "40px", width: "40px" }} />
+                        <Typography sx={{ color: "black" }}variant='caption'>{props.name}</Typography>
                     </Box>
                 </Button>
             </Box>
@@ -56,11 +75,41 @@ function SocialIcon(props) {
 }
 
 export default function SocialIconsMenu(props) {
-    // console.log(mediaIcons);
-    const icons = [];
-    for (const [key, value] of Object.entries(mediaIcons)) {
-        icons.push({ icon: value[0].type, name: key });
+    
+    const getIcons = () => {
+        const icons = [];
+
+        for (const [key, value] of Object.entries(mediaIcons)) {
+            if (value[1]) {
+                icons.push({ icon: value[1].type, name: key })
+            }
+            else {
+                icons.push({ icon: value[0].type, name: key });
+            }
+        }
+
+        return icons;
     }
+
+    // A constant for all icons 
+    const ICONS = getIcons();
+
+    const [search, setSearch] = React.useState("");
+    const [icons, setIcons] = React.useState(ICONS); // The icons that match the search query
+
+    const handleSearchChange = (event) => {
+        setSearch(event.target.value);
+    }
+    
+
+    
+
+    React.useEffect(() => {        
+        // Always filter the constant icons
+        const newIcons = ICONS.filter(icon => icon.name.toLowerCase().includes(search.toLowerCase()));
+        setIcons(newIcons);
+
+    }, [search])
 
     const draw = {
         hidden: { pathLength: 0, opacity: 0 },
@@ -84,12 +133,14 @@ export default function SocialIconsMenu(props) {
 
     return (
         <>
+        
             <Dialog
                 open={props.openSocialIconsMenu}
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={props.handleCloseSocialIconsMenu}
-                aria-describedby='alert-dialog-slide-description'>
+                aria-describedby='alert-dialog-slide-description'
+                margin="0">
                 <Box
                     sx={{
                         display: "flex",
@@ -157,13 +208,6 @@ export default function SocialIconsMenu(props) {
                         </Box>
                     </DialogTitle>
                 </Box>
-                {/* <DialogContent>
-                     <DialogContentText id='alert-dialog-slide-description'>
-                        Let Google help apps determine location. This means
-                        sending anonymous location data to Google, even when no
-                        apps are running.
-                    </DialogContentText> 
-                </DialogContent> */}
                 <DialogActions
                     sx={{
                         height: "auto",
@@ -171,22 +215,16 @@ export default function SocialIconsMenu(props) {
                         flexDirection: "column",
                         justifyContent: "center",
                         alignItems: "center",
+                        margin: 0
                     }}>
-                    {/* <Paper
-                        sx={{
-                            height: "auto",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                        elevation={12}> */}
                     <TextField
                         sx={{
                             ...styles.input,
                             p: 2,
                         }}
                         placeholder='Search...'
+                        value={search}
+                        onChange={handleSearchChange}
                     />
                     <Divider
                         variant='middle'
@@ -194,34 +232,43 @@ export default function SocialIconsMenu(props) {
                             width: "80%",
                         }}
                     />
-                    {/* <Box
-                        p={2}
-                        sx={
-                            {
-                                // width: "600px",
-                            }
-                        }> */}
+                    <Box
+                    sx={{
+                        display: "flex",
+                        m: "0 !important",
+                        p: 0,
+                        justifyContent: "center",
+                        width: "100%",
+                        alignItems: "center",
+                        top: 0,
+                        left: 0,
+                        boxSizing: "border-box",
+                    }}
+                        >
                     <Box
                         sx={{
-                            // width: "100%",
+                            width: "100%",
+                            // maxWidth: "100%",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            p: 2,
+                            p: 1,
                             overflowY: "scroll",
-                            maxHeight: "300px",
-                        }}>
+                            overflowX: "hidden",
+                            maxHeight: "300px",  
+                            ...scrollbarStyles,
+
+                        }} >
                         {/* </Box> */}
                         <Grid
                             container
-                            justifyContent='center'
-                            alignItems='center'
                             rowSpacing={0}
                             columnSpacing={0}
-                            columns={{ xs: 2, sm: 4, md: 6 }}
-                            rows={{ xs: 2, sm: 4, md: 6 }}
-                            maxWidth='100%'
-                            margin='auto'>
+                            columns={{ xs: 2, sm: 4, md: 5 }}
+                            rows={{ xs: 2, sm: 4, md: 5 }}
+                            margin="auto"
+                            width="100%"
+                            >
                             {icons.map((icon, index) => {
                                 return (
                                     <Grid key={index} item xs={1}>
@@ -231,19 +278,16 @@ export default function SocialIconsMenu(props) {
                                             createSocialIconElement={
                                                 props.createSocialIconElement
                                             }
+                                            handleCloseMenu={props.handleCloseSocialIconsMenu}
                                         />
                                     </Grid>
                                 );
                             })}
+                            {icons.length === 0 ? 
+                                <Typography>No icons found</Typography> : null}
                         </Grid>
                     </Box>
-                    {/* </Paper> */}
-                    {/* <Button onClick={props.handleCloseSocialIconsMenu}>
-                        Disagree
-                        </Button>
-                        <Button onClick={props.handleCloseSocialIconsMenu}>
-                        Agree
-                    </Button> */}
+                    </Box>
                 </DialogActions>
             </Dialog>
         </>
