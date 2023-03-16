@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 
 /**
- * Use to focus a (focusable) component that is not visible on render
+ * Use to autofocus a (focusable) component that is not visible on render
  * See https://stackoverflow.com/questions/40132775/autofocus-textfield-using-react-material-ui
  */
 export function useFocusableInput(shouldFocus) {

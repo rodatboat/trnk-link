@@ -17,7 +17,7 @@ import { useFocusableInput } from "../../hooks/useFocusableInput";
 
 const scrollbarStyles = {
     '::-webkit-scrollbar-track': {
-        WebkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.3)',
+        WebkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
         borderRadius: '10px',
         backgroundColor: '#F5F5F5'
       },
@@ -27,7 +27,7 @@ const scrollbarStyles = {
       },
       '::-webkit-scrollbar-thumb': {
         borderRadius: '10px',
-        WebkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,.3)',
+        WebkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
         backgroundColor: '#555'
       }
 }
@@ -102,7 +102,6 @@ export default function SocialIconsMenu(props) {
 
     return (
         <>
-        
             <Dialog
                 open={props.openSocialIconsMenu}
                 TransitionComponent={Transition}
