@@ -22,7 +22,8 @@ export const styles = {
   },
   hint: {
     fontWeight: "regular",
-    fontSize: 12,
+    fontSize: 10,
+    lineHeight: 1
   },
   smallButton:{
     border: 1,
