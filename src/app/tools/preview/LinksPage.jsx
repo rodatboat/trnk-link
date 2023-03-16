@@ -262,8 +262,12 @@ const LinkElementTool = ({ element, deleteElem, index, dragHandleProps }) => {
 const HeaderElementTool = ({ element }) => {
     return <>Header</>;
 };
-const SocialElementTool = ({ element }) => {
-    return <>Social</>;
+const SocialElementTool = ({ Element }) => {
+    return <>
+    <Box>
+      <Element />
+    </Box>
+    </>;
 };
 
 export default function LinksPage() {
@@ -306,6 +310,22 @@ export default function LinksPage() {
                 title: "",
                 link: "",
                 // icon: <></>,
+            }
+        ]);
+    };
+
+    const createSocialIconElement = (element) => {
+      console.log(`element in LinksPage.createSocialIconElement: ${element}`);
+        setLinkElements([
+            ...linkElements,
+            {
+                _id: uuidv4(),
+                new: true,
+                active: true,
+                elemType: "social",
+                title: "",
+                link: "",
+                icon: element,
             }
         ]);
     };
@@ -548,7 +568,7 @@ export default function LinksPage() {
                           />
                         ) : e.elemType === "social" ? (
                           <SocialElementTool
-                            element={e}
+                            Element={e.icon}
                             deleteElem={deleteLinkElement}
                             dragHandleProps={...provided.dragHandleProps}
                             index={i}
@@ -576,7 +596,7 @@ export default function LinksPage() {
                 alignItems: "center",
                 maxWidth: "100%"
             }}>
-                <SocialIconsMenu openSocialIconsMenu={openSocialIconsMenu} handleOpenSocialIconsMenu={handleOpenSocialIconsMenu} handleCloseSocialIconsMenu={handleCloseSocialIconsMenu} />
+                <SocialIconsMenu createSocialIconElement={createSocialIconElement} openSocialIconsMenu={openSocialIconsMenu} handleOpenSocialIconsMenu={handleOpenSocialIconsMenu} handleCloseSocialIconsMenu={handleCloseSocialIconsMenu} />
             </Box>
             </>
     )

@@ -21,31 +21,35 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function SocialIcon(props) {
+    // console.log(`props.icon in SocialIconsMenu.socialicon: ${props.icon}`);
     return (
         <>
             <Box
                 sx={{
                     m: 1,
                 }}>
-                <Box
-                    sx={{
-                        "&:hover": {
-                            backgroundColor: "rgba(215, 215, 215, 0.6)",
-                            cursor: "pointer",
-                        },
-                        borderRadius: "5px",
-                        p: 1,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "column",
-                        // height: "50px",
-                        // width: "50px",
-                        margin: "auto",
-                    }}>
-                    <props.icon style={{ p: 1 }} />
-                    <Typography variant='caption'>{props.name}</Typography>
-                </Box>
+                <Button
+                    onClick={() => props.createSocialIconElement(props.icon)}>
+                    <Box
+                        sx={{
+                            "&:hover": {
+                                backgroundColor: "rgba(215, 215, 215, 0.6)",
+                                cursor: "pointer",
+                            },
+                            borderRadius: "5px",
+                            p: 1,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flexDirection: "column",
+                            // height: "50px",
+                            // width: "50px",
+                            margin: "auto",
+                        }}>
+                        <props.icon style={{ p: 1 }} />
+                        <Typography variant='caption'>{props.name}</Typography>
+                    </Box>
+                </Button>
             </Box>
         </>
     );
@@ -224,6 +228,9 @@ export default function SocialIconsMenu(props) {
                                         <SocialIcon
                                             name={icon.name}
                                             icon={icon.icon}
+                                            createSocialIconElement={
+                                                props.createSocialIconElement
+                                            }
                                         />
                                     </Grid>
                                 );
