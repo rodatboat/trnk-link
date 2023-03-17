@@ -136,8 +136,8 @@ export default function LinksPage() {
     };
 
     // A constant for all icons
+    const ICONS = getIcons(); // these icons are not stateful
     const [search, setSearch] = useState("");
-    const [icons, setIcons] = useState(getIcons());
     const [resultIcons, setResultIcons] = useState(getIcons()); // The icons that match the search query
 
     const handleSearchChange = (event) => {
@@ -146,7 +146,7 @@ export default function LinksPage() {
 
     useEffect(() => {
         // Always filter the constant icons
-        const newIcons = icons.filter((icon) =>
+        const newIcons = ICONS.filter((icon) =>
             icon.name.toLowerCase().includes(search.toLowerCase())
         );
         setResultIcons(newIcons);
