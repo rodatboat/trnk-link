@@ -22,8 +22,6 @@ function SocialIcon({ IconComp, createSocialIconElement, handleCloseMenu }) {
     handleCloseMenu();
   };
 
-  useEffect(() => {});
-
   return (
     <>
       <Box display={"flex"} justifyContent={"center"}>
