@@ -70,6 +70,7 @@ router.route("/create").post(async (req, res) => {
     });
 
     return res.send({
+      data: user,
       success: true,
       message: "Link component created",
       data: newElement
