@@ -14,6 +14,7 @@ import { TbMenuOrder } from "react-icons/tb";
 import changeOrder from "../../api/components/changeOrder";
 import { HeaderElementTool } from "./elementTools/HeaderElementTool";
 import { SocialElementTool } from "./elementTools/SocialElementTool";
+import SocialIconElement from './SocialIconElement';
 import { MdTitle } from "react-icons/md";
 
 export default function LinksPage() {
@@ -35,12 +36,12 @@ export default function LinksPage() {
         elemType: "link",
         title: "",
         link: "",
-        icon: <></>,
+        icon: "",
       },
     ]);
   };
 
-  const createSocialIconElement = (element) => {
+  const createSocialIconElement = (icon) => {
     setLinkElements([
       ...linkElements,
       {
@@ -50,7 +51,7 @@ export default function LinksPage() {
         elemType: "social",
         title: "",
         link: "",
-        icon: element,
+        icon: icon,
       },
     ]);
   };
@@ -65,7 +66,7 @@ export default function LinksPage() {
         link: "",
         elemType: "header",
         title: "",
-        // icon: <></>,
+        icon: "",
       },
     ]);
   };
@@ -77,6 +78,15 @@ export default function LinksPage() {
     }
     setUpdated(Math.random());
   };
+
+  const updateLinkElement = (e, new_e) => {
+    let newList = linkElements.filter((i) => i._id !== e._id);
+    newList.push(new_e);
+    if (newList !== linkElements) {
+      setLinkElements(newList);
+    }
+    setUpdated(Math.random());
+  }
 
   const getUserLinkElements = async () => {
     await fetchComponent().then((data) => setLinkElements(data));
@@ -199,7 +209,7 @@ export default function LinksPage() {
   }, []);
 
   useEffect(() => {
-    getUserLinkElements();
+    // getUserLinkElements();
   }, [updated]);
 
   useEffect(() => {}, [linkElements]);
@@ -353,6 +363,7 @@ export default function LinksPage() {
                             <LinkElementTool
                               className={"link-element"}
                               element={e}
+                              updateElem={updateLinkElement}
                               deleteElem={deleteLinkElement}
                               dragHandleProps={provided.dragHandleProps}
                               index={i}
@@ -360,6 +371,7 @@ export default function LinksPage() {
                           ) : e.elemType === "header" ? (
                             <HeaderElementTool
                               element={e}
+                              updateElem={updateLinkElement}
                               deleteElem={deleteLinkElement}
                               dragHandleProps={provided.dragHandleProps}
                               index={i}
@@ -367,6 +379,7 @@ export default function LinksPage() {
                           ) : e.elemType === "social" ? (
                             <SocialElementTool
                               element={e}
+                              updateElem={updateLinkElement}
                               deleteElem={deleteLinkElement}
                               dragHandleProps={provided.dragHandleProps}
                               index={i}

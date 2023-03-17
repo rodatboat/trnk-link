@@ -20,6 +20,7 @@ export default async function updateComponent({ _id, active, title, link }) {
     .then((data) => {
       if (data.success) {
         toast.success(data.message);
+        return data.data;
       } else {
         toast.error(data.message);
       }

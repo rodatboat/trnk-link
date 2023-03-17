@@ -11,7 +11,7 @@ import { styles } from "../../../styles";
 import { headerElementValidationSchema } from "../validation/headerElement.validation";
 import { linkElementValidationSchema } from "../validation/linkElement.validation";
 
-export const HeaderElementTool = ({ element, deleteElem, dragHandleProps }) => {
+export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleProps }) => {
     const [activeToggle, setActiveToggle] = useState(element.active);
     const [deleteDialog, setDeleteDialog] = useState(false);
   
@@ -42,10 +42,6 @@ export const HeaderElementTool = ({ element, deleteElem, dragHandleProps }) => {
       },
     });
   
-    const handleActiveToggle = () => {
-      setActiveToggle(!activeToggle);
-    };
-  
     const handleDeleteDialogToggle = () => {
       setDeleteDialog(!deleteDialog);
     };
@@ -61,21 +57,21 @@ export const HeaderElementTool = ({ element, deleteElem, dragHandleProps }) => {
     };
   
     const handleUpdate = async (values, actions) => {
-      updateComponent({
+      const newElem = await updateComponent({
         ...values,
         _id: element._id,
         active: activeToggle,
       });
-      deleteElem(element);
+      updateElem(element, newElem);
     };
   
     const handleCreate = async (values, actions) => {
-      createComponent({
+      const newElem = await createComponent({
         ...values,
         elemType: element.elemType,
         active: activeToggle,
       });
-      deleteElem(element);
+      updateElem(element, newElem);
     };
   
     return (

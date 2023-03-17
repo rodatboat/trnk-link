@@ -18,7 +18,7 @@ import updateComponent from "../../../api/components/updateComponent";
 import { styles } from "../../../styles";
 import { linkElementValidationSchema } from "../validation/linkElement.validation";
 
-export const LinkElementTool = ({ element, deleteElem, dragHandleProps }) => {
+export const LinkElementTool = ({ element, updateElem, deleteElem, dragHandleProps }) => {
   const [activeToggle, setActiveToggle] = useState(element.active);
   const [deleteDialog, setDeleteDialog] = useState(false);
 
@@ -36,7 +36,6 @@ export const LinkElementTool = ({ element, deleteElem, dragHandleProps }) => {
       title: element.title,
       link: element.link,
       active: element.active,
-      icon: element.icon,
     },
     validationSchema: linkElementValidationSchema,
     onSubmit: async (values, actions) => {
@@ -49,10 +48,6 @@ export const LinkElementTool = ({ element, deleteElem, dragHandleProps }) => {
       }
     },
   });
-
-  const handleActiveToggle = () => {
-    setActiveToggle(!activeToggle);
-  };
 
   const handleDeleteDialogToggle = () => {
     setDeleteDialog(!deleteDialog);
@@ -69,21 +64,21 @@ export const LinkElementTool = ({ element, deleteElem, dragHandleProps }) => {
   };
 
   const handleUpdate = async (values, actions) => {
-    updateComponent({
+    const newElem = await updateComponent({
       ...values,
       _id: element._id,
       active: activeToggle,
     });
-    deleteElem(element);
+    updateElem(element, newElem);
   };
 
   const handleCreate = async (values, actions) => {
-    createComponent({
+    const newElem = await createComponent({
       ...values,
       elemType: element.elemType,
       active: activeToggle,
     });
-    deleteElem(element);
+    updateElem(element, newElem);
   };
 
   return (
@@ -221,10 +216,7 @@ export const LinkElementTool = ({ element, deleteElem, dragHandleProps }) => {
         >
           <Box
             display={"flex"}
-            flexDirection={{
-              xs:"column",
-              sm:"row"
-            }}
+            flexDirection={"row"}
             alignItems={"center"}
             justifyContent={"center"}
             gap={1}
