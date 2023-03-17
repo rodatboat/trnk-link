@@ -82,7 +82,7 @@ export default function SocialIconsMenu({
           sx={{
             display: "flex",
             justifyContent: "center",
-            width: "100%",
+            width: "100%"
           }}
         >
           <Box
@@ -92,8 +92,7 @@ export default function SocialIconsMenu({
               left: "50%",
               transform: "translate(-50%, -50%)",
               width: "100%",
-
-              p: 4,
+              p:1
             }}
           >
             <Box
@@ -102,6 +101,8 @@ export default function SocialIconsMenu({
                 border: 1,
                 borderRadius: 1,
                 borderColor: "black",
+                maxWidth: "600px",
+                mx:"auto"
               }}
             >
               <Box m={2} minWidth={"fit-content"}>

@@ -74,11 +74,13 @@ router.route("/create").post(async (req, res) => {
       success: true,
       message: "Link component created",
       data: {
+        _id:newElement._id,
         active: newElement.active,
         elemType:newElement.elemType,
         title:newElement.title,
         link:newElement.link,
         icon:newElement.icon,
+        updatedAt:newElement.updatedAt,
       }
     });
   } catch (error) {
@@ -138,11 +140,13 @@ router.route("/update").post(async (req, res) => {
       success: true,
       message: "Link component updated",
       data: {
+        _id:newElement._id,
         active: newElement.active,
         elemType:newElement.elemType,
         title:newElement.title,
         link:newElement.link,
         icon:newElement.icon,
+        updatedAt:newElement.updatedAt,
       }
     });
   } catch (error) {

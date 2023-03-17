@@ -350,7 +350,7 @@ export default function LinksPage() {
                 ref={provided.innerRef}
               >
                 {linkElements ? (
-                  linkElements.map((e, i) => (
+                  linkElements.sort((a, b)=> !b.new - !a.new).map((e, i) => (
                     <Draggable key={e._id} draggableId={e._id} index={i}>
                       {(provided) => (
                         <Grid
