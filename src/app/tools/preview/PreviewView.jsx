@@ -9,7 +9,6 @@ export default function PreviewView() {
       <Box sx={styles.previewLeft} p={2}>
         <Outlet />
       </Box>
-
       <Box sx={styles.previewRight}></Box>
     </Box>
   );

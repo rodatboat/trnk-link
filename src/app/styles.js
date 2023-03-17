@@ -23,40 +23,38 @@ export const styles = {
   hint: {
     fontWeight: "regular",
     fontSize: 10,
-    lineHeight: 1
+    lineHeight: 1,
   },
-  smallButton:{
+  smallButton: {
     border: 1,
     borderRadius: 1,
     // boxShadow: 1,
     width: "fit-content",
     minWidth: "fit-content",
-    backgroundColor:"#fff",
+    backgroundColor: "#fff",
     borderColor: "complement.main",
     maxWidth: "fit-content",
     ".MuiButtonBase-root": {
       maxWidth: "fit-content",
     },
-    "&:hover":{
-      
-    }
+    "&:hover": {},
   },
-  smallButtonActive:{
+  smallButtonActive: {
     border: 1,
     borderRadius: 1,
     // boxShadow: 1,
     borderColor: "accent.main",
-    borderBottomColor:"accent.hover",
+    borderBottomColor: "accent.hover",
     width: "fit-content",
     minWidth: "fit-content",
-    backgroundColor:"accent.main",
+    backgroundColor: "accent.main",
     maxWidth: "fit-content",
     ".MuiButtonBase-root": {
       maxWidth: "fit-content",
     },
-    "&:hover":{
-      backgroundColor:"accent.hover",
-    }
+    "&:hover": {
+      backgroundColor: "accent.hover",
+    },
   },
   button: {
     fontSize: 16,
