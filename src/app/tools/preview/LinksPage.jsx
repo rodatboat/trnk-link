@@ -14,6 +14,7 @@ import { TbMenuOrder } from "react-icons/tb";
 import changeOrder from "../../api/components/changeOrder";
 import { HeaderElementTool } from "./elementTools/HeaderElementTool";
 import { SocialElementTool } from "./elementTools/SocialElementTool";
+import { MdTitle } from "react-icons/md";
 
 export default function LinksPage() {
     const [orderChange, setOrderChange] = useState(false);
@@ -145,11 +146,9 @@ export default function LinksPage() {
 
     useEffect(() => {
         // Always filter the constant icons
-        console.log("useEffect running.");
         const newIcons = icons.filter((icon) =>
             icon.name.toLowerCase().includes(search.toLowerCase())
         );
-        console.log(`newIcons: ${newIcons}`);
         setResultIcons(newIcons);
     }, [search]);
 
