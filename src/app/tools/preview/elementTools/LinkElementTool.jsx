@@ -48,9 +48,6 @@ export const LinkElementTool = ({ element, deleteElem, dragHandleProps }) => {
         }
       }
     },
-    // handleChange:async ()=>{
-    //   console.log("changes")
-    // }
   });
 
   const handleActiveToggle = () => {

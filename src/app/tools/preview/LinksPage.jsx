@@ -1,70 +1,30 @@
 // @ts-nocheck
-import {
-  Box,
-  Button,
-  Grid,
-  InputAdornment,
-  Modal,
-  Switch,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { IoMdAdd } from "react-icons/io";
-import { MdOutlineEdit, MdTitle } from "react-icons/md";
 import { BiLinkAlt } from "react-icons/bi";
 import { IoShareSocialOutline } from "react-icons/io5";
-import { RxDragHandleDots1, RxTrash } from "react-icons/rx";
-import { useTheme } from "@mui/material/styles";
-import { useFormik } from "formik";
-import { RiSaveLine } from "react-icons/ri";
-import { toast } from "react-hot-toast";
 import { styles } from "../../styles";
-import { linkElementValidationSchema } from "./validation/linkElement.validation";
-import { mediaIcons } from "./icons";
+import { icons } from "./icons";
 import { LinkElementTool } from "./elementTools/LinkElementTool";
 import { v4 as uuidv4 } from "uuid";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import fetchComponent from "../../api/components/fetchComponent";
-import createComponent from "../../api/components/createComponent";
-import updateComponent from "../../api/components/updateComponent";
-import deleteComponent from "../../api/components/deleteComponent";
 import SocialIconsMenu from "./SocialIconsMenu";
 import { TbMenuOrder } from "react-icons/tb";
 import changeOrder from "../../api/components/changeOrder";
 import { HeaderElementTool } from "./elementTools/HeaderElementTool";
 import { SocialElementTool } from "./elementTools/SocialElementTool";
-
+import { MdTitle } from "react-icons/md";
 
 export default function LinksPage() {
   const [orderChange, setOrderChange] = useState(false);
   const [updated, setUpdated] = useState(null);
-  const [linkElements, setLinkElements] = useState([
-    // {
-    // _id: 1,
-    // active: true,
-    // elemType: "link",
-    // title: "Youtube",
-    // link: "https://youtube.com/",
-    // icon: mediaIcons.youtube[0],
-    // },
-    // {
-    // _id: 2,
-    // active: true,
-    // elemType: "header",
-    // title: "",
-    // link: "",
-    // icon: <></>,
-    // },
-    // {
-    // _id: 3,
-    // active: true,
-    // elemType: "social",
-    // title: "",
-    // link: "",
-    // icon: <></>,
-    // },
-  ]);
+  const [linkElements, setLinkElements] = useState([]);
+  const [toggleIconsMenu, setToggleIconsMenu] = useState(false);
+  const [shouldFocus, setShouldFocus] = React.useState(false);
+  const [search, setSearch] = useState("");
+  const [resultIcons, setResultIcons] = useState(icons); // The icons that match the search query
+
   const createLinkElement = () => {
     setLinkElements([
       ...linkElements,
@@ -80,21 +40,7 @@ export default function LinksPage() {
     ]);
   };
 
-  const createHeaderElement = () => {
-    setLinkElements([
-      ...linkElements,
-      {
-        _id: uuidv4(),
-        new: true,
-        active: true,
-        elemType: "header",
-        title: "",
-        // icon: <></>,
-      },
-    ]);
-  };
-
-  const createSocialElement = (icon) => {
+  const createSocialIconElement = (element) => {
     setLinkElements([
       ...linkElements,
       {
@@ -103,7 +49,23 @@ export default function LinksPage() {
         active: true,
         elemType: "social",
         title: "",
-        icon: icon,
+        link: "",
+        icon: element,
+      },
+    ]);
+  };
+
+  const createHeaderElement = () => {
+    setLinkElements([
+      ...linkElements,
+      {
+        _id: uuidv4(),
+        new: true,
+        active: true,
+        link: "",
+        elemType: "header",
+        title: "",
+        // icon: <></>,
       },
     ]);
   };
@@ -125,13 +87,11 @@ export default function LinksPage() {
     const { destination, source } = result;
 
     if (!destination) return;
-
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     )
       return;
-
     const newLinkElements = Array.from(linkElements);
 
     // Swap elements by destructuring
@@ -153,6 +113,87 @@ export default function LinksPage() {
     setOrderChange(false);
   };
 
+  const handleToggleSocialIconsMenu = () => {
+    setShouldFocus(!shouldFocus);
+    if (toggleIconsMenu) {
+      setSearch("");
+    }
+    setToggleIconsMenu(!toggleIconsMenu);
+  };
+
+  const searchIcons = () => {
+    const newIcons = Array.from(icons);
+
+    if (search.length === 0) {
+      setResultIcons(newIcons);
+      return;
+    }
+
+    // Adjust these thresholds as desired for strictness of the search algorithm
+    const minThreshold = 0.3; // The threshold when there are few characters in the search query
+    const maxThreshold = 0.8; // The threshold when there are many characters in the search query
+
+    /**
+     * Calculate the threshold based on the length of the search query
+     * using a linear interpolation function (credit chatGPT)
+     */
+    let threshold =
+      minThreshold + ((maxThreshold - minThreshold) * (search.length - 1)) / 5;
+
+    if (threshold > maxThreshold) threshold = maxThreshold;
+    else if (threshold < minThreshold) threshold = minThreshold;
+
+    // Map each search query char to the number of times it appears
+    const searchQueryChars = {};
+    for (let n = 0; n < search.length; n++) {
+      if (searchQueryChars[search[n]]) {
+        searchQueryChars[search[n]]++;
+      } else {
+        searchQueryChars[search[n]] = 1;
+      }
+    }
+
+    for (let j = newIcons.length - 1; j >= 0; j--) {
+      // Map each icon char to the number of times it appears
+      let currIconChars = {};
+      for (let k = 0; k < newIcons[j].name.length; k++) {
+        if (currIconChars[newIcons[j].name[k]]) {
+          currIconChars[newIcons[j].name[k]]++;
+        } else {
+          currIconChars[newIcons[j].name[k]] = 1;
+        }
+      }
+
+      let matchingChars = 0;
+
+      for (let i = 0; i < search.length; i++) {
+        // Only if the character was not counted yet, count it
+        if (currIconChars[search[i]] > 0) {
+          matchingChars++;
+          currIconChars[search[i]]--;
+        }
+      }
+
+      let percentMatchingChars = matchingChars / search.length;
+      newIcons[j].percentage = percentMatchingChars;
+      if (percentMatchingChars < threshold) {
+        newIcons.splice(j, 1);
+      }
+    }
+
+    // Sort the icons by their percentage in non-decreasing order
+    newIcons.sort((a, b) => b.percentage - a.percentage);
+    setResultIcons(newIcons);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
+  useEffect(() => {
+    searchIcons();
+  }, [search]);
+
   useEffect(() => {
     getUserLinkElements();
   }, []);
@@ -162,38 +203,6 @@ export default function LinksPage() {
   }, [updated]);
 
   useEffect(() => {}, [linkElements]);
-
-  const [toggleIconsMenu, setToggleIconsMenu] = useState(false);
-
-  const handleToggleSocialIconsMenu = () => {
-    if(toggleIconsMenu){
-      setSearch("");
-    }
-    setToggleIconsMenu(!toggleIconsMenu);
-  }
-
-  const getIcons = () => {
-    return Object.entries(mediaIcons).map(([key, value])=>{
-     return {icon: value[value.length - 1].type, name: key}
-    });
-  };
-
-  // A constant for all icons
-  const [search, setSearch] = useState("");
-  const [icons, setIcons] = useState(getIcons());
-  const [resultIcons, setResultIcons] = useState(icons); // The icons that match the search query
-
-  const handleSearchChange = (event) => {
-    setSearch(event.target.value);
-  };
-
-  useEffect(() => {
-    // Always filter the constant icons
-    const newIcons = icons.filter((icon) =>
-      icon.name.toLowerCase().includes(search.toLowerCase())
-    );
-    setResultIcons(newIcons);
-  }, [search]);
 
   return (
     <>
@@ -345,27 +354,21 @@ export default function LinksPage() {
                               className={"link-element"}
                               element={e}
                               deleteElem={deleteLinkElement}
-                              dragHandleProps={
-                                  ...provided.dragHandleProps
-                              }
+                              dragHandleProps={provided.dragHandleProps}
                               index={i}
                             />
                           ) : e.elemType === "header" ? (
                             <HeaderElementTool
                               element={e}
                               deleteElem={deleteLinkElement}
-                              dragHandleProps={
-                                  ...provided.dragHandleProps
-                              }
+                              dragHandleProps={provided.dragHandleProps}
                               index={i}
                             />
                           ) : e.elemType === "social" ? (
                             <SocialElementTool
                               element={e}
                               deleteElem={deleteLinkElement}
-                              dragHandleProps={
-                                  ...provided.dragHandleProps
-                              }
+                              dragHandleProps={provided.dragHandleProps}
                               index={i}
                             />
                           ) : (
@@ -393,10 +396,11 @@ export default function LinksPage() {
         }}
       >
         <SocialIconsMenu
+          shouldFocus={shouldFocus}
           icons={resultIcons}
           search={search}
           handleSearchChange={handleSearchChange}
-          createSocialIconElement={createSocialElement}
+          createSocialIconElement={createSocialIconElement}
           toggleIconsMenu={toggleIconsMenu}
           handleToggleSocialIconsMenu={handleToggleSocialIconsMenu}
         />

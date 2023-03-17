@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { SiSourcetree } from "react-icons/si";
 import { RxSection } from "react-icons/rx";
 import {
-    MdOutlineShapeLine,
-    MdOutlineSettings,
-    MdQueryStats,
+  MdOutlineShapeLine,
+  MdOutlineSettings,
+  MdQueryStats,
 } from "react-icons/md";
 import { IoShapesOutline } from "react-icons/io5";
 
@@ -66,28 +66,28 @@ export const NavBarItem = ({ tab }) => {
 };
 
 export default function NavBar() {
-    const [tabs, setTabs] = useState([
-        {
-            title: "Links",
-            icon: <RxSection />,
-            href: "/tools",
-        },
-        {
-            title: "Customize",
-            icon: <IoShapesOutline />,
-            href: "/tools/customize",
-        },
-        {
-            title: "Statistics",
-            icon: <MdQueryStats />,
-            href: "/tools/stats",
-        },
-        {
-            title: "Settings",
-            icon: <MdOutlineSettings />,
-            href: "/tools/settings",
-        },
-    ]);
+  const [tabs, setTabs] = useState([
+    {
+      title: "Links",
+      icon: <RxSection />,
+      href: "/tools",
+    },
+    {
+      title: "Customize",
+      icon: <IoShapesOutline />,
+      href: "/tools/customize",
+    },
+    {
+      title: "Statistics",
+      icon: <MdQueryStats />,
+      href: "/tools/stats",
+    },
+    {
+      title: "Settings",
+      icon: <MdOutlineSettings />,
+      href: "/tools/settings",
+    },
+  ]);
     return (
         <AppBar
             component={"nav"}
@@ -154,47 +154,50 @@ export default function NavBar() {
                     ))}
                 </Box>
 
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        height: "100%",
-                        order: {
-                            xs: 1,
-                            md: 2,
-                        },
-                        width: {
-                            xs: "100%",
-                            md: "auto",
-                        },
-                    }}
-                    py={"auto"}>
-                    <Box
-                        component={"a"}
-                        href={"#"}
-                        sx={{
-                            display: {
-                                xs: "flex",
-                                md: "none",
-                            },
-                        }}
-                        p={3}
-                        pl={0}>
-                        <SiSourcetree fontSize={20} />
-                    </Box>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            height: "100%",
-                        }}>
-                        {/* Notifications, upgrade, share, profile button */}
-                        <Typography>Test</Typography>
-                    </Box>
-                </Box>
-            </Toolbar>
-        </AppBar>
-    );
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            height: "100%",
+            order: {
+              xs: 1,
+              md: 2,
+            },
+            width: {
+              xs: "100%",
+              md: "auto",
+            },
+          }}
+          py={"auto"}
+        >
+          <Box
+            component={"a"}
+            href={"#"}
+            sx={{
+              display: {
+                xs: "flex",
+                md: "none",
+              },
+            }}
+            p={3}
+            pl={0}
+          >
+            <SiSourcetree fontSize={20} />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              height: "100%",
+            }}
+          >
+            {/* Notifications, upgrade, share, profile button */}
+            <Typography>Test</Typography>
+          </Box>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
 }
