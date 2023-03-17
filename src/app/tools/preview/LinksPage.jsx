@@ -181,7 +181,7 @@ export default function LinksPage() {
   // A constant for all icons
   const [search, setSearch] = useState("");
   const [icons, setIcons] = useState(getIcons());
-  const [resultIcons, setResultIcons] = useState(getIcons()); // The icons that match the search query
+  const [resultIcons, setResultIcons] = useState(icons); // The icons that match the search query
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);

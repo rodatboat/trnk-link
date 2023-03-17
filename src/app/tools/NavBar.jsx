@@ -14,7 +14,8 @@ export const NavBarItem = ({ tab }) => {
         <>
             <Box
                 py={1.5}
-                px={1}
+                px={{xs:0,
+                md:1}}
                 sx={{
                     borderRadius: "5px",
                     "&:hover": {
@@ -99,6 +100,7 @@ export default function NavBar() {
                     xs: 128,
                     md: 72,
                 },
+                overflow:"hidden"
             }}>
             <Toolbar
                 sx={{

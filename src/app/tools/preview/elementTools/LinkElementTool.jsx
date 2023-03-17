@@ -224,7 +224,10 @@ export const LinkElementTool = ({ element, deleteElem, dragHandleProps }) => {
         >
           <Box
             display={"flex"}
-            flexDirection={"row"}
+            flexDirection={{
+              xs:"column",
+              sm:"row"
+            }}
             alignItems={"center"}
             justifyContent={"center"}
             gap={1}
