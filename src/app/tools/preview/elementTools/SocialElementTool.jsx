@@ -22,7 +22,7 @@ import { linkElementValidationSchema } from "../validation/linkElement.validatio
 export const SocialElementTool = ({ element, deleteElem, dragHandleProps }) => {
     const [activeToggle, setActiveToggle] = useState(element.active);
     const [deleteDialog, setDeleteDialog] = useState(false);
-    console.log(element);
+    
     const {
         values,
         touched,
@@ -47,9 +47,6 @@ export const SocialElementTool = ({ element, deleteElem, dragHandleProps }) => {
                 }
             }
         },
-        // handleChange:async ()=>{
-        //   console.log("changes")
-        // }
     });
 
     const handleActiveToggle = () => {
@@ -87,8 +84,7 @@ export const SocialElementTool = ({ element, deleteElem, dragHandleProps }) => {
         });
         deleteElem(element);
     };
-    console.log(`values: ${values}`);
-    console.dir(values);
+    
     return (
         <>
             <Box

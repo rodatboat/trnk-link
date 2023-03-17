@@ -143,8 +143,6 @@ export default function LinksPage() {
     if (threshold > maxThreshold) threshold = maxThreshold;
     else if (threshold < minThreshold) threshold = minThreshold;
 
-    console.log(`current threshold: ${threshold}`);
-
     // Map each search query char to the number of times it appears
     const searchQueryChars = {};
     for (let n = 0; n < search.length; n++) {
@@ -185,7 +183,6 @@ export default function LinksPage() {
 
     // Sort the icons by their percentage in non-decreasing order
     newIcons.sort((a, b) => b.percentage - a.percentage);
-    console.log(newIcons);
     setResultIcons(newIcons);
   };
 
@@ -407,7 +404,6 @@ export default function LinksPage() {
           toggleIconsMenu={toggleIconsMenu}
           handleToggleSocialIconsMenu={handleToggleSocialIconsMenu}
         />
-        0
       </Box>
     </>
   );

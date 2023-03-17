@@ -37,7 +37,10 @@ export const styles = {
     ".MuiButtonBase-root": {
       maxWidth: "fit-content",
     },
-    "&:hover": {},
+    "&:hover":{
+      
+    },
+    overflow:"hidden"
   },
   smallButtonActive: {
     border: 1,
@@ -52,9 +55,10 @@ export const styles = {
     ".MuiButtonBase-root": {
       maxWidth: "fit-content",
     },
-    "&:hover": {
-      backgroundColor: "accent.hover",
+    "&:hover":{
+      backgroundColor:"accent.hover",
     },
+    overflow:"hidden"
   },
   button: {
     fontSize: 16,
@@ -70,6 +74,7 @@ export const styles = {
     "&:hover": {
       backgroundColor: "accent.hover",
     },
+    overflow:"hidden"
   },
   input: {
     "&.input-error": {
@@ -98,11 +103,15 @@ export const styles = {
   },
   previewLeft: {
     width: {
-      xs: "60%",
+      xs: "100%",
+      sm: "60%",
       md: "65%",
       lg: "70%",
     },
-    borderRight: 1,
+    borderRight: {
+      xs:0,
+      sm:1
+    },
     minHeight: "100vh",
     height: "100%",
   },
@@ -118,9 +127,17 @@ export const styles = {
     paddingY: 2,
     boxShadow: 1,
     height: "100%",
+    overflow:"hidden"
   },
   previewRight: {
-    width: "100%",
+    display:{
+      xs:"block",
+      sm:"none"
+    },
+    width: {
+      xs:0,
+      sm:"100%"
+    },
   },
   button2: {
     backgroundColor: "primary",
@@ -135,6 +152,7 @@ export const styles = {
     "&:hover": {
       // borderColor: "accent.main",
     },
+    overflow:"hidden"
   },
   button3: {
     backgroundColor: "accent.main",
@@ -148,6 +166,7 @@ export const styles = {
     "&:hover": {
       backgroundColor: "accent.hover",
     },
+    overflow:"hidden"
   },
   switch: {
     "& .MuiSwitch-thumb": {

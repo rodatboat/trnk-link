@@ -40,9 +40,6 @@ export const HeaderElementTool = ({ element, deleteElem, dragHandleProps }) => {
           }
         }
       },
-      // handleChange:async ()=>{
-      //   console.log("changes")
-      // }
     });
   
     const handleActiveToggle = () => {
