@@ -163,4 +163,20 @@ export const styles = {
       opacity: 1,
     },
   },
+  scrollbarStyled:{
+    '::-webkit-scrollbar-track': {
+        WebkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
+        borderRadius: '10px',
+        backgroundColor: 'primary.main'
+      },
+      '::-webkit-scrollbar': {
+        width: '12px',
+        backgroundColor: 'primary.main'
+      },
+      '::-webkit-scrollbar-thumb': {
+        borderRadius: '10px',
+        WebkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
+        backgroundColor: 'complement.main'
+      }
+}
 };
