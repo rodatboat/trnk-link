@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 
-export default async function updateComponent({ _id, active, title, link }) {
+export default async function updateComponent({ _id, active, title, link, icon }) {
   return fetch(`${import.meta.env.VITE_API_URL}/components/update`, {
     method: "POST",
     crossDomain: true,
@@ -13,7 +13,7 @@ export default async function updateComponent({ _id, active, title, link }) {
 
     },
     body: JSON.stringify({
-        elemId:_id, active, title, link
+        elemId:_id, active, title, link, icon
     }),
   })
     .then((res) => res.json())

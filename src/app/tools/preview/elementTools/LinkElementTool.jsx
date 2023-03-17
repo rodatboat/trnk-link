@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { RiSaveLine } from "react-icons/ri";
 import { RxDragHandleDots1, RxTrash } from "react-icons/rx";
@@ -31,6 +31,7 @@ export const LinkElementTool = ({ element, updateElem, deleteElem, dragHandlePro
     handleSubmit,
     isSubmitting,
     initialValues,
+    resetForm
   } = useFormik({
     initialValues: {
       title: element.title,
@@ -46,6 +47,7 @@ export const LinkElementTool = ({ element, updateElem, deleteElem, dragHandlePro
           await handleUpdate(values, actions);
         }
       }
+      // resetForm();
     },
   });
 
@@ -78,9 +80,8 @@ export const LinkElementTool = ({ element, updateElem, deleteElem, dragHandlePro
       elemType: element.elemType,
       active: activeToggle,
     });
-    updateElem(element, newElem);
+    updateElem(element, newElem, true);
   };
-
   return (
     <>
       <Box

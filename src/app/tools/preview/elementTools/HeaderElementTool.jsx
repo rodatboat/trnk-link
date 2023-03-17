@@ -7,6 +7,7 @@ import { RxDragHandleDots1, RxTrash } from "react-icons/rx";
 import createComponent from "../../../api/components/createComponent";
 import deleteComponent from "../../../api/components/deleteComponent";
 import updateComponent from "../../../api/components/updateComponent";
+import { v4 as uuidv4 } from "uuid";
 import { styles } from "../../../styles";
 import { headerElementValidationSchema } from "../validation/headerElement.validation";
 import { linkElementValidationSchema } from "../validation/linkElement.validation";
@@ -24,6 +25,7 @@ export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleP
       handleSubmit,
       isSubmitting,
       initialValues,
+      resetForm
     } = useFormik({
       initialValues: {
         title: element.title,
@@ -39,6 +41,7 @@ export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleP
             await handleUpdate(values, actions);
           }
         }
+        // resetForm();
       },
     });
   
@@ -60,7 +63,7 @@ export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleP
       const newElem = await updateComponent({
         ...values,
         _id: element._id,
-        active: activeToggle,
+        active: activeToggle
       });
       updateElem(element, newElem);
     };
@@ -71,7 +74,7 @@ export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleP
         elemType: element.elemType,
         active: activeToggle,
       });
-      updateElem(element, newElem);
+      updateElem(element, newElem, true);
     };
   
     return (

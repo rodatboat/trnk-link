@@ -10,7 +10,7 @@ const LinkElementSchema = new Schema(
     elemType: {
       type: String,
       enum: ["link", "header", "social"],
-      default: ["link"],
+      default: "link",
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,

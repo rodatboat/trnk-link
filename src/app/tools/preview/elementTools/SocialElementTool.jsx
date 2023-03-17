@@ -8,7 +8,7 @@ import {
     Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { RiSaveLine } from "react-icons/ri";
 import { RxDragHandleDots1, RxTrash } from "react-icons/rx";
@@ -17,8 +17,7 @@ import deleteComponent from "../../../api/components/deleteComponent";
 import updateComponent from "../../../api/components/updateComponent";
 import { styles } from "../../../styles";
 import SocialIconElement from "../SocialIconElement";
-import { headerElementValidationSchema } from "../validation/headerElement.validation";
-import { linkElementValidationSchema } from "../validation/linkElement.validation";
+import { socialElementValidationSchema } from "../validation/socialElement.validation";
 
 export const SocialElementTool = ({ element, updateElem, deleteElem, dragHandleProps }) => {
     const [activeToggle, setActiveToggle] = useState(element.active);
@@ -33,12 +32,13 @@ export const SocialElementTool = ({ element, updateElem, deleteElem, dragHandleP
         handleSubmit,
         isSubmitting,
         initialValues,
+        resetForm
     } = useFormik({
         initialValues: {
             title: element.title,
-            active: element.active,
+            active: element.active
         },
-        validationSchema: headerElementValidationSchema,
+        validationSchema: socialElementValidationSchema,
         onSubmit: async (values, actions) => {
             if (element.new) {
                 await handleCreate(values, actions);
@@ -47,6 +47,7 @@ export const SocialElementTool = ({ element, updateElem, deleteElem, dragHandleP
                     await handleUpdate(values, actions);
                 }
             }
+            initialValues.title=values.title
         },
     });
 
@@ -69,6 +70,7 @@ export const SocialElementTool = ({ element, updateElem, deleteElem, dragHandleP
             ...values,
             _id: element._id,
             active: activeToggle,
+            icon:element.icon
         });
         updateElem(element, newElem);
     };
@@ -78,8 +80,9 @@ export const SocialElementTool = ({ element, updateElem, deleteElem, dragHandleP
             ...values,
             elemType: element.elemType,
             active: activeToggle,
+            icon:element.icon
         });
-        updateElem(element, newElem);
+        updateElem(element, newElem, true);
     };
     
     return (
