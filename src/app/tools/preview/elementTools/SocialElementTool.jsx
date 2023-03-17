@@ -11,7 +11,7 @@ import { styles } from "../../../styles";
 import { headerElementValidationSchema } from "../validation/headerElement.validation";
 import { linkElementValidationSchema } from "../validation/linkElement.validation";
 
-export const HeaderElementTool = ({ element, deleteElem, dragHandleProps }) => {
+export const SocialElementTool = ({ element, deleteElem, dragHandleProps }) => {
     const [activeToggle, setActiveToggle] = useState(element.active);
     const [deleteDialog, setDeleteDialog] = useState(false);
   
@@ -28,7 +28,6 @@ export const HeaderElementTool = ({ element, deleteElem, dragHandleProps }) => {
       initialValues: {
         title: element.title,
         active:element.active,
-        icon: element.icon,
       },
       validationSchema: headerElementValidationSchema,
       onSubmit: async (values, actions) => {

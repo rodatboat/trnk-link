@@ -33,16 +33,8 @@ import SocialIconsMenu from "./SocialIconsMenu";
 import { TbMenuOrder } from "react-icons/tb";
 import changeOrder from "../../api/components/changeOrder";
 import { HeaderElementTool } from "./elementTools/HeaderElementTool";
+import { SocialElementTool } from "./elementTools/SocialElementTool";
 
-const SocialElementTool = ({ element }) => {
-  return (
-    <>
-      <Box>
-        {element}
-      </Box>
-    </>
-  );
-};
 
 export default function LinksPage() {
   const [orderChange, setOrderChange] = useState(false);
@@ -172,8 +164,6 @@ export default function LinksPage() {
   useEffect(() => {}, [linkElements]);
 
   const [toggleIconsMenu, setToggleIconsMenu] = useState(false);
-  const [openSocialIconsMenu, setOpenSocialIconsMenu] = React.useState(false);
-  const [shouldFocus, setShouldFocus] = React.useState(false);
 
   const handleToggleSocialIconsMenu = () => {
     if(toggleIconsMenu){
@@ -183,16 +173,15 @@ export default function LinksPage() {
   }
 
   const getIcons = () => {
-    const icons = Object.entries(mediaIcons).map(([key, value])=>{
-     return icons.push({icon: value[value.length - 1].type, name: key})
+    return Object.entries(mediaIcons).map(([key, value])=>{
+     return {icon: value[value.length - 1].type, name: key}
     });
-
-    return icons;
   };
 
   // A constant for all icons
   const [search, setSearch] = useState("");
-  const [icons, setIcons] = useState(getIcons()); // The icons that match the search query
+  const [icons, setIcons] = useState(getIcons());
+  const [resultIcons, setResultIcons] = useState(getIcons()); // The icons that match the search query
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
@@ -203,7 +192,7 @@ export default function LinksPage() {
     const newIcons = icons.filter((icon) =>
       icon.name.toLowerCase().includes(search.toLowerCase())
     );
-    setIcons(newIcons);
+    setResultIcons(newIcons);
   }, [search]);
 
   return (
@@ -372,7 +361,7 @@ export default function LinksPage() {
                             />
                           ) : e.elemType === "social" ? (
                             <SocialElementTool
-                              element={e.icon}
+                              element={e}
                               deleteElem={deleteLinkElement}
                               dragHandleProps={
                                   ...provided.dragHandleProps
@@ -381,17 +370,17 @@ export default function LinksPage() {
                             />
                           ) : (
                             <></>
-                          )}{" "}
+                          )}
                         </Grid>
-                      )}{" "}
+                      )}
                     </Draggable>
                   ))
                 ) : (
                   <>Empty</>
                 )}
-                {provided.placeholder}{" "}
+                {provided.placeholder}
               </Grid>
-            )}{" "}
+            )}
           </Droppable>
         </DragDropContext>
       </Box>
@@ -404,12 +393,11 @@ export default function LinksPage() {
         }}
       >
         <SocialIconsMenu
-          shouldFocus={shouldFocus}
-          icons={icons}
+          icons={resultIcons}
           search={search}
           handleSearchChange={handleSearchChange}
           createSocialIconElement={createSocialElement}
-          openSocialIconsMenu={openSocialIconsMenu}
+          toggleIconsMenu={toggleIconsMenu}
           handleToggleSocialIconsMenu={handleToggleSocialIconsMenu}
         />
       </Box>

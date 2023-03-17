@@ -110,7 +110,8 @@ export const LinkElementTool = ({ element, deleteElem, dragHandleProps }) => {
               transform: "translate(-50%, -50%)",
               width: "fit-content",
               backgroundColor: "primary.main",
-              border: 2,
+              border: 1,
+              borderRadius:1,
               borderColor: "black",
               p: 1,
             }}
