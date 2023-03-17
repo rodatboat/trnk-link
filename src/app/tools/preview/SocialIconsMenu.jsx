@@ -5,13 +5,8 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
 import Button from "@Mui/material/Button";
 import { styles } from "../../styles";
-import { motion } from "framer-motion";
 import { useFocusableInput } from "../../hooks/useFocusableInput";
 import { IoMdClose } from "react-icons/io";
 import { Modal } from "@mui/material";
@@ -67,6 +62,7 @@ export default function SocialIconsMenu({
 }) {
   const { setInputRef } = useFocusableInput(shouldFocus);
   useEffect(() => {}, [icons]);
+
   return (
     <>
       <Modal

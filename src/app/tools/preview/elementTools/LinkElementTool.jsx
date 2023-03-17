@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Box,
   Button,
@@ -108,7 +109,7 @@ export const LinkElementTool = ({ element, deleteElem, dragHandleProps }) => {
               width: "fit-content",
               backgroundColor: "primary.main",
               border: 1,
-              borderRadius:1,
+              borderRadius: 1,
               borderColor: "black",
               p: 1,
             }}
@@ -222,8 +223,8 @@ export const LinkElementTool = ({ element, deleteElem, dragHandleProps }) => {
           <Box
             display={"flex"}
             flexDirection={{
-              xs:"column",
-              sm:"row"
+              xs: "column",
+              sm: "row",
             }}
             alignItems={"center"}
             justifyContent={"center"}
