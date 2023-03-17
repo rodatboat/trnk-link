@@ -66,14 +66,20 @@ router.route("/create").post(async (req, res) => {
       user: user._id,
       title,
       link,
-      // icon
+      icon
     });
 
     return res.send({
       data: user,
       success: true,
       message: "Link component created",
-      data: newElement
+      data: {
+        active: newElement.active,
+        elemType:newElement.elemType,
+        title:newElement.title,
+        link:newElement.link,
+        icon:newElement.icon,
+      }
     });
   } catch (error) {
     console.log(error.message)
@@ -121,15 +127,23 @@ router.route("/update").post(async (req, res) => {
       return res.send({ success: false, message: "Component doesn't exist" });
     }
 
-    await linkElement.updateOne({
+    const newElement = await linkElement.updateOne({
       active,
       title,
-      link
-    });
+      link,
+      icon
+    }, {new:true});
 
     return res.send({
       success: true,
-      message: "Link component updated"
+      message: "Link component updated",
+      data: {
+        active: newElement.active,
+        elemType:newElement.elemType,
+        title:newElement.title,
+        link:newElement.link,
+        icon:newElement.icon,
+      }
     });
   } catch (error) {
     console.log(error.message)

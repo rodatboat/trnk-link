@@ -17,14 +17,19 @@ import createComponent from "../../../api/components/createComponent";
 import deleteComponent from "../../../api/components/deleteComponent";
 import updateComponent from "../../../api/components/updateComponent";
 import { styles } from "../../../styles";
+import SocialIconElement from "../SocialIconElement";
 import { headerElementValidationSchema } from "../validation/headerElement.validation";
 import { linkElementValidationSchema } from "../validation/linkElement.validation";
 
-export const SocialElementTool = ({ element, deleteElem, dragHandleProps }) => {
+export const SocialElementTool = ({
+  element,
+  updateElem,
+  deleteElem,
+  dragHandleProps,
+}) => {
   const [activeToggle, setActiveToggle] = useState(element.active);
   const [deleteDialog, setDeleteDialog] = useState(false);
 
-  console.log(element);
   const {
     values,
     touched,
@@ -51,10 +56,6 @@ export const SocialElementTool = ({ element, deleteElem, dragHandleProps }) => {
     },
   });
 
-  const handleActiveToggle = () => {
-    setActiveToggle(!activeToggle);
-  };
-
   const handleDeleteDialogToggle = () => {
     setDeleteDialog(!deleteDialog);
   };
@@ -70,21 +71,21 @@ export const SocialElementTool = ({ element, deleteElem, dragHandleProps }) => {
   };
 
   const handleUpdate = async (values, actions) => {
-    updateComponent({
+    const newElem = await updateComponent({
       ...values,
       _id: element._id,
       active: activeToggle,
     });
-    deleteElem(element);
+    updateElem(element, newElem);
   };
 
   const handleCreate = async (values, actions) => {
-    createComponent({
+    const newElem = await createComponent({
       ...values,
       elemType: element.elemType,
       active: activeToggle,
     });
-    deleteElem(element);
+    updateElem(element, newElem);
   };
 
   return (
@@ -160,6 +161,7 @@ export const SocialElementTool = ({ element, deleteElem, dragHandleProps }) => {
           width={"100%"}
           gap={1}
         >
+          <SocialIconElement iconName={element.icon} />
           <TextField
             id={"title"}
             type="text"

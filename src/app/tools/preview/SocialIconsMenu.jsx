@@ -13,7 +13,7 @@ import { Modal } from "@mui/material";
 
 function SocialIcon({ IconComp, createSocialIconElement, handleCloseMenu }) {
   const handleClick = () => {
-    createSocialIconElement(IconComp);
+    createSocialIconElement(IconComp.name);
     handleCloseMenu();
   };
 

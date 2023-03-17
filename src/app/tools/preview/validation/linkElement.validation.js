@@ -8,5 +8,5 @@ export const linkElementValidationSchema = yup.object().shape({
     .string("Enter a title")
     .max(50, "Title is too long")
     .required("Title is required"),
-  link: yup.string("Enter your URL").matches(urlRules, "Invalid url").required("URL is required"),
+  link: yup.string("Enter your URL").matches(urlRules, "Invalid url").required("URL is required")
 });
