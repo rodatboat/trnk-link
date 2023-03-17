@@ -41,7 +41,6 @@ export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleP
             await handleUpdate(values, actions);
           }
         }
-        // resetForm();
       },
     });
   
@@ -63,7 +62,7 @@ export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleP
       const newElem = await updateComponent({
         ...values,
         _id: element._id,
-        active: activeToggle
+        active: values.active
       });
       updateElem(element, newElem);
     };
@@ -72,7 +71,7 @@ export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleP
       const newElem = await createComponent({
         ...values,
         elemType: element.elemType,
-        active: activeToggle,
+        active: values.active,
       });
       updateElem(element, newElem, true);
     };

@@ -69,7 +69,7 @@ export const SocialElementTool = ({ element, updateElem, deleteElem, dragHandleP
         const newElem = await updateComponent({
             ...values,
             _id: element._id,
-            active: activeToggle,
+            active: values.active,
             icon:element.icon
         });
         updateElem(element, newElem);
@@ -79,7 +79,7 @@ export const SocialElementTool = ({ element, updateElem, deleteElem, dragHandleP
         const newElem = await createComponent({
             ...values,
             elemType: element.elemType,
-            active: activeToggle,
+            active: values.active,
             icon:element.icon
         });
         updateElem(element, newElem, true);

@@ -34,7 +34,9 @@ router.route("/").get(async (req, res) => {
     const userOrder = await user.order.map((o)=>o._id.toString());
 
     linkElements.sort((a, b) => {
+      // console.log(a,b)
       return userOrder.indexOf(a._id.toString()) - userOrder.indexOf(b._id.toString())});
+
 
     return res.json({
       success: true,

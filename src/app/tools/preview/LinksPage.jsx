@@ -33,6 +33,7 @@ export default function LinksPage() {
         title: "",
         link: "",
         icon: "",
+        version: uuidv4(),
       },
     ]);
   };
@@ -48,6 +49,7 @@ export default function LinksPage() {
         title: "",
         link: "",
         icon: icon,
+        version: uuidv4(),
       },
     ]);
   };
@@ -63,6 +65,7 @@ export default function LinksPage() {
         elemType: "header",
         title: "",
         icon: "",
+        version: uuidv4(),
       },
     ]);
   };
@@ -82,7 +85,9 @@ export default function LinksPage() {
         setLinkElements(newList);
       }
     } else {
-      const newList = linkElements.map((i) => (i._id === e._id ? new_e : i));
+      const newList = linkElements.map((i) =>
+        i._id === e._id ? { ...new_e, version: uuidv4() } : i
+      );
       if (newList !== linkElements) {
         setLinkElements(newList);
       }
@@ -132,8 +137,7 @@ export default function LinksPage() {
     getUserLinkElements();
   }, []);
 
-  useEffect(() => {
-  }, [linkElements]);
+  useEffect(() => {}, [linkElements]);
 
   return (
     <>
@@ -274,7 +278,11 @@ export default function LinksPage() {
                   linkElements
                     .sort((a, b) => !b.new - !a.new)
                     .map((e, i) => (
-                      <Draggable key={e._id + Date.now()} draggableId={e._id} index={i}>
+                      <Draggable
+                        key={e.version ? e._id + e.version : e._id}
+                        draggableId={e._id}
+                        index={i}
+                      >
                         {(provided) => (
                           <Grid
                             item

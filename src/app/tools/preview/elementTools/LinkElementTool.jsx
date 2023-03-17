@@ -47,7 +47,6 @@ export const LinkElementTool = ({ element, updateElem, deleteElem, dragHandlePro
           await handleUpdate(values, actions);
         }
       }
-      // resetForm();
     },
   });
 
@@ -69,7 +68,7 @@ export const LinkElementTool = ({ element, updateElem, deleteElem, dragHandlePro
     const newElem = await updateComponent({
       ...values,
       _id: element._id,
-      active: activeToggle,
+      active: values.active,
     });
     updateElem(element, newElem);
   };
@@ -78,7 +77,7 @@ export const LinkElementTool = ({ element, updateElem, deleteElem, dragHandlePro
     const newElem = await createComponent({
       ...values,
       elemType: element.elemType,
-      active: activeToggle,
+      active: values.active,
     });
     updateElem(element, newElem, true);
   };

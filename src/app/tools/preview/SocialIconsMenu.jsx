@@ -249,7 +249,7 @@ export default function SocialIconsMenu({
                       <Grid container width="100%" spacing={1}>
                         {resultIcons.map((icon, i) => {
                           return (
-                            <Grid key={i} item xs={3} md={2} xl={1}>
+                            <Grid key={i} item xs={3} md={2}>
                               <SocialIcon
                                 name={icon.name}
                                 IconComp={icon.icon}
