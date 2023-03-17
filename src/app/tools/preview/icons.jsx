@@ -116,3 +116,11 @@ export const mediaIcons = {
   steam: [<ImSteam />, <BsSteam />],
   shopify: [<FaShopify />],
 };
+
+const getIcons = () => {
+  return Object.entries(mediaIcons).map(([key, value]) => {
+    return { icon: value[value.length - 1].type, name: key };
+  });
+};
+
+export const icons = getIcons();
