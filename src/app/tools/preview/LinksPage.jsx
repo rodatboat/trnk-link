@@ -142,7 +142,7 @@ export default function LinksPage() {
         const newLinkElement = Object.assign({}, linkElements[i]);
         newLinkElement.index = i;
 
-        // Replace old linkElement with new
+        // Add to list of components that need updating
         components.push(newLinkElement);
       }
     }
