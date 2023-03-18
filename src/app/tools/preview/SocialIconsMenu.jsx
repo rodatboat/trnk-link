@@ -13,6 +13,7 @@ import { Modal } from "@mui/material";
 
 function SocialIcon({ IconComp, createSocialIconElement, handleCloseMenu }) {
   const handleClick = () => {
+    console.log(`IconComp: ${IconComp}`);
     createSocialIconElement(IconComp.name);
     handleCloseMenu();
   };
@@ -87,7 +88,6 @@ export default function SocialIconsMenu({
               transform: "translate(-50%, -50%)",
               width: "100%",
               maxWidth: "600px",
-
               p: 4,
             }}
           >
@@ -139,6 +139,7 @@ export default function SocialIconsMenu({
                     placeholder="Search..."
                     value={search}
                     onChange={handleSearchChange}
+                    autoComplete="off"
                   />
                   <Box my={2} px={5} width={"100%"}>
                     <Divider />
@@ -166,14 +167,16 @@ export default function SocialIconsMenu({
                         {icons.map((icon, i) => {
                           return (
                             <Grid key={i} item xs={3} md={2} xl={1}>
-                              <SocialIcon
-                                name={icon.name}
-                                IconComp={icon.icon}
-                                createSocialIconElement={
-                                  createSocialIconElement
-                                }
-                                handleCloseMenu={handleToggleSocialIconsMenu}
-                              />
+                              <Box sx={{}}>
+                                <SocialIcon
+                                  name={icon.name}
+                                  IconComp={icon.icon}
+                                  createSocialIconElement={
+                                    createSocialIconElement
+                                  }
+                                  handleCloseMenu={handleToggleSocialIconsMenu}
+                                />
+                              </Box>
                             </Grid>
                           );
                         })}

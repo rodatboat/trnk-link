@@ -14,7 +14,7 @@ import { TbMenuOrder } from "react-icons/tb";
 import changeOrder from "../../api/components/changeOrder";
 import { HeaderElementTool } from "./elementTools/HeaderElementTool";
 import { SocialElementTool } from "./elementTools/SocialElementTool";
-import SocialIconElement from './SocialIconElement';
+import SocialIconElement from "./SocialIconElement";
 import { MdTitle } from "react-icons/md";
 
 export default function LinksPage() {
@@ -42,6 +42,7 @@ export default function LinksPage() {
   };
 
   const createSocialIconElement = (icon) => {
+    console.log(`icon: ${icon}`);
     setLinkElements([
       ...linkElements,
       {
@@ -86,7 +87,7 @@ export default function LinksPage() {
       setLinkElements(newList);
     }
     setUpdated(Math.random());
-  }
+  };
 
   const getUserLinkElements = async () => {
     await fetchComponent().then((data) => setLinkElements(data));

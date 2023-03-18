@@ -1,7 +1,13 @@
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 
-export default async function createComponent({ active, elemType, title, link }) {
+export default async function createComponent({
+  active,
+  elemType,
+  title,
+  link,
+  icon,
+}) {
   return fetch(`${import.meta.env.VITE_API_URL}/components/create`, {
     method: "POST",
     crossDomain: true,
@@ -9,11 +15,14 @@ export default async function createComponent({ active, elemType, title, link })
       "Content-Type": "application/json",
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      authorization: `Bearer ${Cookies.get("jwt")}`
-
+      authorization: `Bearer ${Cookies.get("jwt")}`,
     },
     body: JSON.stringify({
-        active, elemType, title, link
+      active,
+      elemType,
+      title,
+      link,
+      icon,
     }),
   })
     .then((res) => res.json())

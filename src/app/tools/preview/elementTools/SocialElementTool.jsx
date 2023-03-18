@@ -30,6 +30,8 @@ export const SocialElementTool = ({
   const [activeToggle, setActiveToggle] = useState(element.active);
   const [deleteDialog, setDeleteDialog] = useState(false);
 
+  console.log(`element in SocialElementTool: ${element}`);
+  console.dir(element);
   const {
     values,
     touched,
@@ -46,6 +48,8 @@ export const SocialElementTool = ({
     },
     validationSchema: headerElementValidationSchema,
     onSubmit: async (values, actions) => {
+      console.log("values in formik");
+      console.log(values);
       if (element.new) {
         await handleCreate(values, actions);
       } else {
@@ -80,6 +84,8 @@ export const SocialElementTool = ({
   };
 
   const handleCreate = async (values, actions) => {
+    console.log("values in handleCreate");
+    console.log(values);
     const newElem = await createComponent({
       ...values,
       elemType: element.elemType,
