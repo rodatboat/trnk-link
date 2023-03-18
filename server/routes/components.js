@@ -27,13 +27,16 @@ router.route("/").get(async (req, res) => {
       user:1,
       title:1,
       link:1,
-      updatedAt:1
+      updatedAt:1,
+      icon:1
     });
 
     const userOrder = await user.order.map((o)=>o._id.toString());
 
     linkElements.sort((a, b) => {
+      // console.log(a,b)
       return userOrder.indexOf(a._id.toString()) - userOrder.indexOf(b._id.toString())});
+
 
     return res.json({
       success: true,
@@ -58,29 +61,26 @@ router.route("/create").post(async (req, res) => {
     
     if (!user) {
       return res.send({ success: false, message: "User doesn't exist" });
+    } else {
+      const newElement = await LinkElement.create({
+        active, elemType, title, link, icon, user: user._id
+      });
+  
+      return res.send({
+        data: user,
+        success: true,
+        message: "Link component created",
+        data: {
+          _id:newElement._id,
+          active: newElement.active,
+          elemType:newElement.elemType,
+          title:newElement.title,
+          link:newElement.link,
+          icon:newElement.icon,
+          updatedAt:newElement.updatedAt,
+        }
+      });
     }
-    
-    const newElement = await LinkElement.create({
-      active,
-      elemType,
-      user: user._id,
-      title,
-      link,
-      icon
-    });
-
-    return res.send({
-      data: user,
-      success: true,
-      message: "Link component created",
-      data: {
-        active: newElement.active,
-        elemType:newElement.elemType,
-        title:newElement.title,
-        link:newElement.link,
-        icon:newElement.icon,
-      }
-    });
   } catch (error) {
     console.log(error.message)
     return res.send({
@@ -121,13 +121,7 @@ router.route("/update").post(async (req, res) => {
     const { elemId, active, title, link, icon } = req.body;
     const { _id } = req.decoded;
 
-    const linkElement = await LinkElement.findOne({ _id:elemId, user: _id });
-    
-    if (!linkElement) {
-      return res.send({ success: false, message: "Component doesn't exist" });
-    }
-
-    const newElement = await linkElement.updateOne({
+    const linkElement = await LinkElement.findOneAndUpdate({ _id:elemId, user: _id }, {
       active,
       title,
       link,
@@ -138,15 +132,17 @@ router.route("/update").post(async (req, res) => {
       success: true,
       message: "Link component updated",
       data: {
-        active: newElement.active,
-        elemType:newElement.elemType,
-        title:newElement.title,
-        link:newElement.link,
-        icon:newElement.icon,
+        _id:linkElement._id,
+        active: linkElement.active,
+        user: linkElement.user,
+        elemType:linkElement.elemType,
+        title:linkElement.title,
+        link:linkElement.link,
+        icon:linkElement.icon,
+        updatedAt:linkElement.updatedAt,
       }
     });
   } catch (error) {
-    console.log(error.message)
     return res.send({
       success: false,
       message: "Error updating link component",

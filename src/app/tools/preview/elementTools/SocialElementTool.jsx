@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { RiSaveLine } from "react-icons/ri";
 import { RxDragHandleDots1, RxTrash } from "react-icons/rx";
@@ -18,8 +18,7 @@ import deleteComponent from "../../../api/components/deleteComponent";
 import updateComponent from "../../../api/components/updateComponent";
 import { styles } from "../../../styles";
 import SocialIconElement from "../SocialIconElement";
-import { headerElementValidationSchema } from "../validation/headerElement.validation";
-import { linkElementValidationSchema } from "../validation/linkElement.validation";
+import { socialElementValidationSchema } from "../validation/socialElement.validation";
 
 export const SocialElementTool = ({
   element,
@@ -29,6 +28,34 @@ export const SocialElementTool = ({
 }) => {
   const [activeToggle, setActiveToggle] = useState(element.active);
   const [deleteDialog, setDeleteDialog] = useState(false);
+
+  const {
+    values,
+    touched,
+    errors,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    initialValues,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      title: element.title,
+      active: element.active,
+    },
+    validationSchema: socialElementValidationSchema,
+    onSubmit: async (values, actions) => {
+      if (element.new) {
+        await handleCreate(values, actions);
+      } else {
+        if (initialValues !== values) {
+          await handleUpdate(values, actions);
+        }
+      }
+      initialValues.title = values.title;
+    },
+  });
 
   console.log(`element in SocialElementTool: ${element}`);
   console.dir(element);
