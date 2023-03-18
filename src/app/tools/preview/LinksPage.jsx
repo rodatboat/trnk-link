@@ -27,6 +27,7 @@ export default function LinksPage() {
       ...linkElements,
       {
         _id: uuidv4(),
+        index: linkElements.length,
         new: true,
         active: true,
         elemType: "link",
@@ -39,11 +40,11 @@ export default function LinksPage() {
   };
 
   const createSocialIconElement = (icon) => {
-    console.log(`icon: ${icon}`);
     setLinkElements([
       ...linkElements,
       {
         _id: uuidv4(),
+        index: linkElements.length,
         new: true,
         active: true,
         elemType: "social",
@@ -60,6 +61,7 @@ export default function LinksPage() {
       ...linkElements,
       {
         _id: uuidv4(),
+        index: linkElements.length,
         new: true,
         active: true,
         link: "",
@@ -96,7 +98,10 @@ export default function LinksPage() {
   };
 
   const getUserLinkElements = async () => {
-    await fetchComponent().then((data) => setLinkElements(data));
+    await fetchComponent().then((data) => {
+      data.sort((a, b) => a.index - b.index);
+      setLinkElements(data);
+    });
   };
 
   const handleDragEnd = (result) => {
@@ -108,24 +113,44 @@ export default function LinksPage() {
       destination.index === source.index
     )
       return;
+
     const newLinkElements = Array.from(linkElements);
 
-    // Swap elements by destructuring
-    [newLinkElements[source.index], newLinkElements[destination.index]] = [
-      newLinkElements[destination.index],
-      newLinkElements[source.index],
-    ];
+    const [removed] = newLinkElements.splice(result.source.index, 1);
+    newLinkElements.splice(result.destination.index, 0, removed);
 
     if (linkElements !== newLinkElements) {
       setOrderChange(true);
     }
+
     setLinkElements(newLinkElements);
   };
 
+  /**
+   * Checks which elements' indices need to be updated and calls changeOrder
+   */
   const handleOrderChange = () => {
-    if (orderChange) {
-      changeOrder(linkElements.filter((e) => !e.new));
+    let outOfOrder = 0;
+    const components = []; // Components is the array of links that need to be updated
+
+    for (let i = 0; i < linkElements.length; i++) {
+      // If the index is not correct
+      if (linkElements[i].index !== i) {
+        outOfOrder++;
+
+        // Create a copy of the object and assign the correct index to it
+        const newLinkElement = Object.assign({}, linkElements[i]);
+        newLinkElement.index = i;
+
+        // Replace old linkElement with new
+        components.push(newLinkElement);
+      }
     }
+
+    if (outOfOrder > 0) {
+      changeOrder(components);
+    }
+
     setOrderChange(false);
   };
 
@@ -137,8 +162,6 @@ export default function LinksPage() {
   useEffect(() => {
     getUserLinkElements();
   }, []);
-
-  useEffect(() => {}, [linkElements]);
 
   return (
     <>

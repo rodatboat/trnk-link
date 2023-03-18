@@ -25,6 +25,7 @@ export const SocialElementTool = ({
   updateElem,
   deleteElem,
   dragHandleProps,
+  index,
 }) => {
   const [activeToggle, setActiveToggle] = useState(element.active);
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -57,36 +58,6 @@ export const SocialElementTool = ({
     },
   });
 
-  console.log(`element in SocialElementTool: ${element}`);
-  console.dir(element);
-  const {
-    values,
-    touched,
-    errors,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    initialValues,
-  } = useFormik({
-    initialValues: {
-      title: element.title,
-      active: element.active,
-    },
-    validationSchema: headerElementValidationSchema,
-    onSubmit: async (values, actions) => {
-      console.log("values in formik");
-      console.log(values);
-      if (element.new) {
-        await handleCreate(values, actions);
-      } else {
-        if (initialValues !== values) {
-          await handleUpdate(values, actions);
-        }
-      }
-    },
-  });
-
   const handleDeleteDialogToggle = () => {
     setDeleteDialog(!deleteDialog);
   };
@@ -111,14 +82,14 @@ export const SocialElementTool = ({
   };
 
   const handleCreate = async (values, actions) => {
-    console.log("values in handleCreate");
-    console.log(values);
     const newElem = await createComponent({
       ...values,
       elemType: element.elemType,
-      active: activeToggle,
+      active: values.active,
+      icon: element.icon,
+      index: index,
     });
-    updateElem(element, newElem);
+    updateElem(element, newElem, true);
   };
 
   return (

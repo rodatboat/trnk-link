@@ -24,6 +24,7 @@ export const LinkElementTool = ({
   updateElem,
   deleteElem,
   dragHandleProps,
+  index,
 }) => {
   const [activeToggle, setActiveToggle] = useState(element.active);
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -37,7 +38,7 @@ export const LinkElementTool = ({
     handleSubmit,
     isSubmitting,
     initialValues,
-    resetForm
+    resetForm,
   } = useFormik({
     initialValues: {
       title: element.title,
@@ -84,6 +85,7 @@ export const LinkElementTool = ({
       ...values,
       elemType: element.elemType,
       active: values.active,
+      index: index,
     });
     updateElem(element, newElem, true);
   };
