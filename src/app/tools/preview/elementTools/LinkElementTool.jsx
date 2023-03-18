@@ -75,6 +75,7 @@ export const LinkElementTool = ({
       ...values,
       _id: element._id,
       active: values.active,
+      index: element.index
     });
     updateElem(element, newElem);
   };
@@ -84,6 +85,7 @@ export const LinkElementTool = ({
       ...values,
       elemType: element.elemType,
       active: values.active,
+      index: element.index
     });
     updateElem(element, newElem, true);
   };

@@ -28,15 +28,9 @@ router.route("/").get(async (req, res) => {
       title:1,
       link:1,
       updatedAt:1,
-      icon:1
+      icon:1,
+      index:1
     });
-
-    const userOrder = await user.order.map((o)=>o._id.toString());
-
-    linkElements.sort((a, b) => {
-      // console.log(a,b)
-      return userOrder.indexOf(a._id.toString()) - userOrder.indexOf(b._id.toString())});
-
 
     return res.json({
       success: true,
@@ -54,7 +48,7 @@ router.route("/").get(async (req, res) => {
 
 router.route("/create").post(async (req, res) => {
   try {
-    const { active, elemType, title, link, icon } = req.body;
+    const { active, elemType, title, link, icon, index } = req.body;
     const { _id } = req.decoded;
 
     const user = await User.findOne({ _id: _id });
@@ -63,7 +57,7 @@ router.route("/create").post(async (req, res) => {
       return res.send({ success: false, message: "User doesn't exist" });
     } else {
       const newElement = await LinkElement.create({
-        active, elemType, title, link, icon, user: user._id
+        active, elemType, title, link, icon, user: user._id, index
       });
   
       return res.send({
@@ -72,11 +66,12 @@ router.route("/create").post(async (req, res) => {
         message: "Link component created",
         data: {
           _id:newElement._id,
-          active: newElement.active,
-          elemType:newElement.elemType,
-          title:newElement.title,
-          link:newElement.link,
-          icon:newElement.icon,
+          index,
+          active,
+          elemType,
+          title,
+          link,
+          icon,
           updatedAt:newElement.updatedAt,
         }
       });
@@ -118,14 +113,15 @@ router.route("/").delete(async (req, res) => {
 
 router.route("/update").post(async (req, res) => {
   try {
-    const { elemId, active, title, link, icon } = req.body;
+    const { elemId, active, title, link, icon, index } = req.body;
     const { _id } = req.decoded;
 
     const linkElement = await LinkElement.findOneAndUpdate({ _id:elemId, user: _id }, {
       active,
       title,
       link,
-      icon
+      icon,
+      index
     }, {new:true});
 
     return res.send({
@@ -133,6 +129,7 @@ router.route("/update").post(async (req, res) => {
       message: "Link component updated",
       data: {
         _id:linkElement._id,
+        index: linkElement.index,
         active: linkElement.active,
         user: linkElement.user,
         elemType:linkElement.elemType,
@@ -163,6 +160,16 @@ router.route("/order").post( async(req, res)=>{
 
     await user.updateOne({
       order:components
+    });
+
+    await components.map(async (c)=>{
+      await LinkElement.findOneAndUpdate({ _id:c._id, user: _id }, {
+        active:c.active,
+        title:c.title,
+        link:c.link,
+        icon:c.icon,
+        index:c.index
+      }, {new:true});
     });
 
     return res.send({

@@ -29,6 +29,9 @@ const LinkElementSchema = new Schema(
     icon: {
       type: String,
     },
+    index: {
+      type: Number
+    }
   },
   {
     collection: "LinkElements",
