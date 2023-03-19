@@ -62,8 +62,7 @@ export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleP
       const newElem = await updateComponent({
         ...values,
         _id: element._id,
-        active: values.active,
-        index: element.index
+        active: values.active
       });
       updateElem(element, newElem);
     };
@@ -73,7 +72,6 @@ export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleP
         ...values,
         elemType: element.elemType,
         active: values.active,
-        index: element.index
       });
       updateElem(element, newElem, true);
     };

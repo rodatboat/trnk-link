@@ -7,7 +7,6 @@ export default async function createComponent({
   title,
   link,
   icon,
-  index
 }) {
   return fetch(`${import.meta.env.VITE_API_URL}/components/create`, {
     method: "POST",
@@ -24,7 +23,6 @@ export default async function createComponent({
       title,
       link,
       icon,
-      index
     }),
   })
     .then((res) => res.json())

@@ -16,6 +16,13 @@ const user = new Schema(
       required: true,
       minlength:4,
     },
+    order:[
+      {
+        id:{
+          type:String
+        }
+      }
+    ],
     since: {
       type: Date,
       default: Date.now,

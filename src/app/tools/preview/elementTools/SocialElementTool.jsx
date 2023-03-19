@@ -53,6 +53,37 @@ export const SocialElementTool = ({
           await handleUpdate(values, actions);
         }
       }
+      initialValues.title = values.title;
+    },
+  });
+
+  console.log(`element in SocialElementTool: ${element}`);
+  console.dir(element);
+  const {
+    values,
+    touched,
+    errors,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    initialValues,
+  } = useFormik({
+    initialValues: {
+      title: element.title,
+      active: element.active,
+    },
+    validationSchema: headerElementValidationSchema,
+    onSubmit: async (values, actions) => {
+      console.log("values in formik");
+      console.log(values);
+      if (element.new) {
+        await handleCreate(values, actions);
+      } else {
+        if (initialValues !== values) {
+          await handleUpdate(values, actions);
+        }
+      }
     },
   });
 
@@ -75,17 +106,17 @@ export const SocialElementTool = ({
       ...values,
       _id: element._id,
       active: activeToggle,
-      index: element.index
     });
     updateElem(element, newElem);
   };
 
   const handleCreate = async (values, actions) => {
+    console.log("values in handleCreate");
+    console.log(values);
     const newElem = await createComponent({
       ...values,
       elemType: element.elemType,
       active: activeToggle,
-      index: element.index
     });
     updateElem(element, newElem);
   };

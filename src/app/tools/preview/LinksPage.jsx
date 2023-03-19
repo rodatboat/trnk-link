@@ -34,12 +34,12 @@ export default function LinksPage() {
         link: "",
         icon: "",
         version: uuidv4(),
-        index:linkElements.length
       },
     ]);
   };
 
   const createSocialIconElement = (icon) => {
+    console.log(`icon: ${icon}`);
     setLinkElements([
       ...linkElements,
       {
@@ -51,7 +51,6 @@ export default function LinksPage() {
         link: "",
         icon: icon,
         version: uuidv4(),
-        index:linkElements.length
       },
     ]);
   };
@@ -68,7 +67,6 @@ export default function LinksPage() {
         title: "",
         icon: "",
         version: uuidv4(),
-        index:linkElements.length
       },
     ]);
   };
@@ -279,7 +277,7 @@ export default function LinksPage() {
               >
                 {linkElements.length > 0 ? (
                   linkElements
-                    // .sort((a, b) => !b.new - !a.new)
+                    .sort((a, b) => !b.new - !a.new)
                     .map((e, i) => (
                       <Draggable
                         key={e.version ? e._id + e.version : e._id}

@@ -14,6 +14,7 @@ import { icons } from "./icons";
 
 function SocialIcon({ IconComp, createSocialIconElement, handleCloseMenu }) {
   const handleClick = () => {
+    console.log(`IconComp: ${IconComp}`);
     createSocialIconElement(IconComp.name);
     handleCloseMenu();
   };
