@@ -26,6 +26,7 @@ export const SocialElementTool = ({
   deleteElem,
   dragHandleProps,
   index,
+  handleEditIcon,
 }) => {
   const [activeToggle, setActiveToggle] = useState(element.active);
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -166,6 +167,12 @@ export const SocialElementTool = ({
           gap={1}
         >
           <SocialIconElement iconName={element.icon} />
+          <Button
+            sx={{ color: "black" }}
+            onClick={() => handleEditIcon(element.index)}
+          >
+            Edit Icon
+          </Button>
           <TextField
             id={"title"}
             type="text"

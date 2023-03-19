@@ -21,6 +21,8 @@ export default function LinksPage() {
   const [linkElements, setLinkElements] = useState([]);
   const [toggleIconsMenu, setToggleIconsMenu] = useState(false);
   const [shouldFocus, setShouldFocus] = useState(false);
+  const [isEdit, setIsEdit] = useState(false); // The nearest common parent of the social tool and menu is this component, so this state lives here.
+  const [currEdit, setCurrEdit] = useState(null); // This will be the index of the current icon being edited.
 
   const createLinkElement = () => {
     setLinkElements([
@@ -37,6 +39,21 @@ export default function LinksPage() {
         version: uuidv4(),
       },
     ]);
+  };
+
+  /**
+   * Creates a copy of the old link and changes the icon field
+   * to the new icon, then updates linkElements state with the new link
+   *
+   * @param icon { String } the name of the new icon
+   * @param index { Number } the index of the link to replace
+   */
+  const editSocialIconElement = (icon, index) => {
+    const newIcon = Object.assign({}, linkElements[index]);
+    newIcon.icon = icon;
+    const newLinks = [...linkElements];
+    newLinks[index] = newIcon;
+    setLinkElements(newLinks);
   };
 
   const createSocialIconElement = (icon) => {
@@ -133,6 +150,7 @@ export default function LinksPage() {
     // Components is the array of links that need to be updated
     const components = linkElements.filter((component, i) => {
       if (component.index !== i) {
+        // Set the new component's index value to its index in the state array
         component.index = i;
         return component;
       }
@@ -148,6 +166,12 @@ export default function LinksPage() {
   const handleToggleSocialIconsMenu = () => {
     setShouldFocus(!shouldFocus);
     setToggleIconsMenu(!toggleIconsMenu);
+  };
+
+  const handleEditIcon = (idx) => {
+    setIsEdit(true);
+    setCurrEdit(idx);
+    handleToggleSocialIconsMenu();
   };
 
   useEffect(() => {
@@ -313,6 +337,7 @@ export default function LinksPage() {
                                 deleteElem={deleteLinkElement}
                                 dragHandleProps={provided.dragHandleProps}
                                 index={i}
+                                handleEditIcon={handleEditIcon}
                               />
                             ) : e.elemType === "header" ? (
                               <HeaderElementTool
@@ -329,6 +354,11 @@ export default function LinksPage() {
                                 deleteElem={deleteLinkElement}
                                 dragHandleProps={provided.dragHandleProps}
                                 index={i}
+                                handleToggleSocialIconsMenu={
+                                  handleToggleSocialIconsMenu
+                                }
+                                setIsEdit={setIsEdit} // This component needs to set edit, because this is where the edit button lives
+                                handleEditIcon={handleEditIcon}
                               />
                             ) : (
                               <></>
@@ -352,6 +382,10 @@ export default function LinksPage() {
         createSocialIconElement={createSocialIconElement}
         toggleIconsMenu={toggleIconsMenu}
         handleToggleSocialIconsMenu={handleToggleSocialIconsMenu}
+        isEdit={isEdit} // This needs to know if it is an edit
+        setIsEdit={setIsEdit} // this needs set edit as well so it can set it back to false when finished
+        editSocialIconElement={editSocialIconElement}
+        currEdit={currEdit}
       />
     </>
   );
