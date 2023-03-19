@@ -1,4 +1,13 @@
-import { Box, Button, InputAdornment, Modal, Switch, TextField, Typography } from "@mui/material";
+// @ts-nocheck
+import {
+  Box,
+  Button,
+  InputAdornment,
+  Modal,
+  Switch,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
@@ -12,172 +21,183 @@ import { styles } from "../../../styles";
 import { headerElementValidationSchema } from "../validation/headerElement.validation";
 import { linkElementValidationSchema } from "../validation/linkElement.validation";
 
-export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleProps }) => {
-    const [activeToggle, setActiveToggle] = useState(element.active);
-    const [deleteDialog, setDeleteDialog] = useState(false);
-  
-    const {
-      values,
-      touched,
-      errors,
-      handleBlur,
-      handleChange,
-      handleSubmit,
-      isSubmitting,
-      initialValues,
-      resetForm
-    } = useFormik({
-      initialValues: {
-        title: element.title,
-        active:element.active,
-        icon: element.icon,
-      },
-      validationSchema: headerElementValidationSchema,
-      onSubmit: async (values, actions) => {
-        if (element.new) {
-          await handleCreate(values, actions);
-        } else {
-          if (initialValues !== values) {
-            await handleUpdate(values, actions);
-          }
-        }
-      },
-    });
-  
-    const handleDeleteDialogToggle = () => {
-      setDeleteDialog(!deleteDialog);
-    };
-  
-    const handleDelete = async () => {
-      handleDeleteDialogToggle();
+export const HeaderElementTool = ({
+  element,
+  updateElem,
+  deleteElem,
+  dragHandleProps,
+  index,
+}) => {
+  const [activeToggle, setActiveToggle] = useState(element.active);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+
+  const {
+    values,
+    touched,
+    errors,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    initialValues,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      title: element.title,
+      active: element.active,
+      icon: element.icon,
+    },
+    validationSchema: headerElementValidationSchema,
+    onSubmit: async (values, actions) => {
       if (element.new) {
-        deleteElem(element);
+        await handleCreate(values, actions);
       } else {
-        deleteComponent({ _id: element._id });
-        deleteElem(element);
+        if (initialValues !== values) {
+          await handleUpdate(values, actions);
+        }
       }
-    };
-  
-    const handleUpdate = async (values, actions) => {
-      const newElem = await updateComponent({
-        ...values,
-        _id: element._id,
-        active: values.active
-      });
-      updateElem(element, newElem);
-    };
-  
-    const handleCreate = async (values, actions) => {
-      const newElem = await createComponent({
-        ...values,
-        elemType: element.elemType,
-        active: values.active,
-      });
-      updateElem(element, newElem, true);
-    };
-  
-    return (
-      <>
-        <Box
-          sx={styles.elementSettings}
-          component={"form"}
-          onSubmit={handleSubmit}
+    },
+  });
+
+  const handleDeleteDialogToggle = () => {
+    setDeleteDialog(!deleteDialog);
+  };
+
+  const handleDelete = async () => {
+    handleDeleteDialogToggle();
+    if (element.new) {
+      deleteElem(element);
+    } else {
+      deleteComponent({ _id: element._id });
+      deleteElem(element);
+    }
+  };
+
+  const handleUpdate = async (values, actions) => {
+    const newElem = await updateComponent({
+      ...values,
+      _id: element._id,
+      active: values.active,
+    });
+    updateElem(element, newElem);
+  };
+
+  const handleCreate = async (values, actions) => {
+    const newElem = await createComponent({
+      ...values,
+      elemType: element.elemType,
+      active: values.active,
+      index: index,
+    });
+    updateElem(element, newElem, true);
+  };
+
+  return (
+    <>
+      <Box
+        sx={styles.elementSettings}
+        component={"form"}
+        onSubmit={handleSubmit}
+      >
+        <Modal
+          open={deleteDialog}
+          onClose={handleDeleteDialogToggle}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
         >
-          <Modal
-            open={deleteDialog}
-            onClose={handleDeleteDialogToggle}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "fit-content",
+              backgroundColor: "primary.main",
+              border: 1,
+              borderRadius: 1,
+              borderColor: "black",
+              p: 1,
+            }}
           >
-            <Box
-              sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: "fit-content",
-                backgroundColor: "primary.main",
-                border: 1,
-              borderRadius:1,
-                borderColor: "black",
-                p: 1,
-              }}
-            >
-              <Box m={2} minWidth={300}>
-                <Typography
-                  variant="h6"
-                  component="h2"
-                  textAlign={"center"}
-                  mb={4}
+            <Box m={2} minWidth={300}>
+              <Typography
+                variant="h6"
+                component="h2"
+                textAlign={"center"}
+                mb={4}
+              >
+                Delete this forever?
+              </Typography>
+              <Box display={"flex"} flexDirection={"row"} gap={1}>
+                <Button
+                  onClick={handleDeleteDialogToggle}
+                  sx={styles.button2}
+                  color={"secondary"}
                 >
-                  Delete this forever?
-                </Typography>
-                <Box display={"flex"} flexDirection={"row"} gap={1}>
-                  <Button
-                    onClick={handleDeleteDialogToggle}
-                    sx={styles.button2}
-                    color={"secondary"}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleDelete}
-                    sx={styles.button3}
-                    color={"primary"}
-                  >
-                    Delete
-                  </Button>
-                </Box>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleDelete}
+                  sx={styles.button3}
+                  color={"primary"}
+                >
+                  Delete
+                </Button>
               </Box>
             </Box>
-          </Modal>
-  
-          <Box
-            id="handle-box"
-            pr={1.5}
-            display={"flex"}
-            alignItems={"center"}
-            {...dragHandleProps}
-          >
-            <RxDragHandleDots1 />
           </Box>
-          <Box
-            display={"flex"}
-            flexDirection={"column"}
-            height={"100%"}
-            justifyContent={"space-evenly"}
-            width={"100%"}
-            gap={1}
-          >
-            <TextField
-              id={"title"}
-              type="text"
-              value={values.title}
-              error={errors.title && touched.title}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              helperText={errors.title && touched.title && errors.title}
-              sx={styles.input}
-              placeholder="Title"
-              size="small"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start" color="secondary">
-                    <MdOutlineEdit />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end" color="secondary">
-                    <Typography fontSize={12}>{values.title.length > 0 ? `${values.title.length}/50` : ''}</Typography>
-                  </InputAdornment>
-                ),
-              }}
-            />
-              <Box textAlign={"center"} mt={"auto"}>
-              <Typography color={"accent.main"} sx={styles.hint}>{initialValues !== values || element.new ? "Unsaved Changes" : ""}</Typography>
-              </Box>
+        </Modal>
+
+        <Box
+          id="handle-box"
+          pr={1.5}
+          display={"flex"}
+          alignItems={"center"}
+          {...dragHandleProps}
+        >
+          <RxDragHandleDots1 />
+        </Box>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          height={"100%"}
+          justifyContent={"space-evenly"}
+          width={"100%"}
+          gap={1}
+        >
+          <TextField
+            id={"title"}
+            type="text"
+            value={values.title}
+            error={errors.title && touched.title}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            helperText={errors.title && touched.title && errors.title}
+            sx={styles.input}
+            placeholder="Title"
+            size="small"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start" color="secondary">
+                  <MdOutlineEdit />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end" color="secondary">
+                  <Typography fontSize={12}>
+                    {values.title.length > 0 ? `${values.title.length}/50` : ""}
+                  </Typography>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Box textAlign={"center"} mt={"auto"}>
+            <Typography color={"accent.main"} sx={styles.hint}>
+              {initialValues !== values || element.new ? "Unsaved Changes" : ""}
+            </Typography>
           </Box>
-          <Box
+        </Box>
+        <Box
           pl={1.5}
           display={"flex"}
           flexDirection={"column"}
@@ -225,7 +245,7 @@ export const HeaderElementTool = ({ element, updateElem, deleteElem, dragHandleP
             </Button>
           </Box>
         </Box>
-        </Box>
-      </>
-    );
-  };
+      </Box>
+    </>
+  );
+};

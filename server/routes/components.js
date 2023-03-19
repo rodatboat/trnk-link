@@ -1,6 +1,7 @@
+// @ts-nocheck
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const User = require("../models/user.model");
 const LinkElement = require("../models/linkElements.model");
 let middleware = require("../authcheck");
@@ -15,35 +16,31 @@ router.use((req, res, next) => {
 router.route("/").get(async (req, res) => {
   try {
     let { _id } = req.decoded;
-    const user = await User.findOne({_id:_id});
+    const user = await User.findOne({ _id: _id });
 
     if (!user) {
       return res.send({ success: false, message: "User doesn't exist" });
     }
 
-    let linkElements = await LinkElement.find({ user: _id },{
-      active:1,
-      elemType:1,
-      user:1,
-      title:1,
-      link:1,
-      updatedAt:1,
-      icon:1
-    });
-
-    const userOrder = await user.order.map((o)=>o._id.toString());
-
-    linkElements.sort((a, b) => {
-      // console.log(a,b)
-      return userOrder.indexOf(a._id.toString()) - userOrder.indexOf(b._id.toString())});
-
+    let linkElements = await LinkElement.find(
+      { user: _id },
+      {
+        index: 1,
+        active: 1,
+        elemType: 1,
+        user: 1,
+        title: 1,
+        link: 1,
+        updatedAt: 1,
+        icon: 1,
+      }
+    );
 
     return res.json({
       success: true,
       message: "Link components fetched",
       data: linkElements,
     });
-
   } catch (err) {
     return res.json({
       success: false,
@@ -54,35 +51,42 @@ router.route("/").get(async (req, res) => {
 
 router.route("/create").post(async (req, res) => {
   try {
-    const { active, elemType, title, link, icon } = req.body;
+    const { index, active, elemType, title, link, icon } = req.body;
     const { _id } = req.decoded;
 
     const user = await User.findOne({ _id: _id });
-    
+
     if (!user) {
       return res.send({ success: false, message: "User doesn't exist" });
     } else {
       const newElement = await LinkElement.create({
-        active, elemType, title, link, icon, user: user._id
+        index,
+        active,
+        elemType,
+        title,
+        link,
+        icon,
+        user: user._id,
       });
-  
+
       return res.send({
         data: user,
         success: true,
         message: "Link component created",
         data: {
-          _id:newElement._id,
+          _id: newElement._id,
+          index: newElement.index,
           active: newElement.active,
-          elemType:newElement.elemType,
-          title:newElement.title,
-          link:newElement.link,
-          icon:newElement.icon,
-          updatedAt:newElement.updatedAt,
-        }
+          elemType: newElement.elemType,
+          title: newElement.title,
+          link: newElement.link,
+          icon: newElement.icon,
+          updatedAt: newElement.updatedAt,
+        },
       });
     }
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     return res.send({
       success: false,
       message: "Error creating link component",
@@ -95,20 +99,26 @@ router.route("/").delete(async (req, res) => {
     const { elemId } = req.body;
     const { _id } = req.decoded;
 
-    const linkElement = await LinkElement.findOne({ _id:elemId, user: _id });
-    
+    const linkElement = await LinkElement.findOne({
+      _id: elemId,
+      user: _id,
+    });
+
     if (!linkElement) {
-      return res.send({ success: false, message: "Component doesn't exist" });
+      return res.send({
+        success: false,
+        message: "Component doesn't exist",
+      });
     }
 
     await linkElement.deleteOne();
 
     return res.send({
       success: true,
-      message: "Link component deleted"
+      message: "Link component deleted",
     });
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     return res.send({
       success: false,
       message: "Error deleting link component",
@@ -118,29 +128,35 @@ router.route("/").delete(async (req, res) => {
 
 router.route("/update").post(async (req, res) => {
   try {
-    const { elemId, active, title, link, icon } = req.body;
+    const { index, elemId, active, title, link, icon } = req.body;
     const { _id } = req.decoded;
 
-    const linkElement = await LinkElement.findOneAndUpdate({ _id:elemId, user: _id }, {
-      active,
-      title,
-      link,
-      icon
-    }, {new:true});
+    const linkElement = await LinkElement.findOneAndUpdate(
+      { _id: elemId, user: _id },
+      {
+        index,
+        active,
+        title,
+        link,
+        icon,
+      },
+      { new: true }
+    );
 
     return res.send({
       success: true,
       message: "Link component updated",
       data: {
-        _id:linkElement._id,
+        _id: linkElement._id,
+        index: linkElement.index,
         active: linkElement.active,
         user: linkElement.user,
-        elemType:linkElement.elemType,
-        title:linkElement.title,
-        link:linkElement.link,
-        icon:linkElement.icon,
-        updatedAt:linkElement.updatedAt,
-      }
+        elemType: linkElement.elemType,
+        title: linkElement.title,
+        link: linkElement.link,
+        icon: linkElement.icon,
+        updatedAt: linkElement.updatedAt,
+      },
     });
   } catch (error) {
     return res.send({
@@ -150,27 +166,25 @@ router.route("/update").post(async (req, res) => {
   }
 });
 
-router.route("/order").post( async(req, res)=>{
+router.route("/order").post(async (req, res) => {
   try {
-    const { components } = req.body;
-    const { _id } = req.decoded;
+    const { components } = req.body; // The array of links that need to be updated
 
-    const user = await User.findOne({_id:_id})
+    const bulkOps = components.map(({ _id, index }) => ({
+      updateOne: {
+        filter: { _id: new mongoose.Types.ObjectId(_id) },
+        update: { $set: { index } },
+      },
+    }));
 
-    if (!user) {
-      return res.send({ success: false, message: "User doesn't exist" });
-    }
-
-    await user.updateOne({
-      order:components
-    });
+    await LinkElement.bulkWrite(bulkOps);
 
     return res.send({
       success: true,
-      message: "Link components order changed"
+      message: "Link components order changed",
     });
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     return res.send({
       success: false,
       message: "Error changing link components order",

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 
@@ -9,11 +10,10 @@ export default async function changeOrder(components) {
       "Content-Type": "application/json",
       Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
-      authorization: `Bearer ${Cookies.get("jwt")}`
-
+      authorization: `Bearer ${Cookies.get("jwt")}`,
     },
     body: JSON.stringify({
-        components
+      components,
     }),
   })
     .then((res) => res.json())

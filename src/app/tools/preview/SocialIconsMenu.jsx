@@ -12,11 +12,25 @@ import { IoMdClose } from "react-icons/io";
 import { Modal } from "@mui/material";
 import { icons } from "./icons";
 
-function SocialIcon({ IconComp, createSocialIconElement, handleCloseMenu }) {
+function SocialIcon({
+  IconComp,
+  createSocialIconElement,
+  handleCloseMenu,
+  isEdit,
+  setIsEdit,
+  editSocialIconElement,
+  currEdit,
+}) {
   const handleClick = () => {
-    console.log(`IconComp: ${IconComp}`);
-    createSocialIconElement(IconComp.name);
-    handleCloseMenu();
+    if (isEdit) {
+      editSocialIconElement(IconComp.name, currEdit);
+      // Clean up when done
+      handleCloseMenu();
+      setIsEdit(false);
+    } else {
+      createSocialIconElement(IconComp.name);
+      handleCloseMenu();
+    }
   };
 
   return (
@@ -57,7 +71,11 @@ export default function SocialIconsMenu({
   toggleIconsMenu,
   handleToggleSocialIconsMenu,
   createSocialIconElement,
+  editSocialIconElement,
   shouldFocus,
+  isEdit,
+  setIsEdit,
+  currEdit,
 }) {
   const [search, setSearch] = useState("");
   const [resultIcons, setResultIcons] = useState(icons);
@@ -135,8 +153,6 @@ export default function SocialIconsMenu({
   useEffect(() => {
     searchIcons();
   }, [search]);
-
-  useEffect(() => {}, [icons]);
 
   return (
     <>
@@ -253,6 +269,10 @@ export default function SocialIconsMenu({
                                   createSocialIconElement
                                 }
                                 handleCloseMenu={handleToggleSocialIconsMenu}
+                                isEdit={isEdit}
+                                setIsEdit={setIsEdit}
+                                editSocialIconElement={editSocialIconElement}
+                                currEdit={currEdit}
                               />
                             </Grid>
                           );

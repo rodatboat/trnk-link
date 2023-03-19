@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 const LinkElementSchema = new Schema(
   {
+    index: {
+      type: Number,
+      required: false,
+    },
     active: {
       type: Boolean,
       default: true,

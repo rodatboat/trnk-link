@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 
 export default async function createComponent({
+  index,
   active,
   elemType,
   title,
@@ -18,6 +19,7 @@ export default async function createComponent({
       authorization: `Bearer ${Cookies.get("jwt")}`,
     },
     body: JSON.stringify({
+      index,
       active,
       elemType,
       title,
