@@ -78,6 +78,7 @@ export const HeaderElementTool = ({
       ...values,
       _id: element._id,
       active: values.active,
+      index: index
     });
     updateElem(element, newElem);
   };

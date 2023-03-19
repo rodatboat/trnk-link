@@ -36,6 +36,8 @@ router.route("/").get(async (req, res) => {
       }
     );
 
+    linkElements.sort((a, b) => a.index - b.index);
+
     return res.json({
       success: true,
       message: "Link components fetched",

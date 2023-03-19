@@ -56,6 +56,12 @@ export default function LinksPage() {
     setLinkElements(newLinks);
   };
 
+  /**
+   * Creates a social icon element, using the icon passed and adds it to the list
+   * of link elements.
+   * 
+   * @param {*} icon the icon used to create the element
+   */
   const createSocialIconElement = (icon) => {
     setLinkElements([
       ...linkElements,
@@ -97,6 +103,14 @@ export default function LinksPage() {
     }
   };
 
+  /**
+   * Updates existing element component or creates a new one if it doesn't
+   * already exist in the DB.
+   * 
+   * @param {*} e Current element
+   * @param {*} new_e Updated element
+   * @param {*} elemIsNew If the element is new or previously existing
+   */
   const updateLinkElement = (e, new_e, elemIsNew = false) => {
     if (elemIsNew) {
       let newList = linkElements.filter((i) => i._id !== e._id);
@@ -114,13 +128,20 @@ export default function LinksPage() {
     }
   };
 
+  /**
+   * Fetch user element components from DB.
+   */
   const getUserLinkElements = async () => {
-    await fetchComponent().then((data) => {
-      data.sort((a, b) => a.index - b.index);
-      setLinkElements(data);
-    });
+    await fetchComponent().then((data) => setLinkElements(data));
   };
 
+  /**
+   * Handles the logic behind click-and-drag and changing the order of 
+   * the link elements state.
+   * 
+   * @param {*} result
+   * @returns 
+   */
   const handleDragEnd = (result) => {
     const { destination, source } = result;
 

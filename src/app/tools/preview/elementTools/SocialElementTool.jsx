@@ -78,6 +78,8 @@ export const SocialElementTool = ({
       ...values,
       _id: element._id,
       active: activeToggle,
+      icon: element.icon,
+      index: index
     });
     updateElem(element, newElem);
   };
