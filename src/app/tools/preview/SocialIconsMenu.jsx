@@ -14,23 +14,12 @@ import { icons } from "./icons";
 
 function SocialIcon({
   IconComp,
-  createSocialIconElement,
+  onChange,
   handleCloseMenu,
-  isEdit,
-  setIsEdit,
-  editSocialIconElement,
-  currEdit,
 }) {
   const handleClick = () => {
-    if (isEdit) {
-      editSocialIconElement(IconComp.name, currEdit);
-      // Clean up when done
+      onChange(IconComp.name);
       handleCloseMenu();
-      setIsEdit(false);
-    } else {
-      createSocialIconElement(IconComp.name);
-      handleCloseMenu();
-    }
   };
 
   return (
@@ -70,19 +59,15 @@ function SocialIcon({
 export default function SocialIconsMenu({
   toggleIconsMenu,
   handleToggleSocialIconsMenu,
-  createSocialIconElement,
-  editSocialIconElement,
+  onSocialIconSelect,
   shouldFocus,
-  isEdit,
-  setIsEdit,
-  currEdit,
 }) {
   const [search, setSearch] = useState("");
   const [resultIcons, setResultIcons] = useState(icons);
   const { setInputRef } = useFocusableInput(shouldFocus);
 
-  const handleSearchChange = (event) => {
-    setSearch(event.target.value);
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
   };
 
   const searchIcons = () => {
@@ -265,14 +250,10 @@ export default function SocialIconsMenu({
                               <SocialIcon
                                 name={icon.name}
                                 IconComp={icon.icon}
-                                createSocialIconElement={
-                                  createSocialIconElement
+                                onChange={
+                                  onSocialIconSelect
                                 }
                                 handleCloseMenu={handleToggleSocialIconsMenu}
-                                isEdit={isEdit}
-                                setIsEdit={setIsEdit}
-                                editSocialIconElement={editSocialIconElement}
-                                currEdit={currEdit}
                               />
                             </Grid>
                           );

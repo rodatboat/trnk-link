@@ -21,8 +21,6 @@ export default function LinksPage() {
   const [linkElements, setLinkElements] = useState([]);
   const [toggleIconsMenu, setToggleIconsMenu] = useState(false);
   const [shouldFocus, setShouldFocus] = useState(false);
-  const [isEdit, setIsEdit] = useState(false); // The nearest common parent of the social tool and menu is this component, so this state lives here.
-  const [currEdit, setCurrEdit] = useState(null); // This will be the index of the current icon being edited.
 
   const createLinkElement = () => {
     setLinkElements([
@@ -189,15 +187,11 @@ export default function LinksPage() {
     setToggleIconsMenu(!toggleIconsMenu);
   };
 
-  const handleEditIcon = (idx) => {
-    setIsEdit(true);
-    setCurrEdit(idx);
-    handleToggleSocialIconsMenu();
-  };
-
   useEffect(() => {
     getUserLinkElements();
   }, []);
+
+  
 
   return (
     <>
@@ -358,7 +352,6 @@ export default function LinksPage() {
                                 deleteElem={deleteLinkElement}
                                 dragHandleProps={provided.dragHandleProps}
                                 index={i}
-                                handleEditIcon={handleEditIcon}
                               />
                             ) : e.elemType === "header" ? (
                               <HeaderElementTool
@@ -375,11 +368,6 @@ export default function LinksPage() {
                                 deleteElem={deleteLinkElement}
                                 dragHandleProps={provided.dragHandleProps}
                                 index={i}
-                                handleToggleSocialIconsMenu={
-                                  handleToggleSocialIconsMenu
-                                }
-                                setIsEdit={setIsEdit} // This component needs to set edit, because this is where the edit button lives
-                                handleEditIcon={handleEditIcon}
                               />
                             ) : (
                               <></>
@@ -400,13 +388,9 @@ export default function LinksPage() {
       {/* Social Icons Menu Modal */}
       <SocialIconsMenu
         shouldFocus={shouldFocus}
-        createSocialIconElement={createSocialIconElement}
+        onSocialIconSelect={createSocialIconElement}
         toggleIconsMenu={toggleIconsMenu}
         handleToggleSocialIconsMenu={handleToggleSocialIconsMenu}
-        isEdit={isEdit} // This needs to know if it is an edit
-        setIsEdit={setIsEdit} // this needs set edit as well so it can set it back to false when finished
-        editSocialIconElement={editSocialIconElement}
-        currEdit={currEdit}
       />
     </>
   );

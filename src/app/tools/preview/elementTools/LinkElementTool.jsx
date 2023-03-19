@@ -26,7 +26,6 @@ export const LinkElementTool = ({
   dragHandleProps,
   index,
 }) => {
-  const [activeToggle, setActiveToggle] = useState(element.active);
   const [deleteDialog, setDeleteDialog] = useState(false);
 
   const {

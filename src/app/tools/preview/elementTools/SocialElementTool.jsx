@@ -18,6 +18,7 @@ import deleteComponent from "../../../api/components/deleteComponent";
 import updateComponent from "../../../api/components/updateComponent";
 import { styles } from "../../../styles";
 import SocialIconElement from "../SocialIconElement";
+import SocialIconsMenu from "../SocialIconsMenu";
 import { socialElementValidationSchema } from "../validation/socialElement.validation";
 
 export const SocialElementTool = ({
@@ -26,10 +27,11 @@ export const SocialElementTool = ({
   deleteElem,
   dragHandleProps,
   index,
-  handleEditIcon,
 }) => {
-  const [activeToggle, setActiveToggle] = useState(element.active);
   const [deleteDialog, setDeleteDialog] = useState(false);
+
+  const [toggleIconsMenu, setToggleIconsMenu] = useState(false);
+  const [shouldFocus, setShouldFocus] = useState(false);
 
   const {
     values,
@@ -45,6 +47,7 @@ export const SocialElementTool = ({
     initialValues: {
       title: element.title,
       active: element.active,
+      icon: element.icon,
     },
     validationSchema: socialElementValidationSchema,
     onSubmit: async (values, actions) => {
@@ -77,7 +80,7 @@ export const SocialElementTool = ({
     const newElem = await updateComponent({
       ...values,
       _id: element._id,
-      active: activeToggle,
+      active: element.active,
       icon: element.icon,
       index: index
     });
@@ -95,6 +98,31 @@ export const SocialElementTool = ({
     updateElem(element, newElem, true);
   };
 
+  const handleToggleSocialIconsMenu = () => {
+    setShouldFocus(!shouldFocus);
+    setToggleIconsMenu(!toggleIconsMenu);
+  };
+
+  /**
+   * Creates a copy of the old link and changes the icon field
+   * to the new icon, then updates linkElements state with the new link
+   *
+   * @param icon { String } the name of the new icon
+   */
+  const changeIcon = (icon) => {
+    element.icon = icon;
+    // const newIcon = Object.assign({}, linkElements[index]);
+    // newIcon.icon = icon;
+    // const newLinks = [...linkElements];
+    // newLinks[index] = newIcon;
+    // setLinkElements(newLinks);
+  };
+
+
+  // useEffect(() => {
+  //   values.icon = element.icon;
+  // }, [element.icon]);
+
   return (
     <>
       <Box
@@ -102,6 +130,7 @@ export const SocialElementTool = ({
         component={"form"}
         onSubmit={handleSubmit}
       >
+        {/* Delete Modal */}
         <Modal
           open={deleteDialog}
           onClose={handleDeleteDialogToggle}
@@ -151,6 +180,14 @@ export const SocialElementTool = ({
           </Box>
         </Modal>
 
+        {/* Social Icons Menu */}
+        <SocialIconsMenu
+        shouldFocus={shouldFocus}
+        onSocialIconSelect={changeIcon}
+        toggleIconsMenu={toggleIconsMenu}
+        handleToggleSocialIconsMenu={handleToggleSocialIconsMenu}
+        />
+
         <Box
           id="handle-box"
           pr={1.5}
@@ -171,7 +208,7 @@ export const SocialElementTool = ({
           <SocialIconElement iconName={element.icon} />
           <Button
             sx={{ color: "black" }}
-            onClick={() => handleEditIcon(element.index)}
+            onClick={handleToggleSocialIconsMenu}
           >
             Edit Icon
           </Button>
