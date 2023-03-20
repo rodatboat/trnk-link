@@ -11,6 +11,7 @@ import PrivateRoute from "./PrivateRoute";
 import LoginPage from "./app/login/LoginPage";
 import RegisterPage from "./app/register/RegisterPage";
 import ToolsView from "./app/tools/ToolsView";
+import UserView from "./app/[username]/UserView";
 
 function App() {
   // const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -60,7 +61,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            {/* <Route path="/privacy-policy" element={<Privacy />}/> */}
+            <Route path="/:username" element={<UserView />}/>
             {/* <Route path="/forgotpassword" element={<ForgotPassword />} /> */}
             {/* <Route path="/reset-password/:userId/:token" element={<ResetPassword />} /> */}
             {/* <Route exact path="/logout" element={<LogOut />} /> */}
