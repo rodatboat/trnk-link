@@ -1,8 +1,8 @@
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 
-export default async function fetchUser() {
-  return fetch(`${import.meta.env.VITE_API_URL}/user/`, {
+export default async function fetchUserLinks(username) {
+  return fetch(`${import.meta.env.VITE_API_URL}/user/${username}`, {
     method: "GET",
     crossDomain: true,
     headers: {

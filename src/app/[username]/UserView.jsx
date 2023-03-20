@@ -1,9 +1,10 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import fetchComponent from "../api/components/fetchComponent";
 import fetchUser from "../api/user/fetchUser";
+import fetchUserLinks from "../api/user/fetchUserLinks";
 import SocialIconElement from "../tools/preview/SocialIconElement";
 
 /**
@@ -99,6 +100,8 @@ export default function UserView() {
   const [icons, setIcons] = useState(null);
   const iconsTop = true; // Whether the icons are above or below the links
 
+  const {username} = useParams();
+
   // Need a field in the user schema for social icons on top or bottom of links. Or some other solution.
 
   /**
@@ -124,71 +127,82 @@ export default function UserView() {
     setIcons(icons);
   };
 
+  const fetchData = async () => {
+    await fetchUserLinks(username).then((data)=>setUser(data));
+  }
+
   // Fetch the user's data on page load
   useEffect(() => {
-    getData();
+    // getData();
+    fetchData();
   }, []);
 
+  // return (
+  //   <>
+  //     <Box
+  //       sx={{
+  //         display: "flex",
+  //         flexDirection: "column",
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //         mt: "5rem",
+  //       }}
+  //     >
+  //       {/* Wait for user data to be ready */}
+  //       {user && links && (
+  //         <>
+  //           {/* Profile picture */}
+  //           {/* This null is a placeholder until we add a profile picture to the user schema */}
+  //           {user.image ? null : (
+  //             <Box
+  //               sx={{
+  //                 display: "flex",
+  //                 justifyContent: "center",
+  //                 alignItems: "center",
+  //                 height: "5rem",
+  //                 width: "5rem",
+  //                 borderRadius: "50%",
+  //                 backgroundColor: "red",
+  //                 m: 1,
+  //               }}
+  //             >
+  //               {user.username[0].toUpperCase()}
+  //             </Box>
+  //           )}
+
+  //           {/* Username */}
+  //           <Typography variant="h5" sx={{ m: 1 }}>
+  //             @{user.username}
+  //           </Typography>
+
+  //           {/* Links Section */}
+  //           <Box
+  //             sx={{
+  //               display: "flex",
+  //               justifyContent: "space-evenly",
+  //               flexDirection: "column",
+  //               alignItems: "center",
+  //               height: "60vh",
+  //             }}
+  //           >
+  //             {/* If user wants icons above links */}
+  //             {iconsTop && <SocialIcons icons={icons} />}
+
+  //             {/* Links */}
+  //             <LinkElements links={links} />
+
+  //             {/* If user wants icons below links */}
+  //             {!iconsTop && <SocialIcons icons={icons} />}
+  //           </Box>
+  //         </>
+  //       )}
+  //     </Box>
+  //   </>
+  // );
+
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          mt: "5rem",
-        }}
-      >
-        {/* Wait for user data to be ready */}
-        {user && links && (
-          <>
-            {/* Profile picture */}
-            {/* This null is a placeholder until we add a profile picture to the user schema */}
-            {user.image ? null : (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "5rem",
-                  width: "5rem",
-                  borderRadius: "50%",
-                  backgroundColor: "red",
-                  m: 1,
-                }}
-              >
-                {user.username[0].toUpperCase()}
-              </Box>
-            )}
-
-            {/* Username */}
-            <Typography variant="h5" sx={{ m: 1 }}>
-              @{user.username}
-            </Typography>
-
-            {/* Links Section */}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-evenly",
-                flexDirection: "column",
-                alignItems: "center",
-                height: "60vh",
-              }}
-            >
-              {/* If user wants icons above links */}
-              {iconsTop && <SocialIcons icons={icons} />}
-
-              {/* Links */}
-              <LinkElements links={links} />
-
-              {/* If user wants icons below links */}
-              {!iconsTop && <SocialIcons icons={icons} />}
-            </Box>
-          </>
-        )}
-      </Box>
-    </>
-  );
+    <><Box>
+      {user ? user.user.username : ""}
+      </Box></>
+  )
 }

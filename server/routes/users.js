@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
+const LinkElement = require("../models/linkElements.model");
 require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -62,10 +63,10 @@ router.route("/login").post(async (req, res) => {
       }
     );
 
-    res.header('Access-Control-Allow-Credentials', true);
+    res.header("Access-Control-Allow-Credentials", true);
     res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
     );
     res.cookie("jwt", token, {
       maxAge: 24 * 60 * 60 * 1000, // 1 hour * 2
@@ -96,13 +97,15 @@ router.route("/").get(async (req, res) => {
 
     const verify = jwt.verify(token, JWT_SECRET);
 
-    const user = await User.findOne({ _id: verify._id },
+    const user = await User.findOne(
+      { _id: verify._id },
       {
-        password:0,
-        createdAt:0,
+        password: 0,
+        createdAt: 0,
         updatedAt: 0,
-        __v:0,
-      });
+        __v: 0,
+      }
+    );
 
     if (!user) {
       return res.send({ success: false, message: "User doesn't exist" });
@@ -117,6 +120,46 @@ router.route("/").get(async (req, res) => {
     return res.json({
       success: false,
       message: "Error fetching user info",
+    });
+  }
+});
+
+router.route("/:username").get(async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    const user = await User.findOne({ username: username }, { username: 1 });
+
+    if (!user) {
+      return res.send({ success: false, message: "User doesn't exist" });
+    }
+
+    let userElements = await LinkElement.find(
+      { username: username },
+      {
+        index: 1,
+        active: 1,
+        elemType: 1,
+        title: 1,
+        link: 1,
+        icon: 1,
+      }
+    );
+    userElements.sort((a, b) => a.index - b.index);
+
+    return res.json({
+      success: true,
+      message: "User link components fetched",
+      data: {
+        user:user,
+        elements: userElements
+      },
+    });
+  } catch (err) {
+    console.log(error.message);
+    return res.send({
+      success: false,
+      message: "Error fetching user link components",
     });
   }
 });
