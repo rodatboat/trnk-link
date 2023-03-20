@@ -43,9 +43,10 @@ export const SocialElementTool = ({
     isSubmitting,
     initialValues,
     resetForm,
+    setFieldValue,
   } = useFormik({
     initialValues: {
-      title: element.title,
+      link: element.link,
       active: element.active,
       icon: element.icon,
     },
@@ -80,9 +81,7 @@ export const SocialElementTool = ({
     const newElem = await updateComponent({
       ...values,
       _id: element._id,
-      active: element.active,
-      icon: element.icon,
-      index: index
+      index: index,
     });
     updateElem(element, newElem);
   };
@@ -92,7 +91,7 @@ export const SocialElementTool = ({
       ...values,
       elemType: element.elemType,
       active: values.active,
-      icon: element.icon,
+      icon: values.icon,
       index: index,
     });
     updateElem(element, newElem, true);
@@ -104,24 +103,13 @@ export const SocialElementTool = ({
   };
 
   /**
-   * Creates a copy of the old link and changes the icon field
-   * to the new icon, then updates linkElements state with the new link
+   * Changes value of icon in formik, based on selection from social icons menu.
    *
    * @param icon { String } the name of the new icon
    */
   const changeIcon = (icon) => {
-    element.icon = icon;
-    // const newIcon = Object.assign({}, linkElements[index]);
-    // newIcon.icon = icon;
-    // const newLinks = [...linkElements];
-    // newLinks[index] = newIcon;
-    // setLinkElements(newLinks);
+    setFieldValue("icon", icon);
   };
-
-
-  // useEffect(() => {
-  //   values.icon = element.icon;
-  // }, [element.icon]);
 
   return (
     <>
@@ -182,10 +170,10 @@ export const SocialElementTool = ({
 
         {/* Social Icons Menu */}
         <SocialIconsMenu
-        shouldFocus={shouldFocus}
-        onSocialIconSelect={changeIcon}
-        toggleIconsMenu={toggleIconsMenu}
-        handleToggleSocialIconsMenu={handleToggleSocialIconsMenu}
+          shouldFocus={shouldFocus}
+          onSocialIconSelect={changeIcon}
+          toggleIconsMenu={toggleIconsMenu}
+          handleToggleSocialIconsMenu={handleToggleSocialIconsMenu}
         />
 
         <Box
@@ -205,39 +193,38 @@ export const SocialElementTool = ({
           width={"100%"}
           gap={1}
         >
-          <SocialIconElement iconName={element.icon} />
-          <Button
-            sx={{ color: "black" }}
-            onClick={handleToggleSocialIconsMenu}
-          >
-            Edit Icon
-          </Button>
-          <TextField
-            id={"title"}
-            type="text"
-            value={values.title}
-            error={errors.title && touched.title}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            helperText={errors.title && touched.title && errors.title}
-            sx={styles.input}
-            placeholder="Title"
-            size="small"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start" color="secondary">
-                  <MdOutlineEdit />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end" color="secondary">
-                  <Typography fontSize={12}>
-                    {values.title.length > 0 ? `${values.title.length}/50` : ""}
-                  </Typography>
-                </InputAdornment>
-              ),
-            }}
-          />
+          <Box display={"flex"} gap={1} sx={{
+            "& .MuiFormControl-root":{
+              width:"100%"
+            }
+          }}>
+            <Button
+              color="black"
+              sx={styles.smallButton}
+              onClick={handleToggleSocialIconsMenu}
+            >
+              <SocialIconElement iconName={values.icon} fontSize={26} />
+            </Button>
+            <TextField
+              id={"link"}
+              type="text"
+              value={values.link}
+              error={errors.link && touched.link}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              helperText={errors.link && touched.link && errors.link}
+              sx={styles.input}
+              placeholder="https://www.example.com/"
+              size="small"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start" color="secondary">
+                    <MdOutlineEdit />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
           <Box textAlign={"center"} mt={"auto"}>
             <Typography color={"accent.main"} sx={styles.hint}>
               {initialValues !== values || element.new ? "Unsaved Changes" : ""}

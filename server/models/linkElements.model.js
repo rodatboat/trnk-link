@@ -5,7 +5,6 @@ const LinkElementSchema = new Schema(
   {
     index: {
       type: Number,
-      required: false,
     },
     active: {
       type: Boolean,
@@ -22,12 +21,12 @@ const LinkElementSchema = new Schema(
       required: true,
     },
     title: {
-      required: true,
       default: "",
       type: String,
       maxlength: 50,
     },
     link: {
+      default: "",
       type: String,
     },
     icon: {

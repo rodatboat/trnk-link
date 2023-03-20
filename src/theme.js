@@ -5,14 +5,17 @@ export const theme = {
         mode:"light",
         primary:{
             // Light will be main, dark will be dark.
-            main:"#fafafa",
+            main:"#fff",
             dark:"#000"
         },
         secondary:{
-            main:"#424242",
+            main:"#fafafa",
         },
         complement:{
-            main:"#9e9e9e",
+            main:"#9e9e9e", // rgba(215, 215, 215, 0.6)
+        },
+        black:{
+            main: "#000"
         },
         accent:{
           main:"#CF5C36",

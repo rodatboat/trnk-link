@@ -40,21 +40,6 @@ export default function LinksPage() {
   };
 
   /**
-   * Creates a copy of the old link and changes the icon field
-   * to the new icon, then updates linkElements state with the new link
-   *
-   * @param icon { String } the name of the new icon
-   * @param index { Number } the index of the link to replace
-   */
-  const editSocialIconElement = (icon, index) => {
-    const newIcon = Object.assign({}, linkElements[index]);
-    newIcon.icon = icon;
-    const newLinks = [...linkElements];
-    newLinks[index] = newIcon;
-    setLinkElements(newLinks);
-  };
-
-  /**
    * Creates a social icon element, using the icon passed and adds it to the list
    * of link elements.
    * 
@@ -203,11 +188,11 @@ export default function LinksPage() {
               mb={0.5}
               sx={{
                 backgroundColor: "primary",
-                color: "secondary",
+                color: "black",
                 borderColor: "complement.main",
               }}
             >
-              <Typography color={"secondary"} sx={{ fontWeight: "regular" }}>
+              <Typography color={"black"} sx={{ fontWeight: "regular" }}>
                 Choose what element to create:
               </Typography>
             </Box>
@@ -218,7 +203,7 @@ export default function LinksPage() {
             <Box>
               <Button onClick={createLinkElement} sx={styles.button2}>
                 <Typography
-                  color={"secondary"}
+                  color={"black"}
                   sx={{
                     display: "flex",
                     alignItems: "center",
@@ -244,7 +229,7 @@ export default function LinksPage() {
             <Box>
               <Button onClick={createHeaderElement} sx={styles.button2}>
                 <Typography
-                  color={"secondary"}
+                  color={"black"}
                   sx={{
                     display: "flex",
                     alignItems: "center",
@@ -270,7 +255,7 @@ export default function LinksPage() {
             <Box>
               <Button onClick={handleToggleSocialIconsMenu} sx={styles.button2}>
                 <Typography
-                  color={"secondary"}
+                  color={"black"}
                   sx={{
                     display: "flex",
                     alignItems: "center",

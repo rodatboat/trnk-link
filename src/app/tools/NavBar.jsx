@@ -19,7 +19,7 @@ export const NavBarItem = ({ tab }) => {
                 sx={{
                     borderRadius: "5px",
                     "&:hover": {
-                        backgroundColor: "rgba(215, 215, 215, 0.6)",
+                        backgroundColor: "secondary.main",
                     },
                 }}>
                 <Box

@@ -31,14 +31,15 @@ export const styles = {
     // boxShadow: 1,
     width: "fit-content",
     minWidth: "fit-content",
-    backgroundColor: "#fff",
+    color:"black.main",
+    backgroundColor: "primary.main",
     borderColor: "complement.main",
     maxWidth: "fit-content",
     ".MuiButtonBase-root": {
       maxWidth: "fit-content",
     },
     "&:hover":{
-      
+      backgroundColor: "secondary.main",
     },
     overflow:"hidden"
   },
@@ -97,11 +98,13 @@ export const styles = {
         // borderColor: 'yellow',
       },
       "&.Mui-focused fieldset": {
-        borderColor: "black",
+        borderColor: "black.main",
       },
     },
+    backgroundColor: "secondary.main",
   },
   previewLeft: {
+    backgroundColor: "secondary.main",
     width: {
       xs: "100%",
       sm: "60%",
@@ -124,7 +127,7 @@ export const styles = {
     borderColor: "complement.main",
     borderRadius: 1,
     padding: 1,
-    paddingY: 2,
+    // paddingY: 1,
     boxShadow: 1,
     height: "100%",
     overflow:"hidden"
@@ -140,16 +143,17 @@ export const styles = {
     },
   },
   button2: {
-    backgroundColor: "primary",
+    backgroundColor: "secondary.main",
     border: 1,
-    color: "secondary",
+    color: "black.main",
     borderColor: "complement.main",
     borderRadius: 1,
-    boxShadow: 1,
+    // boxShadow: 1,
     width: "100%",
     paddingX: 2,
     textTransform: "none",
     "&:hover": {
+      backgroundColor: "primary.main",
       // borderColor: "accent.main",
     },
     overflow:"hidden"

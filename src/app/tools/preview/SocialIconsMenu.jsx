@@ -46,8 +46,7 @@ function SocialIcon({
             style={{
               p: 1,
               color: "black",
-              width: "40px",
-              height: "40px",
+              fontSize: 40
             }}
           />
         </Button>
@@ -172,8 +171,9 @@ export default function SocialIconsMenu({
                 borderRadius: 1,
                 borderColor: "black",
                 maxWidth: "600px",
-                maxHeight: "500px",
-                p: 1,
+                maxHeight: "600px",
+                p: 1.5,
+                // px:1,
                 mx: "auto",
               }}
             >
@@ -182,15 +182,12 @@ export default function SocialIconsMenu({
                   sx={{
                     width: "100%",
                     display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
+                    flexDirection:"column",
+                    alignItems: "center",
                   }}
-                  mb={3}
+                  mb={2}
                 >
-                  <Typography variant="h6" component="h2" textAlign={"left"}>
-                    Select a social media icon
-                  </Typography>
-                  <Box>
+                  <Box alignSelf={"flex-end"} mb={2}>
                     <Button
                       sx={styles.button2}
                       onClick={handleToggleSocialIconsMenu}
@@ -198,6 +195,9 @@ export default function SocialIconsMenu({
                       <IoMdClose color={"#000"} fontSize={20} />
                     </Button>
                   </Box>
+                  <Typography variant="h6" component="h2" textAlign={"left"} fontSize={18}>
+                    Select a social media icon
+                  </Typography>
                 </Box>
                 <Box
                   sx={{
@@ -207,7 +207,7 @@ export default function SocialIconsMenu({
                     alignItems: "center",
                     "& .MuiFormControl-root": {
                       width: "100%",
-                      px: 3,
+                      px: 2,
                     },
                   }}
                 >
@@ -218,6 +218,7 @@ export default function SocialIconsMenu({
                     value={search}
                     onChange={handleSearchChange}
                     autoComplete="off"
+                    size="small"
                   />
                   <Box my={2} px={5} width={"100%"}>
                     <Divider />
@@ -229,6 +230,7 @@ export default function SocialIconsMenu({
                       borderRadius: 1,
                       maxHeight: "300px",
                       minHeight: "300px",
+                      borderColor: "complement.main",
                       width: "100%",
                     }}
                   >
@@ -239,8 +241,6 @@ export default function SocialIconsMenu({
                         overflowY: "scroll",
                         maxHeight: "inherit",
                         width: "100%",
-
-                        borderColor: "complement.main",
                       }}
                     >
                       <Grid container width="100%" spacing={1}>
