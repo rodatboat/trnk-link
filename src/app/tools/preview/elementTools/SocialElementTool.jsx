@@ -27,6 +27,7 @@ export const SocialElementTool = ({
   deleteElem,
   dragHandleProps,
   index,
+  setIndex
 }) => {
   const [deleteDialog, setDeleteDialog] = useState(false);
 
@@ -74,6 +75,7 @@ export const SocialElementTool = ({
     } else {
       deleteComponent({ _id: element._id });
       deleteElem(element);
+      setIndex(index-1);
     }
   };
 
@@ -95,6 +97,7 @@ export const SocialElementTool = ({
       index: index,
     });
     updateElem(element, newElem, true);
+    setIndex(index+1);
   };
 
   const handleToggleSocialIconsMenu = () => {

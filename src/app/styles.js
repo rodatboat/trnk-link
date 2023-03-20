@@ -106,10 +106,10 @@ export const styles = {
   previewLeft: {
     backgroundColor: "secondary.main",
     width: {
-      xs: "100%",
-      sm: "60%",
-      md: "65%",
-      lg: "70%",
+      xs: "100% !important",
+      sm: "60% !important",
+      md: "65% !important",
+      lg: "70% !important",
     },
     borderRight: {
       xs:0,
@@ -133,14 +133,19 @@ export const styles = {
     overflow:"hidden"
   },
   previewRight: {
+    backgroundColor: "secondary.main",
     display:{
-      xs:"block",
-      sm:"none"
+      xs:"none",
+      sm:"block"
     },
     width: {
       xs:0,
-      sm:"100%"
+      sm:"40%",
+      md:"35%",
+      lg:"30%",
     },
+    minHeight: "100vh",
+    height: "100%",
   },
   button2: {
     backgroundColor: "secondary.main",

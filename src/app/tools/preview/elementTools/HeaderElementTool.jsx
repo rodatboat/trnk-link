@@ -27,6 +27,7 @@ export const HeaderElementTool = ({
   deleteElem,
   dragHandleProps,
   index,
+  setIndex
 }) => {
   const [deleteDialog, setDeleteDialog] = useState(false);
 
@@ -69,6 +70,7 @@ export const HeaderElementTool = ({
     } else {
       deleteComponent({ _id: element._id });
       deleteElem(element);
+      setIndex(index-1);
     }
   };
 
@@ -90,6 +92,7 @@ export const HeaderElementTool = ({
       index: index,
     });
     updateElem(element, newElem, true);
+    setIndex(index+1);
   };
 
   return (
