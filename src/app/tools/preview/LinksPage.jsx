@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Box, Button, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { BiLinkAlt } from "react-icons/bi";
@@ -43,7 +42,7 @@ export default function LinksPage() {
    * Creates a social icon element, using the icon passed and adds it to the list
    * of link elements.
    *
-   * @param {*} icon the icon used to create the element
+   * @param {String} icon the icon used to create the element
    */
   const createSocialIconElement = (icon) => {
     setLinkElements([
@@ -123,7 +122,7 @@ export default function LinksPage() {
    * the link elements state.
    *
    * @param {*} result
-   * @returns
+   * @returns {void}
    */
   const handleDragEnd = (result) => {
     const { destination, source } = result;
@@ -159,6 +158,8 @@ export default function LinksPage() {
         return component;
       }
     });
+
+    console.log(components);
 
     if (components.length > 0) {
       changeOrder(components);

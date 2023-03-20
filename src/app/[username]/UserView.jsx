@@ -10,8 +10,8 @@ import SocialIconElement from "../tools/preview/SocialIconElement";
  * This component handles the social icons,
  * which are all together either above or below the LinkElements
  *
- * @param {*} icons The array of icons
- * @returns {React.FC}
+ * @param {Array} icons - An array of social icons
+ * @returns {React.FC} - A React function component
  */
 const SocialIcons = ({ icons }) => {
   return (
@@ -43,7 +43,7 @@ const SocialIcons = ({ icons }) => {
 /**
  * This component handles link and header elements
  *
- * @param {*} links The array of link elements
+ * @param {Array} links - The array of link elements
  * @returns {React.FC}
  */
 const LinkElements = ({ links }) => {
@@ -104,6 +104,8 @@ export default function UserView() {
   /**
    * Fetches the user and components, filters the icons
    * from the headers and links, and sets state
+   *
+   * @return {void}
    */
   const getData = async () => {
     const components = await fetchComponent().then((data) => data);
