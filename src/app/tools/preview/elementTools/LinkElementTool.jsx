@@ -25,6 +25,7 @@ export const LinkElementTool = ({
   deleteElem,
   dragHandleProps,
   index,
+  setIndex
 }) => {
   const [deleteDialog, setDeleteDialog] = useState(false);
 
@@ -67,6 +68,7 @@ export const LinkElementTool = ({
     } else {
       deleteComponent({ _id: element._id });
       deleteElem(element);
+      setIndex(index-1);
     }
   };
 
@@ -88,6 +90,7 @@ export const LinkElementTool = ({
       index: index,
     });
     updateElem(element, newElem, true);
+    setIndex(index++);
   };
   return (
     <>

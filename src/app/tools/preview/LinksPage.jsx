@@ -17,6 +17,7 @@ import SocialIconElement from "./SocialIconElement";
 import { MdTitle } from "react-icons/md";
 
 export default function LinksPage() {
+  const [nextIndex, setNextIndex] = useState(0);
   const [orderChange, setOrderChange] = useState(false);
   const [linkElements, setLinkElements] = useState([]);
   const [toggleIconsMenu, setToggleIconsMenu] = useState(false);
@@ -115,7 +116,10 @@ export default function LinksPage() {
    * Fetch user element components from DB.
    */
   const getUserLinkElements = async () => {
-    await fetchComponent().then((data) => setLinkElements(data));
+    await fetchComponent().then((data) => {
+      setNextIndex(data.length);
+      return setLinkElements(data);
+    });
   };
 
   /**
@@ -336,7 +340,8 @@ export default function LinksPage() {
                                 updateElem={updateLinkElement}
                                 deleteElem={deleteLinkElement}
                                 dragHandleProps={provided.dragHandleProps}
-                                index={i}
+                                index={nextIndex}
+                                setIndex={setNextIndex}
                               />
                             ) : e.elemType === "header" ? (
                               <HeaderElementTool
@@ -344,7 +349,8 @@ export default function LinksPage() {
                                 updateElem={updateLinkElement}
                                 deleteElem={deleteLinkElement}
                                 dragHandleProps={provided.dragHandleProps}
-                                index={i}
+                                index={nextIndex}
+                                setIndex={setNextIndex}
                               />
                             ) : e.elemType === "social" ? (
                               <SocialElementTool
@@ -352,7 +358,8 @@ export default function LinksPage() {
                                 updateElem={updateLinkElement}
                                 deleteElem={deleteLinkElement}
                                 dragHandleProps={provided.dragHandleProps}
-                                index={i}
+                                index={nextIndex}
+                                setIndex={setNextIndex}
                               />
                             ) : (
                               <></>
