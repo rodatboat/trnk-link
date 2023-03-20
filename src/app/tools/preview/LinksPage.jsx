@@ -42,7 +42,7 @@ export default function LinksPage() {
   /**
    * Creates a social icon element, using the icon passed and adds it to the list
    * of link elements.
-   * 
+   *
    * @param {*} icon the icon used to create the element
    */
   const createSocialIconElement = (icon) => {
@@ -89,7 +89,7 @@ export default function LinksPage() {
   /**
    * Updates existing element component or creates a new one if it doesn't
    * already exist in the DB.
-   * 
+   *
    * @param {*} e Current element
    * @param {*} new_e Updated element
    * @param {*} elemIsNew If the element is new or previously existing
@@ -119,11 +119,11 @@ export default function LinksPage() {
   };
 
   /**
-   * Handles the logic behind click-and-drag and changing the order of 
+   * Handles the logic behind click-and-drag and changing the order of
    * the link elements state.
-   * 
+   *
    * @param {*} result
-   * @returns 
+   * @returns
    */
   const handleDragEnd = (result) => {
     const { destination, source } = result;
@@ -175,8 +175,6 @@ export default function LinksPage() {
   useEffect(() => {
     getUserLinkElements();
   }, []);
-
-  
 
   return (
     <>
