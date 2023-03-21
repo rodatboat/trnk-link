@@ -62,7 +62,7 @@ export default function UserView() {
   const [user, setUser] = useState(null);
 
   const fetchData = async () => {
-    await fetchUserLinks(username).then((data) => setUser(data));
+    await fetchUserLinks(username).then((data) => data.success ? setUser(data.data) : setUser(null));
   };
 
   useEffect(() => {
@@ -76,6 +76,8 @@ export default function UserView() {
           paddingX: 2,
           paddingTop: 8,
           paddingBottom: 4,
+          display:"flex",
+          minHeight: "100vh",
           backgroundColor: "secondary.main", // user background for entire page
         }}
       >
@@ -125,7 +127,11 @@ export default function UserView() {
             </Grid>
           </Box>
         ) : (
-          <></>
+          
+          <Box mx={"auto"} my={"auto"} maxWidth={680} textAlign={"center"}>
+            <Typography fontSize={20} mb={2}>The <Box component={"span"} fontWeight={"medium"}>TrnkLink</Box> you're looking for doesn't exist</Typography>
+            <Typography fontSize={14}>Want this username? <Box component={"a"} display={"inline"} href="/register" sx={{textDecoration:"underline"}}>Create an account</Box></Typography>
+            </Box>
         )}
       </Box>
     </>

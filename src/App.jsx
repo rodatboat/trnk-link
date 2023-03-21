@@ -34,7 +34,7 @@ function App() {
     <>
       <ThemeProvider theme={themeMode}>
         <CssBaseline />
-        <Box className="App" sx={{ width: "100%", height: "100%" }}>
+        <Box className="App">
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route

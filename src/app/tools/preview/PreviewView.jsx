@@ -7,7 +7,8 @@ export default function PreviewView() {
   return (
     <Box sx={{
       display: "flex",
-      flexDirection:"row"
+      flexDirection:"row",
+      height: "100%"
     }}>
       <Box sx={styles.previewLeft} p={2}>
         <Outlet />

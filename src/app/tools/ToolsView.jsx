@@ -11,15 +11,17 @@ import { Box } from "@mui/material";
 export default function ToolsView() {
   return (
     <>
-      <NavBar />
-      <Routes>
-        <Route exact path="/" element={<PreviewView />}>
-          <Route exact path="" element={<LinksPage />} />
-          <Route exact path="/customize" element={<CustomizePage />} />
-        </Route>
-        <Route exact path="/stats" element={<StatsPage />} />
-        <Route exact path="/settings" element={<SettingsPage />} />
-      </Routes>
+      <Box height={"100vh"}>
+        <NavBar />
+        <Routes>
+          <Route exact path="/" element={<PreviewView />}>
+            <Route exact path="" element={<LinksPage />} />
+            <Route exact path="/customize" element={<CustomizePage />} />
+          </Route>
+          <Route exact path="/stats" element={<StatsPage />} />
+          <Route exact path="/settings" element={<SettingsPage />} />
+        </Routes>
+      </Box>
     </>
   );
 }

@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
+import { redirect } from "react-router-dom";
 
 export default async function fetchUserLinks(username) {
   return fetch(`${import.meta.env.VITE_API_URL}/user/${username}`, {
@@ -16,9 +17,10 @@ export default async function fetchUserLinks(username) {
     .then((data) => {
       if (data.success) {
         // toast.success(data.message);
-        return data.data;
+        return data;
       } else {
-        toast.error(data.message);
+        // toast.error(data.message);
+        return data;
       }
     });
 }

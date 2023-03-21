@@ -77,8 +77,8 @@ export const styles = {
       xs: 0,
       sm: 1,
     },
-    minHeight: "100vh",
     height: "100%",
+    // height: "100vh",
   },
   previewRight: {
     backgroundColor: "secondary.main",
@@ -92,7 +92,6 @@ export const styles = {
       md: "35%",
       lg: "30%",
     },
-    minHeight: "100vh",
     height: "100%",
   },
   smallButton: {
