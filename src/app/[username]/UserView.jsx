@@ -57,12 +57,12 @@ const SocialElement = ({ element }) => {
   );
 };
 
-export default function UserView() {
+export default function UserView({minHeight="100vh", setUsername=null}) {
   const { username } = useParams();
   const [user, setUser] = useState(null);
 
   const fetchData = async () => {
-    await fetchUserLinks(username).then((data) => data.success ? setUser(data.data) : setUser(null));
+    await fetchUserLinks(setUsername ? setUsername : username).then((data) => data.success ? setUser(data.data) : setUser(null));
   };
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function UserView() {
           paddingTop: 8,
           paddingBottom: 4,
           display:"flex",
-          minHeight: "100vh",
+          minHeight: minHeight,
           backgroundColor: "secondary.main", // user background for entire page
         }}
       >
