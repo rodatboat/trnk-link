@@ -1,4 +1,4 @@
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { SiSourcetree } from "react-icons/si";
 import { RxSection } from "react-icons/rx";
@@ -8,6 +8,8 @@ import {
   MdQueryStats,
 } from "react-icons/md";
 import { IoShapesOutline } from "react-icons/io5";
+import logoutUser from "../api/user/logoutUser";
+import { styles } from "../styles";
 
 export const NavBarItem = ({ tab }) => {
     return (
@@ -194,7 +196,7 @@ export default function NavBar() {
             }}
           >
             {/* Notifications, upgrade, share, profile button */}
-            <Typography>Test</Typography>
+            <Button sx={styles.button2} onClick={()=>logoutUser()}><Typography color={"black"}>Test</Typography></Button>
           </Box>
         </Box>
       </Toolbar>

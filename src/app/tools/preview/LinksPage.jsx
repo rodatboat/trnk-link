@@ -14,6 +14,7 @@ import { HeaderElementTool } from "./elementTools/HeaderElementTool";
 import { SocialElementTool } from "./elementTools/SocialElementTool";
 import SocialIconElement from "./SocialIconElement";
 import { MdTitle } from "react-icons/md";
+import { useOutletContext } from "react-router-dom";
 
 export default function LinksPage() {
   const [nextIndex, setNextIndex] = useState(0);
@@ -21,6 +22,7 @@ export default function LinksPage() {
   const [linkElements, setLinkElements] = useState([]);
   const [toggleIconsMenu, setToggleIconsMenu] = useState(false);
   const [shouldFocus, setShouldFocus] = useState(false);
+  const [currentComponents, setCurrentComponents] = useOutletContext();
 
   const createLinkElement = () => {
     setLinkElements([
@@ -178,6 +180,11 @@ export default function LinksPage() {
   useEffect(() => {
     getUserLinkElements();
   }, []);
+
+  useEffect(()=>setCurrentComponents({
+    ...currentComponents,
+    elements:linkElements.filter((e)=>!e.new)
+  }),[linkElements]);
 
   return (
     <>

@@ -62,12 +62,16 @@ export default function UserView({minHeight="100vh", setUsername=null}) {
   const [user, setUser] = useState(null);
 
   const fetchData = async () => {
-    await fetchUserLinks(setUsername ? setUsername : username).then((data) => data.success ? setUser(data.data) : setUser(null));
+    await fetchUserLinks(username).then((data) => data.success ? setUser(data.data) : setUser(null));
   };
 
   useEffect(() => {
-    fetchData();
+    setUsername ? setUser(setUsername) : fetchData();
   }, []);
+
+  useEffect(()=>{
+    setUser(setUsername)
+  },[setUsername])
 
   return (
     <>
@@ -77,7 +81,8 @@ export default function UserView({minHeight="100vh", setUsername=null}) {
           paddingTop: 8,
           paddingBottom: 4,
           display:"flex",
-          minHeight: minHeight,
+          minHeight: "100vh",
+          overflow:"scroll",
           backgroundColor: "secondary.main", // user background for entire page
         }}
       >

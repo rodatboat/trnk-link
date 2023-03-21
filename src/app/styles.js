@@ -77,7 +77,8 @@ export const styles = {
       xs: 0,
       sm: 1,
     },
-    height: "100%",
+    height: "fit-content",
+    overflow:"scroll"
     // height: "100vh",
   },
   previewRight: {
@@ -92,7 +93,6 @@ export const styles = {
       md: "35%",
       lg: "30%",
     },
-    height: "100%",
   },
   smallButton: {
     border: 1,

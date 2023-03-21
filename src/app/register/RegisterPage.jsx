@@ -29,6 +29,7 @@ export default function RegisterPage() {
         <Box
         m={"auto"}
         height={"100vh"}
+        px={3}
         display={"flex"}
       >
         <Box
