@@ -25,58 +25,6 @@ export const styles = {
     fontSize: 10,
     lineHeight: 1,
   },
-  smallButton: {
-    border: 1,
-    borderRadius: 1,
-    // boxShadow: 1,
-    width: "fit-content",
-    minWidth: "fit-content",
-    color:"black.main",
-    backgroundColor: "primary.main",
-    borderColor: "complement.main",
-    maxWidth: "fit-content",
-    ".MuiButtonBase-root": {
-      maxWidth: "fit-content",
-    },
-    "&:hover":{
-      backgroundColor: "secondary.main",
-    },
-    overflow:"hidden"
-  },
-  smallButtonActive: {
-    border: 1,
-    borderRadius: 1,
-    // boxShadow: 1,
-    borderColor: "accent.main",
-    borderBottomColor: "accent.hover",
-    width: "fit-content",
-    minWidth: "fit-content",
-    backgroundColor: "accent.main",
-    maxWidth: "fit-content",
-    ".MuiButtonBase-root": {
-      maxWidth: "fit-content",
-    },
-    "&:hover":{
-      backgroundColor:"accent.hover",
-    },
-    overflow:"hidden"
-  },
-  button: {
-    fontSize: 16,
-    fontWeight: "medium",
-    backgroundColor: "accent.main",
-    borderBottom: 1,
-    borderColor: "accent.hover",
-    borderRadius: 1,
-    // boxShadow: 1,
-    padding: 1.25,
-    textTransform: "none",
-    width: "100%",
-    "&:hover": {
-      backgroundColor: "accent.hover",
-    },
-    overflow:"hidden"
-  },
   input: {
     "&.input-error": {
       borderColor: "error",
@@ -103,21 +51,6 @@ export const styles = {
     },
     backgroundColor: "secondary.main",
   },
-  previewLeft: {
-    backgroundColor: "secondary.main",
-    width: {
-      xs: "100% !important",
-      sm: "60% !important",
-      md: "65% !important",
-      lg: "70% !important",
-    },
-    borderRight: {
-      xs:0,
-      sm:1
-    },
-    minHeight: "100vh",
-    height: "100%",
-  },
   elementSettings: {
     display: "flex",
     flexDirection: "row",
@@ -130,22 +63,89 @@ export const styles = {
     // paddingY: 1,
     boxShadow: 1,
     height: "100%",
-    overflow:"hidden"
+    overflow: "hidden",
   },
-  previewRight: {
+  previewLeft: {
     backgroundColor: "secondary.main",
-    display:{
-      xs:"none",
-      sm:"block"
-    },
     width: {
-      xs:0,
-      sm:"40%",
-      md:"35%",
-      lg:"30%",
+      xs: "100% !important",
+      sm: "60% !important",
+      md: "65% !important",
+      lg: "70% !important",
+    },
+    borderRight: {
+      xs: 0,
+      sm: 1,
     },
     minHeight: "100vh",
     height: "100%",
+  },
+  previewRight: {
+    backgroundColor: "secondary.main",
+    display: {
+      xs: "none",
+      sm: "block",
+    },
+    width: {
+      xs: 0,
+      sm: "40%",
+      md: "35%",
+      lg: "30%",
+    },
+    minHeight: "100vh",
+    height: "100%",
+  },
+  smallButton: {
+    border: 1,
+    borderRadius: 1,
+    // boxShadow: 1,
+    width: "fit-content",
+    minWidth: "fit-content",
+    color: "black.main",
+    backgroundColor: "primary.main",
+    borderColor: "complement.main",
+    maxWidth: "fit-content",
+    ".MuiButtonBase-root": {
+      maxWidth: "fit-content",
+    },
+    "&:hover": {
+      backgroundColor: "secondary.main",
+    },
+    overflow: "hidden",
+  },
+  smallButtonActive: {
+    border: 1,
+    borderRadius: 1,
+    // boxShadow: 1,
+    borderColor: "accent.main",
+    borderBottomColor: "accent.hover",
+    width: "fit-content",
+    minWidth: "fit-content",
+    backgroundColor: "accent.main",
+    maxWidth: "fit-content",
+    ".MuiButtonBase-root": {
+      maxWidth: "fit-content",
+    },
+    "&:hover": {
+      backgroundColor: "accent.hover",
+    },
+    overflow: "hidden",
+  },
+  button: {
+    fontSize: 16,
+    fontWeight: "medium",
+    backgroundColor: "accent.main",
+    borderBottom: 1,
+    borderColor: "accent.hover",
+    borderRadius: 1,
+    // boxShadow: 1,
+    padding: 1.25,
+    textTransform: "none",
+    width: "100%",
+    "&:hover": {
+      backgroundColor: "accent.hover",
+    },
+    overflow: "hidden",
   },
   button2: {
     backgroundColor: "secondary.main",
@@ -161,7 +161,7 @@ export const styles = {
       backgroundColor: "primary.main",
       // borderColor: "accent.main",
     },
-    overflow:"hidden"
+    overflow: "hidden",
   },
   button3: {
     backgroundColor: "accent.main",
@@ -175,7 +175,7 @@ export const styles = {
     "&:hover": {
       backgroundColor: "accent.hover",
     },
-    overflow:"hidden"
+    overflow: "hidden",
   },
   switch: {
     "& .MuiSwitch-thumb": {
@@ -191,20 +191,4 @@ export const styles = {
       opacity: 1,
     },
   },
-  scrollbarStyled:{
-    '::-webkit-scrollbar-track': {
-        WebkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
-        borderRadius: '10px',
-        backgroundColor: 'primary.main'
-      },
-      '::-webkit-scrollbar': {
-        width: '12px',
-        backgroundColor: 'primary.main'
-      },
-      '::-webkit-scrollbar-thumb': {
-        borderRadius: '10px',
-        WebkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
-        backgroundColor: 'complement.main'
-      }
-}
 };

@@ -1,208 +1,133 @@
-import { Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import fetchComponent from "../api/components/fetchComponent";
 import fetchUser from "../api/user/fetchUser";
 import fetchUserLinks from "../api/user/fetchUserLinks";
+import { styles } from "../styles";
 import SocialIconElement from "../tools/preview/SocialIconElement";
+import { elementStyles } from "./elementStyles";
 
-/**
- * This component handles the social icons,
- * which are all together either above or below the LinkElements
- *
- * @param {Array} icons - An array of social icons
- * @returns {React.FC} - A React function component
- */
-const SocialIcons = ({ icons }) => {
+const HeaderElement = ({ element }) => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-      }}
-    >
-      {icons.map((icon, i) => (
-        <Link
-          key={i}
-          to={`https://${icon.link}`}
-          rel="noopener"
-          target="_blank"
-        >
-          <Box
-            sx={{
-              m: 1,
-            }}
-          >
-            <SocialIconElement key={i} iconName={icon.icon} />
-          </Box>
-        </Link>
-      ))}
-    </Box>
+    <>
+      <Grid item xs={12}>
+        <Box p={2}>
+          <Typography sx={elementStyles.title}>{element.title}</Typography>
+        </Box>
+      </Grid>
+    </>
   );
 };
 
-/**
- * This component handles link and header elements
- *
- * @param {Array} links - The array of link elements
- * @returns {React.FC}
- */
-const LinkElements = ({ links }) => {
+const LinkElement = ({ element }) => {
   return (
     <>
-      {links.map((link, i) => {
-        return link.elemType === "link" ? (
-          <Link
-            key={i}
-            rel="noopener"
-            target="_blank"
-            to={`https://${link.link}`}
-          >
-            <Box
-              sx={{
-                m: 2,
-                display: "flex",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-                width: "600px",
-                height: "50px",
-                border: "1px solid rgba(0, 0, 0, 0.8)",
-                borderRadius: "25px",
-              }}
-            >
-              {link.title}
-            </Box>
-          </Link>
-        ) : (
-          <Box
-            key={i}
-            sx={{
-              m: 2,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "600px",
-              height: "50px",
-            }}
-          >
-            <Typography variant="h6">{link.title}</Typography>
+      <Grid item xs={12}>
+        <Link to={element.link}>
+          <Box p={2} sx={elementStyles.squareStyle}>
+            <Typography sx={elementStyles.elementText}>
+              {element.title}
+            </Typography>
           </Box>
-        );
-      })}
+        </Link>
+      </Grid>
+    </>
+  );
+};
+
+const SocialElement = ({ element }) => {
+  return (
+    <>
+      <Grid item xs={2} sm={1}>
+        <Link to={element.link}>
+          <Box
+            p={2}
+            color={"black"} // user color
+          >
+            <Typography sx={elementStyles.elementText}>
+              {element.title}
+            </Typography>
+            <SocialIconElement iconName={element.icon} fontSize={32} />
+          </Box>
+        </Link>
+      </Grid>
     </>
   );
 };
 
 export default function UserView() {
-  // The user's data. I guess these are not actually stateful in this component. This is more just a static webapage.
-  const [links, setLinks] = useState(null);
+  const { username } = useParams();
   const [user, setUser] = useState(null);
-  const [icons, setIcons] = useState(null);
-  const iconsTop = true; // Whether the icons are above or below the links
-
-  const {username} = useParams();
-
-  // Need a field in the user schema for social icons on top or bottom of links. Or some other solution.
-
-  /**
-   * Fetches the user and components, filters the icons
-   * from the headers and links, and sets state
-   *
-   * @return {void}
-   */
-  const getData = async () => {
-    const components = await fetchComponent().then((data) => data);
-    const user = await fetchUser().then((data) => data);
-
-    const links = components.filter(
-      (component) =>
-        component.elemType === "header" || component.elemType === "link"
-    );
-    const icons = components.filter(
-      (component) => component.elemType === "social"
-    );
-
-    setLinks(links);
-    setUser(user);
-    setIcons(icons);
-  };
 
   const fetchData = async () => {
-    await fetchUserLinks(username).then((data)=>setUser(data));
-  }
+    await fetchUserLinks(username).then((data) => setUser(data));
+  };
 
-  // Fetch the user's data on page load
   useEffect(() => {
-    // getData();
     fetchData();
   }, []);
 
-  // return (
-  //   <>
-  //     <Box
-  //       sx={{
-  //         display: "flex",
-  //         flexDirection: "column",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //         mt: "5rem",
-  //       }}
-  //     >
-  //       {/* Wait for user data to be ready */}
-  //       {user && links && (
-  //         <>
-  //           {/* Profile picture */}
-  //           {/* This null is a placeholder until we add a profile picture to the user schema */}
-  //           {user.image ? null : (
-  //             <Box
-  //               sx={{
-  //                 display: "flex",
-  //                 justifyContent: "center",
-  //                 alignItems: "center",
-  //                 height: "5rem",
-  //                 width: "5rem",
-  //                 borderRadius: "50%",
-  //                 backgroundColor: "red",
-  //                 m: 1,
-  //               }}
-  //             >
-  //               {user.username[0].toUpperCase()}
-  //             </Box>
-  //           )}
-
-  //           {/* Username */}
-  //           <Typography variant="h5" sx={{ m: 1 }}>
-  //             @{user.username}
-  //           </Typography>
-
-  //           {/* Links Section */}
-  //           <Box
-  //             sx={{
-  //               display: "flex",
-  //               justifyContent: "space-evenly",
-  //               flexDirection: "column",
-  //               alignItems: "center",
-  //               height: "60vh",
-  //             }}
-  //           >
-  //             {/* If user wants icons above links */}
-  //             {iconsTop && <SocialIcons icons={icons} />}
-
-  //             {/* Links */}
-  //             <LinkElements links={links} />
-
-  //             {/* If user wants icons below links */}
-  //             {!iconsTop && <SocialIcons icons={icons} />}
-  //           </Box>
-  //         </>
-  //       )}
-  //     </Box>
-  //   </>
-  // );
-
   return (
-    <><Box>
-      {user ? user.user.username : ""}
-      </Box></>
-  )
+    <>
+      <Box
+        sx={{
+          paddingX: 2,
+          paddingTop: 8,
+          paddingBottom: 4,
+          backgroundColor: "secondary.main", // user background for entire page
+        }}
+      >
+        {user ? (
+          <Box mx={"auto"} maxWidth={680} textAlign={"center"}>
+            <Box mb={4}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: 100,
+                  width: 100,
+                  borderRadius: 10,
+                  backgroundColor: "#000",
+                  mx: "auto",
+                  mb: 2,
+                }}
+              >
+                <Typography color={"white"} fontSize={32} fontWeight={"medium"}>
+                  {user.user.username[0].toUpperCase()}
+                </Typography>
+              </Box>
+              <Typography sx={elementStyles.username} color={"black"}>
+                @{user.user.username}
+              </Typography>
+            </Box>
+
+            <Grid
+              container
+              sx={{
+                justifyContent: "center",
+              }}
+              spacing={2}
+            >
+              {user.elements.map((e, i) =>
+                e.elemType === "link" ? (
+                  <LinkElement key={i} element={e} />
+                ) : e.elemType === "header" ? (
+                  <HeaderElement key={i} element={e} />
+                ) : e.elemType === "social" ? (
+                  <SocialElement key={i} element={e} />
+                ) : (
+                  <></>
+                )
+              )}
+            </Grid>
+          </Box>
+        ) : (
+          <></>
+        )}
+      </Box>
+    </>
+  );
 }

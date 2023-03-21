@@ -185,7 +185,7 @@ export const LinkElementTool = ({
               endAdornment: (
                 <InputAdornment position="end" color="secondary">
                   <Typography fontSize={12}>
-                    {values.title.length > 0 ? `${values.title.length}/50` : ""}
+                    {values.title.length > 0 ? `${values.title.length}/100` : ""}
                   </Typography>
                 </InputAdornment>
               ),

@@ -23,7 +23,7 @@ const LinkElementSchema = new Schema(
     title: {
       default: "",
       type: String,
-      maxlength: 50,
+      maxlength: 100,
     },
     link: {
       default: "",
