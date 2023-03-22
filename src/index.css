@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 
-:r
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -17,6 +16,8 @@
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --base-w: 100vw;
+  --base-h: 100vh;
 
 }
 

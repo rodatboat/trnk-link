@@ -16,7 +16,7 @@ export default function PreviewView() {
       sx={{
         display: "flex",
         flexDirection: "row",
-        overflow:"hidden"
+        overflow: "hidden",
       }}
     >
       <Box sx={styles.previewLeft} p={2}>
@@ -24,15 +24,21 @@ export default function PreviewView() {
       </Box>
       <Box sx={styles.previewRight}>
         <Box
-          height={500}
-          width={300}
-          border={4}
-          mx={"auto"}
-          overflow={"hidden"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          height={"100%"}
         >
-          <Box overflow="scroll">
+          <Box className={"user-preview"}>
+          <Box sx={{
+            maxHeight: 724,
+            maxWidth: 352,
+            // height: 724,
+            // width: 352,
+            overflowY:"scroll"
+          }}>
             <UserView setUsername={currentComponents} />
-          </Box>
+          </Box></Box>
         </Box>
       </Box>
     </Box>

@@ -40,7 +40,7 @@ const LinkElement = ({ element }) => {
 const SocialElement = ({ element }) => {
   return (
     <>
-      <Grid item xs={2} sm={1}>
+      <Grid item xs={2} sm={2}>
         <Link to={element.link}>
           <Box
             p={2}
@@ -82,7 +82,6 @@ export default function UserView({minHeight="100vh", setUsername=null}) {
           paddingBottom: 4,
           display:"flex",
           minHeight: "100vh",
-          overflow:"scroll",
           backgroundColor: "secondary.main", // user background for entire page
         }}
       >

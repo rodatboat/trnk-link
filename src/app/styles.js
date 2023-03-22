@@ -69,30 +69,44 @@ export const styles = {
     backgroundColor: "secondary.main",
     width: {
       xs: "100% !important",
-      sm: "60% !important",
+      sm: "100% !important",
       md: "65% !important",
       lg: "70% !important",
     },
     borderRight: {
       xs: 0,
-      sm: 1,
+      md: 1,
     },
-    height: "fit-content",
-    overflow:"scroll"
+    height: "fit-content"
+    // overflow:"scroll"
     // height: "100vh",
   },
   previewRight: {
     backgroundColor: "secondary.main",
     display: {
       xs: "none",
-      sm: "block",
+      sm: "none",
+      md: "block",
     },
     width: {
       xs: 0,
-      sm: "40%",
+      sm: 0,
       md: "35%",
       lg: "30%",
     },
+    position:"fixed",
+    right:0,
+    height:"100%",
+    ".user-preview":{
+      border: 12,
+      borderRadius: 4,
+      overflowY:"hidden",
+      transform: {
+        xs:"scale(.60)",
+        md:"scale(.7)",
+        lg:"scale(.8)"
+      },
+    }
   },
   smallButton: {
     border: 1,
