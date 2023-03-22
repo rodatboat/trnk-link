@@ -19,6 +19,7 @@ export const elementStyles = {
   squareStyle: {
     boxShadow: 1,
     border: 1,
+    backgroundColor: "secondary.main", // user style of button
     borderColor: "complement.main", // user style of elements
     // borderColor: rgb(0 0 0) 8px 8px 0px 0px,
     // "&:hover":{

@@ -77,9 +77,8 @@ export const styles = {
       xs: 0,
       md: 1,
     },
-    height: "fit-content"
-    // overflow:"scroll"
-    // height: "100vh",
+    height: "fit-content",
+    minHeight: "100%",
   },
   previewRight: {
     backgroundColor: "secondary.main",

@@ -34,7 +34,7 @@ function App() {
     <>
       <ThemeProvider theme={themeMode}>
         <CssBaseline />
-        <Box className="App">
+        <Box className="App" backgroundColor={"secondary.main"}>
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route
