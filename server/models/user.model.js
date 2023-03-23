@@ -8,6 +8,18 @@ const user = new Schema(
       required: true,
       minlength:2,
     },
+    displayName:{
+      type: String,
+      required: true,
+      maxlength: 30,
+      default:"",
+    },
+    bio:{
+      type: String,
+      required: true,
+      default:"",
+      maxlength: 120,
+    },
     email: {
       type: String,
       required: true,

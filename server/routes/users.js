@@ -33,6 +33,7 @@ router.route("/register").post(async (req, res) => {
     await User.create({
       email: email,
       username: username,
+      displayName: `@${username}`,
       password: encryptedPassword,
     });
 

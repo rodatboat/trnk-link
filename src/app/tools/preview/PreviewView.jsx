@@ -66,8 +66,8 @@ export default function PreviewView() {
               sx={{
                 maxHeight: 724,
                 maxWidth: 352,
-                // height: 724,
-                // width: 352,
+                 height: "auto",
+                 width: "auto",
                 overflowY: "scroll",
               }}
             >

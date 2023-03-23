@@ -46,9 +46,6 @@ const SocialElement = ({ element }) => {
             p={2}
             color={"black"} // user color
           >
-            <Typography sx={elementStyles.elementText}>
-              {element.title}
-            </Typography>
             <SocialIconElement iconName={element.icon} fontSize={32} />
           </Box>
         </Link>
