@@ -10,7 +10,7 @@ import UserView from "../../[username]/UserView";
 export default function PreviewView() {
   const [previewDialog, setPreviewDialog] = useState(false);
   const [currentComponents, setCurrentComponents] = useState({
-    user: { username: window.localStorage.getItem("username") },
+    user: { username: window.localStorage.getItem("username")},
     elements: [],
   });
 
@@ -23,7 +23,7 @@ export default function PreviewView() {
       sx={{
         display: "flex",
         flexDirection: "row",
-        height:"100%",
+        height: "100%",
       }}
     >
       <Modal open={previewDialog} onClose={handlePreviewDialogToggle}>
@@ -66,8 +66,8 @@ export default function PreviewView() {
               sx={{
                 maxHeight: 724,
                 maxWidth: 352,
-                 height: "auto",
-                 width: "auto",
+                height: "auto",
+                width: "auto",
                 overflowY: "scroll",
               }}
             >
@@ -122,16 +122,16 @@ export default function PreviewView() {
               sx={{
                 maxHeight: 724,
                 maxWidth: 352,
-                
-                height: {lg:724},
-                width: {lg:352},
+
+                height: { lg: 724 },
+                width: { lg: 352 },
                 overflowY: "scroll",
               }}
             >
               <UserView setUsername={currentComponents} />
             </Box>
           </Box>
-      </Box>
+        </Box>
       </Box>
     </Box>
   );

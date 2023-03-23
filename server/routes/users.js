@@ -129,7 +129,10 @@ router.route("/:username").get(async (req, res) => {
   try {
     const { username } = req.params;
 
-    const user = await User.findOne({ username: username }, { username: 1 });
+    const user = await User.findOne(
+      { username: username },
+      { username: 1, displayName: 1, bio: 1 }
+    );
 
     if (!user) {
       return res.send({ success: false, message: "User doesn't exist" });
@@ -152,8 +155,8 @@ router.route("/:username").get(async (req, res) => {
       success: true,
       message: "User link components fetched",
       data: {
-        user:user,
-        elements: userElements
+        user: user,
+        elements: userElements,
       },
     });
   } catch (err) {

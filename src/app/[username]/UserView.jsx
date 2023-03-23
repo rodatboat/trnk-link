@@ -105,7 +105,10 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
               </Typography>
             </Box>
             <Typography sx={elementStyles.username} color={"black"}>
-              @{user.user.username}
+              {user.user.displayName}
+            </Typography>
+            <Typography sx={elementStyles.bio} color={"black"}>
+              {user.user.bio}
             </Typography>
           </Box>
 

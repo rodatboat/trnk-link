@@ -7,4 +7,5 @@ export const headerElementValidationSchema = yup.object().shape({
   title: yup
     .string("Enter a title")
     .max(50, "Title is too long")
-    .required("Title is required"),});
+    .required("Title is required"),
+});
