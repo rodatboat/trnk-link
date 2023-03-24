@@ -46,9 +46,6 @@ const SocialElement = ({ element }) => {
             p={2}
             color={"black"} // user color
           >
-            <Typography sx={elementStyles.elementText}>
-              {element.title}
-            </Typography>
             <SocialIconElement iconName={element.icon} fontSize={32} />
           </Box>
         </Link>
@@ -108,7 +105,10 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
               </Typography>
             </Box>
             <Typography sx={elementStyles.username} color={"black"}>
-              @{user.user.username}
+              {user.user.displayName}
+            </Typography>
+            <Typography sx={elementStyles.bio} color={"black"}>
+              {user.user.bio}
             </Typography>
           </Box>
 

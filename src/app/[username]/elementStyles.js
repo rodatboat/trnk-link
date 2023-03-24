@@ -4,6 +4,10 @@ export const elementStyles = {
     color: "black",
     fontWeight: "bold",
   },
+  bio:{
+    fontSize: 16,
+    color:"black"
+  },
   title:{
     fontWeight: "medium",
     fontSize: 18,

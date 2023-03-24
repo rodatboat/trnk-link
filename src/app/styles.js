@@ -16,6 +16,12 @@ export const styles = {
     lineHeight: 1.2,
     // whiteSpace: "nowrap"
   },
+  title2: {
+    fontWeight: "extraBold",
+    fontSize: 32,
+    lineHeight: 1.2,
+    // whiteSpace: "nowrap"
+  },
   subtitle: {
     fontWeight: "regular",
     fontSize: 16,
@@ -102,7 +108,7 @@ export const styles = {
       overflowY:"hidden",
       transform: {
         xs:"scale(.60)",
-        md:"scale(.7)",
+        md:"scale(.75)",
         lg:"scale(.8)"
       },
     }
