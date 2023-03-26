@@ -14,31 +14,11 @@ import { useOutletContext } from "react-router-dom";
 import fetchUserLinks from "../../api/user/fetchUserLinks";
 import { styles } from "../../styles";
 import { profileValidationSchema } from "./validation/profile.validation";
+import { ChromePicker, SketchPicker } from 'react-color';
+import BackgroundsForm from "./BackgroundsForm";
 
 export default function CustomizePage() {
   const [currentComponents, setCurrentComponents] = useOutletContext();
-  const [bgModes, setBgModes] = useState([
-    {
-      name: "solid",
-      styling: styles.solidBgMode,
-      active: true,
-    },
-    {
-      name: "gradient",
-      styling: styles.gradientBgMode,
-      active: false,
-    },
-    {
-      name: "image",
-      styling: styles.solidBgMode,
-      active: false,
-    },
-    {
-      name: "video",
-      styling: styles.solidBgMode,
-      active: false,
-    },
-  ]);
 
   const {
     values,
@@ -233,38 +213,7 @@ export default function CustomizePage() {
         </Grid>
       </Box>
 
-      <Typography sx={styles.title2} mt={6} mb={2} px={1}>
-        Backgrounds
-      </Typography>
-      <Box sx={{ ...styles.elementSettings, p: 2 }}>
-        <Grid container>
-          <Grid item xs={12}>
-            <Box>
-              <Grid container>
-                {bgModes.map((mode, i) => (
-                  <Grid item xs={3} key={i}>
-                    <Box>
-                      <Box sx={styles.bgStyle}>
-                        <Box sx={mode.styling} />
-                      </Box>
-                      <Typography textAlign={"center"}>{mode.name}</Typography>
-                    </Box>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          </Grid>
-          <Grid item xs={12}>
-            <Box>
-              <Box textAlign={"center"} mt={2} display={"block"}>
-                <Typography color={"accent.main"} sx={styles.hint}>
-                  Unsaved Changes
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
+      <BackgroundsForm user={currentComponents} />
 
       <Typography sx={styles.title2} mt={6} mb={2} px={1}>
         Buttons

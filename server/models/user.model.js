@@ -24,6 +24,19 @@ const user = new Schema(
       type: String,
       required: true,
     },
+    background:{
+      mode:{
+        type:String,
+        required: true,
+        default: "solid"
+      },
+      colors:[
+        {
+          type:String,
+          default:"#fafafa"
+        }
+      ]
+    },
     password: {
       type: String,
       required: true,
