@@ -10,7 +10,13 @@ import UserView from "../../[username]/UserView";
 export default function PreviewView() {
   const [previewDialog, setPreviewDialog] = useState(false);
   const [currentComponents, setCurrentComponents] = useState({
-    user: { username: window.localStorage.getItem("username")},
+    user: {
+      username: window.localStorage.getItem("username"),
+      background:{
+        mode: "",
+      colors: [],
+      }
+    },
     elements: [],
   });
 

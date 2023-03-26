@@ -5,37 +5,51 @@ import React, { useEffect, useState } from "react";
 import { ChromePicker } from "react-color";
 import { styles } from "../../styles";
 
-const ColorPickTool = ({defaultColor="#fff"}) => {
+// Still need to pass colors from user, and setup formik to handle change by passing a change function into this. Save button needed for form too
+const ColorPickTool = ({ defaultColor = "#fff", updateColor }) => {
   const [colorToggle, setColorToggle] = useState(false);
-  const [currentColor, setCurrentColor] = useState(defaultColor)
+  const [currentColor, setCurrentColor] = useState(defaultColor);
 
   const handleColorChange = (color) => {
-    setCurrentColor(color.hex)
+    setCurrentColor(color.hex);
   };
 
   const handleColorToggle = () => {
     setColorToggle(!colorToggle);
   };
+
+  useEffect(() => {
+    updateColor(currentColor);
+  }, [currentColor]);
   return (
     <>
       <Box
-        sx={!colorToggle ? {
-        ...styles.bgStyle,
-          maxWidth: "40px",
-          maxHeight: "40px",
-          borderRadius: 1.1,
-          p: 0.6,
-        } : {
-            ...styles.bgSelectedStyle,
-              maxWidth: "40px",
-              maxHeight: "40px",
-              borderRadius: 1.1,
-              p: 0.6,
-            }}
+        sx={
+          !colorToggle
+            ? {
+                ...styles.bgStyle,
+                maxWidth: "40px",
+                maxHeight: "40px",
+                borderRadius: 1.1,
+                p: 0.6,
+              }
+            : {
+                ...styles.bgSelectedStyle,
+                maxWidth: "40px",
+                maxHeight: "40px",
+                borderRadius: 1.1,
+                p: 0.6,
+              }
+        }
       >
         <Box
           component={"button"}
-          sx={{ width:"100%", aspectRatio: "1/1", borderRadius: 0.5, backgroundColor: currentColor }}
+          sx={{
+            width: "100%",
+            aspectRatio: "1/1",
+            borderRadius: 0.5,
+            backgroundColor: currentColor,
+          }}
           onClick={handleColorToggle}
         />
       </Box>
@@ -66,14 +80,12 @@ const ColorPickTool = ({defaultColor="#fff"}) => {
 export default function BackgroundsForm({ user }) {
   const [bgModes, setBgModes] = useState([
     {
-      name: "Solid",
+      name: "solid",
       styling: styles.solidBgMode,
-      active: true,
     },
     {
-      name: "Gradient",
+      name: "gradient",
       styling: styles.gradientBgMode,
-      active: false,
     },
     // {
     //   name: "Image",
@@ -100,14 +112,22 @@ export default function BackgroundsForm({ user }) {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      displayName: "",
-      bio: "",
+      mode: user.background.mode,
+      colors: user.background.colors,
     },
     // validationSchema: profileValidationSchema,
     onSubmit: async (values, actions) => {
       await handleUserUpdate(values, actions);
     },
   });
+
+  const updateColor = (color) => {
+    setFieldValue("colors", color);
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 
   useEffect(() => {}, [user]);
 
@@ -135,12 +155,18 @@ export default function BackgroundsForm({ user }) {
                     <Box>
                       <Box
                         sx={
-                          mode.active ? styles.bgSelectedStyle : styles.bgStyle
+                          user.background
+                            ? mode.name === user.background.mode
+                              ? styles.bgSelectedStyle
+                              : styles.bgStyle
+                            : styles.bgStyle
                         }
                       >
                         <Box sx={mode.styling} />
                       </Box>
-                      <Typography textAlign={"center"}>{mode.name}</Typography>
+                      <Typography textAlign={"center"}>
+                        {capitalizeFirstLetter(mode.name)}
+                      </Typography>
                     </Box>
                   </Grid>
                 ))}
@@ -163,7 +189,15 @@ export default function BackgroundsForm({ user }) {
           </Grid>
           <Grid item xs={12}>
             <Box>
-              <ColorPickTool />
+              {user.background
+                ? user.background.colors.map((c, i) => (
+                    <ColorPickTool
+                      key={i}
+                      defaultColor={c}
+                      updateColor={updateColor}
+                    />
+                  ))
+                : null}
             </Box>
           </Grid>
           <Grid item xs={12}>

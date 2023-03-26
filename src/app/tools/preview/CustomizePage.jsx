@@ -14,7 +14,7 @@ import { useOutletContext } from "react-router-dom";
 import fetchUserLinks from "../../api/user/fetchUserLinks";
 import { styles } from "../../styles";
 import { profileValidationSchema } from "./validation/profile.validation";
-import { ChromePicker, SketchPicker } from 'react-color';
+import { ChromePicker, SketchPicker } from "react-color";
 import BackgroundsForm from "./BackgroundsForm";
 
 export default function CustomizePage() {
@@ -51,7 +51,7 @@ export default function CustomizePage() {
         setFieldValue("bio", data.data.user.bio);
 
         setCurrentComponents({
-          user: { ...currentComponents.user, ...data.data.user },
+          user: { ...data.data.user },
           elements: data.data.elements,
         });
       }
@@ -213,7 +213,7 @@ export default function CustomizePage() {
         </Grid>
       </Box>
 
-      <BackgroundsForm user={currentComponents} />
+      <BackgroundsForm user={currentComponents.user} />
 
       <Typography sx={styles.title2} mt={6} mb={2} px={1}>
         Buttons

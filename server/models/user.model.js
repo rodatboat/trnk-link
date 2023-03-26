@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const user = new Schema(
@@ -6,48 +6,49 @@ const user = new Schema(
     username: {
       type: String,
       required: true,
-      minlength:2,
+      minlength: 2,
     },
-    displayName:{
+    displayName: {
       type: String,
       required: true,
       maxlength: 30,
-      default:"",
+      default: "",
     },
-    bio:{
+    bio: {
       type: String,
       required: true,
-      default:"",
+      default: "",
       maxlength: 120,
     },
     email: {
       type: String,
       required: true,
     },
-    background:{
-      mode:{
-        type:String,
+    background: {
+      mode: {
+        type: String,
         required: true,
-        default: "solid"
+        enum: ["solid", "gradient"],
+        default: "solid",
       },
-      colors:[
+      colors: [
         {
-          type:String,
-          default:"#fafafa"
-        }
-      ]
+          type: String,
+          default: "#fafafa",
+        },
+      ],
     },
     password: {
       type: String,
       required: true,
-      minlength:4,
+      minlength: 4,
     },
-    order:[
+    order: [
       {
-        id:{
-          type:String
-        }
-      }
+        id: {
+          type: String,
+        },
+      },
     ],
     since: {
       type: Date,

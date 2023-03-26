@@ -131,7 +131,8 @@ router.route("/:username").get(async (req, res) => {
 
     const user = await User.findOne(
       { username: username },
-      { username: 1, displayName: 1, bio: 1 }
+      { username: 1, displayName: 1, bio: 1,
+        background:1 }
     );
 
     if (!user) {
@@ -146,7 +147,7 @@ router.route("/:username").get(async (req, res) => {
         elemType: 1,
         title: 1,
         link: 1,
-        icon: 1,
+        icon: 1
       }
     );
     userElements.sort((a, b) => a.index - b.index);
@@ -164,6 +165,36 @@ router.route("/:username").get(async (req, res) => {
     return res.send({
       success: false,
       message: "Error fetching user link components",
+    });
+  }
+});
+
+router.route("/update").post(async (req, res) => {
+  try {
+    let token = req.headers["x-access-token"] || req.headers["authorization"];
+    if (token.startsWith("Bearer ")) {
+      token = token.slice(7, token.length);
+    }
+
+    const verify = jwt.verify(token, JWT_SECRET);
+
+    const user = await User.findOne(
+      { _id: verify._id }
+    );
+
+    if (!user) {
+      return res.send({ success: false, message: "User doesn't exist" });
+    }
+
+    return res.json({
+      success: true,
+      message: "User updated",
+      data: user,
+    });
+  } catch (err) {
+    return res.json({
+      success: false,
+      message: "Error updating user",
     });
   }
 });
