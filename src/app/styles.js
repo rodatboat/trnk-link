@@ -209,4 +209,30 @@ export const styles = {
       opacity: 1,
     },
   },
+  bgStyle:{
+    p: 1,
+    border: 2,
+    borderRadius: 2,
+    borderColor: "secondary.main",
+    mb: 1,
+  },
+  bgSelectedStyle:{
+    p: 1,
+    border: 2,
+    borderRadius: 2,
+    borderColor: "black",
+    mb: 1,
+  },
+  solidBgMode:{
+    backgroundColor: "complement.main",
+    width: "100%",
+    aspectRatio: "9 / 16",
+    borderRadius: 1.5,
+  },
+  gradientBgMode: {
+    background: "linear-gradient(#9e9e9e 0%, #fafafa 100%)",
+    width: "100%",
+    aspectRatio: "9 / 16",
+    borderRadius: 1.5,
+  }
 };

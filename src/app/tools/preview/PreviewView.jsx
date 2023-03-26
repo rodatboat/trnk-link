@@ -125,6 +125,7 @@ export default function PreviewView() {
 
                 height: { lg: 724 },
                 width: { lg: 352 },
+                aspectRatio: "9 / 16",
                 overflowY: "scroll",
               }}
             >

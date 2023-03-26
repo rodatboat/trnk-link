@@ -6,8 +6,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { style } from "@mui/system";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineEdit } from "react-icons/md";
 import { useOutletContext } from "react-router-dom";
 import fetchUserLinks from "../../api/user/fetchUserLinks";
@@ -16,6 +17,28 @@ import { profileValidationSchema } from "./validation/profile.validation";
 
 export default function CustomizePage() {
   const [currentComponents, setCurrentComponents] = useOutletContext();
+  const [bgModes, setBgModes] = useState([
+    {
+      name: "solid",
+      styling: styles.solidBgMode,
+      active: true,
+    },
+    {
+      name: "gradient",
+      styling: styles.gradientBgMode,
+      active: false,
+    },
+    {
+      name: "image",
+      styling: styles.solidBgMode,
+      active: false,
+    },
+    {
+      name: "video",
+      styling: styles.solidBgMode,
+      active: false,
+    },
+  ]);
 
   const {
     values,
@@ -217,6 +240,22 @@ export default function CustomizePage() {
         <Grid container>
           <Grid item xs={12}>
             <Box>
+              <Grid container>
+                {bgModes.map((mode, i) => (
+                  <Grid item xs={3} key={i}>
+                    <Box>
+                      <Box sx={styles.bgStyle}>
+                        <Box sx={mode.styling} />
+                      </Box>
+                      <Typography textAlign={"center"}>{mode.name}</Typography>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box>
               <Box textAlign={"center"} mt={2} display={"block"}>
                 <Typography color={"accent.main"} sx={styles.hint}>
                   Unsaved Changes
@@ -243,8 +282,6 @@ export default function CustomizePage() {
           </Grid>
         </Grid>
       </Box>
-
-      
     </Box>
   );
 }
