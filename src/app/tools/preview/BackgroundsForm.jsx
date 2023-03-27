@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { ChromePicker } from "react-color";
 import { styles } from "../../styles";
+import { backgroundFormValidationSchema } from "./validation/backgrounds.validation";
 
 // Still need to pass colors from user, and setup formik to handle change by passing a change function into this. Save button needed for form too
 const ColorPickTool = ({ defaultColor = "#fff", updateColor }) => {
@@ -78,6 +79,7 @@ const ColorPickTool = ({ defaultColor = "#fff", updateColor }) => {
 };
 
 export default function BackgroundsForm({ user }) {
+  const [updated, setUpdated] = useState(false);
   const [bgModes, setBgModes] = useState([
     {
       name: "solid",
@@ -112,24 +114,46 @@ export default function BackgroundsForm({ user }) {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      mode: user.background.mode,
-      colors: user.background.colors,
+      mode: "",
+      colors: [],
     },
-    // validationSchema: profileValidationSchema,
+    validationSchema: backgroundFormValidationSchema,
     onSubmit: async (values, actions) => {
       await handleUserUpdate(values, actions);
     },
   });
 
   const updateColor = (color) => {
-    setFieldValue("colors", color);
+    setFieldValue("colors", [color]);
   };
 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  useEffect(() => {}, [user]);
+  const handleModeChange = (mode) => {
+    setFieldValue("mode", mode.name);
+  }
+
+  const updateUserBackground = () =>{
+    setUpdated(false);
+  }
+
+  useEffect(() => {
+    if(user.background){
+      if(user.background.colors){
+        setFieldValue("mode", user.background.mode);
+        setFieldValue("colors", user.background.colors);
+      }
+    }
+  }, [user]);
+
+  useEffect(()=>{
+    if((JSON.stringify(values.colors) !== JSON.stringify(user.background.colors))||
+    values.mode !== user.background.mode){
+      setUpdated(true);
+    }
+  },[values.colors, values.mode])
 
   return (
     <>
@@ -149,7 +173,7 @@ export default function BackgroundsForm({ user }) {
           </Grid>
           <Grid item xs={12}>
             <Box>
-              <Grid container>
+              <Grid container spacing={1}>
                 {bgModes.map((mode, i) => (
                   <Grid item xs={4} md={3} key={i}>
                     <Box>
@@ -162,7 +186,7 @@ export default function BackgroundsForm({ user }) {
                             : styles.bgStyle
                         }
                       >
-                        <Box sx={mode.styling} />
+                        <Box sx={mode.styling} onClick={(mode)=>handleModeChange} />
                       </Box>
                       <Typography textAlign={"center"}>
                         {capitalizeFirstLetter(mode.name)}
@@ -202,7 +226,7 @@ export default function BackgroundsForm({ user }) {
           </Grid>
           <Grid item xs={12}>
             <Box>
-              <Box textAlign={"center"} mt={2} display={"block"}>
+              <Box textAlign={"center"} mt={2} display={updated ? "block" : "none"}>
                 <Typography color={"accent.main"} sx={styles.hint}>
                   Unsaved Changes
                 </Typography>
