@@ -57,11 +57,28 @@ const SocialElement = ({ element }) => {
 export default function UserView({ minHeight = "100vh", setUsername = null }) {
   const { username } = useParams();
   const [user, setUser] = useState(null);
+  const [viewBackground, setViewBackground] = useState({
+    background: "secondary.main",
+  });
 
   const fetchData = async () => {
     await fetchUserLinks(username).then((data) =>
       data.success ? setUser(data.data) : setUser(null)
     );
+  };
+
+  const generateColor = () => {
+    const selectedMode = user.user.background.mode;
+    const selectedColors = user.user.background.colors;
+    if (selectedMode === "gradient") {
+      setViewBackground({
+        background: `linear-gradient(90deg, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)`,
+      });
+    } else if (selectedMode === "solid") {
+      setViewBackground({
+        backgroundColor: `${selectedColors[0]}`,
+      });
+    }
   };
 
   useEffect(() => {
@@ -72,6 +89,10 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
     setUser(setUsername);
   }, [setUsername]);
 
+  useEffect(() => {
+    user ? generateColor() : null;
+  }, [user]);
+
   return (
     <Box
       sx={{
@@ -81,7 +102,7 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
         display: "flex",
         // maxHeight: "100vh",
         height: "100%",
-        backgroundColor: "secondary.main", // user background for entire page
+        ...viewBackground, // user background for entire page
       }}
     >
       {user ? (

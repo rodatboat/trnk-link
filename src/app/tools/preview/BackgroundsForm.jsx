@@ -132,6 +132,7 @@ export default function BackgroundsForm({ user }) {
   };
 
   const handleModeChange = (mode) => {
+    console.log(mode)
     setFieldValue("mode", mode.name);
   }
 
@@ -180,13 +181,13 @@ export default function BackgroundsForm({ user }) {
                       <Box
                         sx={
                           user.background
-                            ? mode.name === user.background.mode
+                            ? mode.name === values.mode
                               ? styles.bgSelectedStyle
                               : styles.bgStyle
                             : styles.bgStyle
                         }
                       >
-                        <Box sx={mode.styling} onClick={(mode)=>handleModeChange} />
+                        <Box sx={mode.styling} onClick={()=>handleModeChange(mode)} />
                       </Box>
                       <Typography textAlign={"center"}>
                         {capitalizeFirstLetter(mode.name)}
