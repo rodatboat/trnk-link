@@ -100,7 +100,7 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
         paddingTop: 8,
         paddingBottom: 4,
         display: "flex",
-        // maxHeight: "100vh",
+        minHeight: "100vh",
         height: "100%",
         ...viewBackground, // user background for entire page
       }}

@@ -132,12 +132,12 @@ export default function BackgroundsForm({ user }) {
   };
 
   const handleModeChange = (mode) => {
-    console.log(mode)
     setFieldValue("mode", mode.name);
   }
 
   const updateUserBackground = () =>{
     setUpdated(false);
+    // Send request here.
   }
 
   useEffect(() => {
