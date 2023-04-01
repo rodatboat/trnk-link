@@ -1,6 +1,6 @@
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { fontWeight } from "@mui/system";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsEye } from "react-icons/bs";
 import { IoCloseSharp } from "react-icons/io5";
 import { Outlet } from "react-router-dom";
@@ -23,6 +23,8 @@ export default function PreviewView() {
   const handlePreviewDialogToggle = () => {
     setPreviewDialog(!previewDialog);
   };
+
+  useEffect(()=>{},[currentComponents])
 
   return (
     <Box

@@ -131,8 +131,7 @@ router.route("/:username").get(async (req, res) => {
 
     const user = await User.findOne(
       { username: username },
-      { username: 1, displayName: 1, bio: 1,
-        background:1 }
+      { username: 1, displayName: 1, bio: 1, background: 1 }
     );
 
     if (!user) {
@@ -147,7 +146,7 @@ router.route("/:username").get(async (req, res) => {
         elemType: 1,
         title: 1,
         link: 1,
-        icon: 1
+        icon: 1,
       }
     );
     userElements.sort((a, b) => a.index - b.index);
@@ -176,20 +175,28 @@ router.route("/update").post(async (req, res) => {
       token = token.slice(7, token.length);
     }
 
+    const { background } = req.body;
+
     const verify = jwt.verify(token, JWT_SECRET);
 
-    const user = await User.findOne(
-      { _id: verify._id }
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: verify._id },
+      {
+        background
+      },
+      { new: true }
     );
 
-    if (!user) {
+    if (!updatedUser) {
       return res.send({ success: false, message: "User doesn't exist" });
     }
 
     return res.json({
       success: true,
       message: "User updated",
-      data: user,
+      data: {
+        background: updatedUser.background
+      },
     });
   } catch (err) {
     return res.json({

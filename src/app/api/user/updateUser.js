@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 
 export default async function updateUser({
-  user
+  background
 }) {
   return fetch(`${import.meta.env.VITE_API_URL}/user/update`, {
     method: "POST",
@@ -14,7 +14,7 @@ export default async function updateUser({
       authorization: `Bearer ${Cookies.get("jwt")}`,
     },
     body: JSON.stringify({
-        user
+      background
     }),
   })
     .then((res) => res.json())

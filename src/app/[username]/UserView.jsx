@@ -87,11 +87,15 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
 
   useEffect(() => {
     setUser(setUsername);
+    user ? generateColor() : null;
   }, [setUsername]);
 
   useEffect(() => {
     user ? generateColor() : null;
   }, [user]);
+
+  useEffect(() => {
+  }, [viewBackground]);
 
   return (
     <Box
@@ -101,7 +105,7 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
         paddingBottom: 4,
         display: "flex",
         minHeight: "100vh",
-        height: "100%",
+        height: "fit-content",
         ...viewBackground, // user background for entire page
       }}
     >
