@@ -151,8 +151,8 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
             }}
             spacing={2}
           >
-            {user.elements.map((e, i) =>
-              e.elemType === "link" ? (
+            {user.elements.map((e, i) => e.active ?
+              (e.elemType === "link" ? (
                 <LinkElement key={i} element={e} />
               ) : e.elemType === "header" ? (
                 <HeaderElement key={i} element={e} />
@@ -160,7 +160,7 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
                 <SocialElement key={i} element={e} />
               ) : (
                 <></>
-              )
+              )) : null
             )}
           </Grid>
         </Box>

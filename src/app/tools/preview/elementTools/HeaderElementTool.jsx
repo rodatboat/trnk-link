@@ -79,7 +79,8 @@ export const HeaderElementTool = ({
       ...values,
       _id: element._id,
       active: values.active,
-      index: index
+      // Checks if element already has an index assigned to it, if not go with nextIndex
+      index: element.index ? element.index : index
     });
     updateElem(element, newElem);
   };
