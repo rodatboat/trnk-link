@@ -1,9 +1,9 @@
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 
-export default async function updateUser({
-  background
-}) {
+export default async function updateUser(
+  update
+) {
   return fetch(`${import.meta.env.VITE_API_URL}/user/update`, {
     method: "POST",
     crossDomain: true,
@@ -14,7 +14,7 @@ export default async function updateUser({
       authorization: `Bearer ${Cookies.get("jwt")}`,
     },
     body: JSON.stringify({
-      background
+      update
     }),
   })
     .then((res) => res.json())

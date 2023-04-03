@@ -175,14 +175,14 @@ router.route("/update").post(async (req, res) => {
       token = token.slice(7, token.length);
     }
 
-    const { background } = req.body;
+    const { update } = req.body;
 
     const verify = jwt.verify(token, JWT_SECRET);
 
     const updatedUser = await User.findOneAndUpdate(
       { _id: verify._id },
       {
-        background
+        ...update
       },
       { new: true }
     );
@@ -195,7 +195,11 @@ router.route("/update").post(async (req, res) => {
       success: true,
       message: "User updated",
       data: {
-        background: updatedUser.background
+        background: updatedUser.background,
+        user: {
+          displayName:updatedUser.displayName,
+          bio:updatedUser.bio
+        },
       },
     });
   } catch (err) {

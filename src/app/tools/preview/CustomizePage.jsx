@@ -16,6 +16,7 @@ import { styles } from "../../styles";
 import { profileValidationSchema } from "./validation/profile.validation";
 import { ChromePicker, SketchPicker } from "react-color";
 import BackgroundsForm from "./BackgroundsForm";
+import updateUser from "../../api/user/updateUser";
 
 export default function CustomizePage() {
   const [currentComponents, setCurrentComponents] = useOutletContext();
@@ -37,12 +38,23 @@ export default function CustomizePage() {
       bio: "",
     },
     validationSchema: profileValidationSchema,
-    onSubmit: async (values, actions) => {
-      await handleUserUpdate(values, actions);
-    },
   });
 
-  const handleUserUpdate = async (values, actions) => {};
+  const handleUserUpdate = async () => {
+    await updateUser({
+      displayName: values.displayName,
+      bio: values.bio,
+    }).then((data) => {
+      setCurrentComponents({
+        ...currentComponents,
+        user:{
+          ...currentComponents.user,
+            displayName: data.user.displayName,
+            bio: data.user.bio,
+        }
+      });
+    });
+  };
 
   const fetchUserData = async () => {
     await fetchUserLinks(window.localStorage.getItem("username")).then(
@@ -67,7 +79,7 @@ export default function CustomizePage() {
       <Typography sx={styles.title2} mt={6} mb={2} px={1}>
         Customize
       </Typography>
-      <Box component={"form"} sx={{ ...styles.elementSettings, p: 2 }}>
+      <Box sx={{ ...styles.elementSettings, p: 2 }}>
         <Grid container>
           <Grid item xs={5} sm={3}>
             <Box>
@@ -101,12 +113,13 @@ export default function CustomizePage() {
             >
               <Button
                 sx={{ ...styles.button2, height: "100%" }}
-                type="submit"
-                disabled={
-                  isSubmitting ||
-                  (values.displayName === currentComponents.user.displayName &&
-                    values.bio === currentComponents.user.bio)
-                }
+                onClick={handleUserUpdate}
+                // type="submit"
+                // disabled={
+                //   isSubmitting ||
+                //   (values.displayName === currentComponents.user.displayName &&
+                //     values.bio === currentComponents.user.bio)
+                // }
               >
                 Save
               </Button>

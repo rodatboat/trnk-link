@@ -120,10 +120,7 @@ export default function BackgroundsForm({ user }) {
       mode: "",
       colors: [],
     },
-    validationSchema: backgroundFormValidationSchema,
-    onSubmit: async (values, actions) => {
-      await handleUserUpdate(values, actions);
-    },
+    validationSchema: backgroundFormValidationSchema
   });
 
   const updateColor = (color) => {
@@ -147,10 +144,13 @@ export default function BackgroundsForm({ user }) {
     }).then((data) => {
       setCurrentComponents({
         ...currentComponents,
-        background: {
-          mode: data.background.mode,
-          colors: data.background.colors,
-        },
+        user:{
+          ...currentComponents.user,
+          background: {
+            mode: data.background.mode,
+            colors: data.background.colors,
+          },
+        }
       });
     });
     setUpdated(false);

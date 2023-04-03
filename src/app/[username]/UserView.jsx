@@ -81,17 +81,26 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
     }
   };
 
+  const updateUser = () => {
+    if(setUsername){
+      setUser(setUsername);
+    } else {
+      fetchData();
+    }
+  }
+
   useEffect(() => {
-    setUsername ? setUser(setUsername) : fetchData();
+    updateUser();
   }, []);
 
   useEffect(() => {
-    setUser(setUsername);
-    user ? generateColor() : null;
+    updateUser();
   }, [setUsername]);
 
   useEffect(() => {
-    user ? generateColor() : null;
+    if(user){
+      generateColor();
+    }
   }, [user]);
 
   useEffect(() => {
@@ -99,15 +108,13 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
 
   return (
     <Box
-      sx={{
-        paddingX: 2,
-        paddingTop: 8,
-        paddingBottom: 4,
-        display: "flex",
-        minHeight: "100vh",
-        height: "fit-content",
-        ...viewBackground, // user background for entire page
-      }}
+    px={2}
+    pt={8}
+    pb={4}
+    display={"flex"}
+    minHeight={"100vh"}
+    height={"fit-content"}
+      sx={viewBackground}
     >
       {user ? (
         <Box mx={"auto"} maxWidth={680} textAlign={"center"}>
