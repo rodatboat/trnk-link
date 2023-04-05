@@ -72,7 +72,7 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
     const selectedColors = user.user.background.colors;
     if (selectedMode === "gradient") {
       setViewBackground({
-        background: `linear-gradient(0deg, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%)`, // 90deg horizontal, 0deg vertical
+        background: `linear-gradient(0deg, ${selectedColors[1]} 0%, ${selectedColors[0]} 100%)`, // 90deg horizontal, 0deg vertical
       });
     } else if (selectedMode === "solid") {
       setViewBackground({

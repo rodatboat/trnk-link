@@ -10,7 +10,7 @@ import { styles } from "../../styles";
 import { backgroundFormValidationSchema } from "./validation/backgrounds.validation";
 
 // Still need to pass colors from user, and setup formik to handle change by passing a change function into this. Save button needed for form too
-const ColorPickTool = ({ defaultColor = "#fff", updateColor }) => {
+const ColorPickTool = ({ defaultColor = "#fff", updateColor, index }) => {
   const [colorToggle, setColorToggle] = useState(false);
   const [currentColor, setCurrentColor] = useState(defaultColor);
 
@@ -23,7 +23,7 @@ const ColorPickTool = ({ defaultColor = "#fff", updateColor }) => {
   };
 
   useEffect(() => {
-    updateColor(currentColor);
+    updateColor(currentColor, index);
   }, [currentColor]);
   return (
     <>
@@ -105,11 +105,17 @@ export default function BackgroundsForm({ user }) {
     // },
   ]);
 
-  const [backgroundColors, setBackgroundColors] = useState(["#fff","#fff"]);
-  const [mode, setMode] = useState("");
+  const [backgroundColors, setBackgroundColors] = useState([]);
+  const [bgMode, setBgMode] = useState("");
 
-  const updateColor = (color) => {
-    setBackgroundColors(color);
+  const updateColor = (color, i =-1) => {
+    if(i !== -1){
+      let colorsCopy = backgroundColors;
+      colorsCopy[i] = color;
+
+      setBackgroundColors(colorsCopy);
+      setUpdated(true);
+    }
   };
 
   const capitalizeFirstLetter = (string) => {
@@ -117,20 +123,21 @@ export default function BackgroundsForm({ user }) {
   };
 
   const handleModeChange = (mode) => {
-    setMode(mode.name);
+    if(mode.name !== bgMode){
+      setBgMode(mode.name);
 
-    // if(mode.name === "gradient"){
-    //   setBackgroundColors[colors, "#fff"]
-    //   setFieldValue("colors", [...values.colors, "#fff"]);
-    // } else if(mode.name === "solid"){
-    //   setFieldValue("colors", [...values.colors]);
-    // }
+    if(mode.name === "gradient"){
+      setBackgroundColors([...backgroundColors, "#fff"]);
+    } else if(mode.name === "solid"){
+      setBackgroundColors([backgroundColors[0]]);
+    }
+    }
   };
 
   const updateUserBackground = async () => {
     await updateUser({
       background: {
-        mode: mode,
+        mode: bgMode,
         colors: backgroundColors,
       },
     }).then((data) => {
@@ -150,9 +157,9 @@ export default function BackgroundsForm({ user }) {
 
   useEffect(() => {
     if (user.background) {
-      setMode(user.background.mode);
+      setBgMode(user.background.mode);
       if (user.background.colors) {
-        // setBackgroundColors(user.background.colors);
+        setBackgroundColors(user.background.colors);
       }
     }
   }, [user]);
@@ -161,11 +168,15 @@ export default function BackgroundsForm({ user }) {
     if (
       JSON.stringify(backgroundColors) !==
         JSON.stringify(user.background.colors) ||
-      mode !== user.background.mode
+        bgMode !== user.background.mode
     ) {
       setUpdated(true);
     }
-  }, [backgroundColors, mode]);
+  }, [backgroundColors, bgMode]);
+
+
+useEffect(() => {
+  }, [backgroundColors]);
 
   return (
     <>
@@ -186,25 +197,22 @@ export default function BackgroundsForm({ user }) {
           <Grid item xs={12}>
             <Box>
               <Grid container spacing={1}>
-                {bgModes.map((mode, i) => (
+                {bgModes.map((indexedMode, i) => (
                   <Grid item xs={4} md={3} key={i}>
                     <Box>
                       <Box
-                        sx={
-                          user.background
-                            ? mode.name === mode
+                        sx={indexedMode.name === bgMode
                               ? styles.bgSelectedStyle
                               : styles.bgStyle
-                            : styles.bgStyle
                         }
                       >
                         <Box
-                          sx={mode.styling}
-                          onClick={() => handleModeChange(mode)}
+                          sx={indexedMode.styling}
+                          onClick={() => handleModeChange(indexedMode)}
                         />
                       </Box>
                       <Typography textAlign={"center"}>
-                        {capitalizeFirstLetter(mode.name)}
+                        {capitalizeFirstLetter(indexedMode.name)}
                       </Typography>
                     </Box>
                   </Grid>
@@ -233,6 +241,7 @@ export default function BackgroundsForm({ user }) {
                     <ColorPickTool
                       key={i}
                       defaultColor={c}
+                      index={i}
                       updateColor={updateColor}
                     />
                   ))
