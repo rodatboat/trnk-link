@@ -17,6 +17,7 @@ import { profileValidationSchema } from "./validation/profile.validation";
 import { ChromePicker, SketchPicker } from "react-color";
 import BackgroundsForm from "./BackgroundsForm";
 import updateUser from "../../api/user/updateUser";
+import { RiSaveLine } from "react-icons/ri";
 
 export default function CustomizePage() {
   const [currentComponents, setCurrentComponents] = useOutletContext();
@@ -47,11 +48,11 @@ export default function CustomizePage() {
     }).then((data) => {
       setCurrentComponents({
         ...currentComponents,
-        user:{
+        user: {
           ...currentComponents.user,
-            displayName: data.user.displayName,
-            bio: data.user.bio,
-        }
+          displayName: data.user.displayName,
+          bio: data.user.bio,
+        },
       });
     });
   };
@@ -80,8 +81,8 @@ export default function CustomizePage() {
         Customize
       </Typography>
       <Box sx={{ ...styles.elementSettings, p: 2 }}>
-        <Grid container>
-          <Grid item xs={5} sm={3}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={3}>
             <Box>
               <Box
                 sx={{
@@ -101,7 +102,7 @@ export default function CustomizePage() {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={7} sm={9}>
+          <Grid item xs={12} sm={9}>
             <Box
               sx={{
                 display: "flex",
@@ -111,24 +112,6 @@ export default function CustomizePage() {
                 gap: 1,
               }}
             >
-              <Button
-                sx={{ ...styles.button2, height: "100%" }}
-                onClick={handleUserUpdate}
-                // type="submit"
-                // disabled={
-                //   isSubmitting ||
-                //   (values.displayName === currentComponents.user.displayName &&
-                //     values.bio === currentComponents.user.bio)
-                // }
-              >
-                Save
-              </Button>
-              <Button sx={{ ...styles.button2, height: "100%" }}>Cancel</Button>
-            </Box>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Box mt={4}>
               <TextField
                 id={"displayName"}
                 type="text"
@@ -190,20 +173,31 @@ export default function CustomizePage() {
                   ),
                 }}
               />
-              <Box
-                textAlign={"center"}
-                mt={2}
-                display={
-                  values.displayName === currentComponents.user.displayName &&
-                  values.bio === currentComponents.user.bio
-                    ? "none"
-                    : "block"
-                }
+            </Box>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Box
+              textAlign={"center"}
+              mt={2}
+              display={
+                values.displayName === currentComponents.user.displayName &&
+                values.bio === currentComponents.user.bio
+                  ? "none"
+                  : "block"
+              }
+            >
+              <Button
+                sx={{ ...styles.smallButton, textTransform: "none", borderColor:"accent.hover" }}
+                onClick={handleUserUpdate}
               >
+                <Box sx={{ pr: 1, display: "flex", alignItems: "center", color: "accent.main" }}>
+                  <RiSaveLine fontSize={18} />
+                </Box>
                 <Typography color={"accent.main"} sx={styles.hint}>
                   Unsaved Changes
                 </Typography>
-              </Box>
+              </Button>
             </Box>
           </Grid>
         </Grid>

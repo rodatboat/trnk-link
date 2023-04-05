@@ -210,14 +210,14 @@ export const styles = {
     },
   },
   bgStyle:{
-    p: 1,
+    p: .5,
     border: 2,
     borderRadius: 2,
     borderColor: "secondary.main",
     mb: 1,
   },
   bgSelectedStyle:{
-    p: 1,
+    p: .5,
     border: 2,
     borderRadius: 2,
     borderColor: "black",

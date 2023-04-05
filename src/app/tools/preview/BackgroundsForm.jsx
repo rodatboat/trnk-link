@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { ChromePicker } from "react-color";
+import { RiSaveLine } from "react-icons/ri";
 import { useOutletContext } from "react-router-dom";
 import updateUser from "../../api/user/updateUser";
 import { styles } from "../../styles";
@@ -104,27 +105,11 @@ export default function BackgroundsForm({ user }) {
     // },
   ]);
 
-  const {
-    values,
-    touched,
-    errors,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    initialValues,
-    resetForm,
-    setFieldValue,
-  } = useFormik({
-    initialValues: {
-      mode: "",
-      colors: [],
-    },
-    validationSchema: backgroundFormValidationSchema
-  });
+  const [backgroundColors, setBackgroundColors] = useState(["#fff","#fff"]);
+  const [mode, setMode] = useState("");
 
   const updateColor = (color) => {
-    setFieldValue("colors", [color]);
+    setBackgroundColors(color);
   };
 
   const capitalizeFirstLetter = (string) => {
@@ -132,14 +117,21 @@ export default function BackgroundsForm({ user }) {
   };
 
   const handleModeChange = (mode) => {
-    setFieldValue("mode", mode.name);
+    setMode(mode.name);
+
+    // if(mode.name === "gradient"){
+    //   setBackgroundColors[colors, "#fff"]
+    //   setFieldValue("colors", [...values.colors, "#fff"]);
+    // } else if(mode.name === "solid"){
+    //   setFieldValue("colors", [...values.colors]);
+    // }
   };
 
   const updateUserBackground = async () => {
     await updateUser({
       background: {
-        mode: values.mode,
-        colors: values.colors,
+        mode: mode,
+        colors: backgroundColors,
       },
     }).then((data) => {
       setCurrentComponents({
@@ -158,22 +150,22 @@ export default function BackgroundsForm({ user }) {
 
   useEffect(() => {
     if (user.background) {
+      setMode(user.background.mode);
       if (user.background.colors) {
-        setFieldValue("mode", user.background.mode);
-        setFieldValue("colors", user.background.colors);
+        // setBackgroundColors(user.background.colors);
       }
     }
   }, [user]);
 
   useEffect(() => {
     if (
-      JSON.stringify(values.colors) !==
+      JSON.stringify(backgroundColors) !==
         JSON.stringify(user.background.colors) ||
-      values.mode !== user.background.mode
+      mode !== user.background.mode
     ) {
       setUpdated(true);
     }
-  }, [values.colors, values.mode]);
+  }, [backgroundColors, mode]);
 
   return (
     <>
@@ -200,7 +192,7 @@ export default function BackgroundsForm({ user }) {
                       <Box
                         sx={
                           user.background
-                            ? mode.name === values.mode
+                            ? mode.name === mode
                               ? styles.bgSelectedStyle
                               : styles.bgStyle
                             : styles.bgStyle
@@ -236,8 +228,8 @@ export default function BackgroundsForm({ user }) {
           </Grid>
           <Grid item xs={12}>
             <Box>
-              {user.background
-                ? user.background.colors.map((c, i) => (
+              {backgroundColors
+                ? backgroundColors.map((c, i) => (
                     <ColorPickTool
                       key={i}
                       defaultColor={c}
@@ -254,12 +246,17 @@ export default function BackgroundsForm({ user }) {
                 mt={2}
                 display={updated ? "block" : "none"}
               >
+                <Button
+                sx={{ ...styles.smallButton, textTransform: "none", borderColor:"accent.hover" }}
+                onClick={updateUserBackground}
+              >
+                <Box sx={{ pr: 1, display: "flex", alignItems: "center", color: "accent.main" }}>
+                  <RiSaveLine fontSize={18} />
+                </Box>
                 <Typography color={"accent.main"} sx={styles.hint}>
                   Unsaved Changes
-                  <Button sx={styles.button2} onClick={updateUserBackground}>
-                    test
-                  </Button>
                 </Typography>
+              </Button>
               </Box>
             </Box>
           </Grid>
