@@ -234,5 +234,10 @@ export const styles = {
     width: "100%",
     aspectRatio: "9 / 16",
     borderRadius: 1.5,
-  }
+  },
+  fillButtonMode:{
+    backgroundColor: "complement.main",
+    width: "100%",
+    aspectRatio: "3 / 1",
+  },
 };

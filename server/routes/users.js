@@ -177,6 +177,15 @@ router.route("/update").post(async (req, res) => {
 
     const { update } = req.body;
 
+    const {username, password, email} = update;
+
+    if (username || password || email){
+      return res.json({
+        success: false,
+        message: "Invalid user update",
+      });
+    }
+
     const verify = jwt.verify(token, JWT_SECRET);
 
     const updatedUser = await User.findOneAndUpdate(

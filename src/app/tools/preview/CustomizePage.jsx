@@ -18,6 +18,7 @@ import { ChromePicker, SketchPicker } from "react-color";
 import BackgroundsForm from "./BackgroundsForm";
 import updateUser from "../../api/user/updateUser";
 import { RiSaveLine } from "react-icons/ri";
+import ButtonsForm from "./ButtonsForm";
 
 export default function CustomizePage() {
   const [currentComponents, setCurrentComponents] = useOutletContext();
@@ -222,22 +223,7 @@ export default function CustomizePage() {
 
       <BackgroundsForm user={currentComponents.user} />
 
-      <Typography sx={styles.title2} mt={6} mb={2} px={1}>
-        Buttons
-      </Typography>
-      <Box sx={{ ...styles.elementSettings, p: 2 }}>
-        <Grid container>
-          <Grid item xs={12}>
-            <Box>
-              <Box textAlign={"center"} mt={2} display={"block"}>
-                <Typography color={"accent.main"} sx={styles.hint}>
-                  Unsaved Changes
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
+      <ButtonsForm user={currentComponents.user} />
     </Box>
   );
 }

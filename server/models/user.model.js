@@ -38,6 +38,33 @@ const user = new Schema(
         },
       ],
     },
+    buttons: {
+      mode: {
+        type: String,
+        required: true,
+        enum: ["fill", "outline", "hardshadow", "softshadow"],
+        default: "outline",
+      },
+      borderType: {
+        type: Number,
+        min: 0,
+        max: 2,
+      },
+      colors: [
+        {
+          type: String,
+          default: "#fff",
+        },
+        {
+          type: String,
+          default: "#000",
+        },
+        {
+          type: String,
+          default: "#000",
+        },
+      ],
+    },
     password: {
       type: String,
       required: true,

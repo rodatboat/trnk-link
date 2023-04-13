@@ -82,12 +82,12 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
   };
 
   const updateUser = () => {
-    if(setUsername){
+    if (setUsername) {
       setUser(setUsername);
     } else {
       fetchData();
     }
-  }
+  };
 
   useEffect(() => {
     updateUser();
@@ -98,22 +98,21 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
   }, [setUsername]);
 
   useEffect(() => {
-    if(user){
+    if (user) {
       generateColor();
     }
   }, [user]);
 
-  useEffect(() => {
-  }, [viewBackground]);
+  useEffect(() => {}, [viewBackground]);
 
   return (
     <Box
-    px={2}
-    pt={8}
-    pb={4}
-    display={"flex"}
-    minHeight={"100vh"}
-    height={"fit-content"}
+      px={2}
+      pt={8}
+      pb={4}
+      display={"flex"}
+      minHeight={"100vh"}
+      height={"fit-content"}
       sx={viewBackground}
     >
       {user ? (
@@ -151,16 +150,18 @@ export default function UserView({ minHeight = "100vh", setUsername = null }) {
             }}
             spacing={2}
           >
-            {user.elements.map((e, i) => e.active ?
-              (e.elemType === "link" ? (
-                <LinkElement key={i} element={e} />
-              ) : e.elemType === "header" ? (
-                <HeaderElement key={i} element={e} />
-              ) : e.elemType === "social" ? (
-                <SocialElement key={i} element={e} />
-              ) : (
-                <></>
-              )) : null
+            {user.elements.map((e, i) =>
+              e.active ? (
+                e.elemType === "link" ? (
+                  <LinkElement key={i} element={e} />
+                ) : e.elemType === "header" ? (
+                  <HeaderElement key={i} element={e} />
+                ) : e.elemType === "social" ? (
+                  <SocialElement key={i} element={e} />
+                ) : (
+                  <></>
+                )
+              ) : null
             )}
           </Grid>
         </Box>
