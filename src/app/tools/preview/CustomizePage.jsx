@@ -58,23 +58,23 @@ export default function CustomizePage() {
     });
   };
 
-  const fetchUserData = async () => {
-    await fetchUserLinks(window.localStorage.getItem("username")).then(
-      (data) => {
-        setFieldValue("displayName", data.data.user.displayName);
-        setFieldValue("bio", data.data.user.bio);
+  // const fetchUserData = async () => {
+  //   await fetchUserLinks(window.localStorage.getItem("username")).then(
+  //     (data) => {
+  //       setFieldValue("displayName", data.data.user.displayName);
+  //       setFieldValue("bio", data.data.user.bio);
 
-        setCurrentComponents({
-          user: { ...data.data.user },
-          elements: data.data.elements,
-        });
-      }
-    );
-  };
+  //       setCurrentComponents({
+  //         user: { ...data.data.user },
+  //         elements: data.data.elements,
+  //       });
+  //     }
+  //   );
+  // };
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+  // useEffect(() => {
+  //   fetchUserData();
+  // }, []);
 
   return (
     <Box m={"auto"} maxWidth={640}>

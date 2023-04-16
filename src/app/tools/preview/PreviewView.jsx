@@ -6,6 +6,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { Outlet } from "react-router-dom";
 import { styles } from "../../styles";
 import UserView from "../../[username]/UserView";
+import fetchUserLinks from "../../api/user/fetchUserLinks";
 
 export default function PreviewView() {
   const [previewDialog, setPreviewDialog] = useState(false);
@@ -23,6 +24,24 @@ export default function PreviewView() {
   const handlePreviewDialogToggle = () => {
     setPreviewDialog(!previewDialog);
   };
+
+  const fetchUserData = async () => {
+    await fetchUserLinks(window.localStorage.getItem("username")).then(
+      (data) => {
+        // setFieldValue("displayName", data.data.user.displayName);
+        // setFieldValue("bio", data.data.user.bio);
+
+        setCurrentComponents({
+          user: { ...data.data.user },
+          elements: data.data.elements,
+        });
+      }
+    );
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   useEffect(()=>{},[currentComponents])
 
