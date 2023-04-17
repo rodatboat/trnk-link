@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Button from "@Mui/material/Button";
+import Button from "@mui/material/Button";
 import { styles } from "../../styles";
 import { useFocusableInput } from "../../hooks/useFocusableInput";
 import { IoMdClose } from "react-icons/io";
