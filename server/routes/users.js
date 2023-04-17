@@ -34,7 +34,7 @@ router.route("/register").post(async (req, res) => {
       email: email,
       username: username,
       displayName: `@${username}`,
-      password: encryptedPassword,
+      password: encryptedPassword
     });
 
     return res.send({
@@ -42,6 +42,7 @@ router.route("/register").post(async (req, res) => {
       message: "User created successfully.",
     });
   } catch (error) {
+    console.log(error.message)
     return res.send({ success: false, message: "Error creating user" });
   }
 });
@@ -139,7 +140,7 @@ router.route("/:username").get(async (req, res) => {
     }
 
     let userElements = await LinkElement.find(
-      { username: username },
+      { user: user._id },
       {
         index: 1,
         active: 1,
@@ -160,7 +161,6 @@ router.route("/:username").get(async (req, res) => {
       },
     });
   } catch (err) {
-    console.log(error.message);
     return res.send({
       success: false,
       message: "Error fetching user link components",

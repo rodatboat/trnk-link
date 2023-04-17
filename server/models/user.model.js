@@ -16,7 +16,6 @@ const user = new Schema(
     },
     bio: {
       type: String,
-      required: true,
       default: "",
       maxlength: 120,
     },
