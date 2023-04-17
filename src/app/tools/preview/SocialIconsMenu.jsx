@@ -5,11 +5,10 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
 import { styles } from "../../styles";
 import { useFocusableInput } from "../../hooks/useFocusableInput";
 import { IoMdClose } from "react-icons/io";
-import { Modal } from "@mui/material";
+import { Modal, Button } from "@mui/material";
 import { icons } from "./icons";
 
 function SocialIcon({
