@@ -211,7 +211,7 @@ export default function NavBar() {
           >
             {/* Notifications, upgrade, share, profile button */}
             <Button sx={styles.button2} onClick={() => logoutUser()}>
-              <Typography color={"black"}>Test</Typography>
+              <Typography color={"black"}>Logout</Typography>
             </Button>
           </Box>
         </Box>
